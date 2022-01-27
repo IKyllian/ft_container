@@ -2,6 +2,10 @@
 #define VECTOR_HPP
 
 #include <iostream>
+#include "vector_iterator.hpp"
+#include "vector_const_iterator.hpp"
+#include "vector_reverse_iterator.hpp"
+#include "vector_const_reverse_iterator.hpp"
 
 namespace ft
 {
@@ -48,10 +52,11 @@ namespace ft
 		*/
 		typedef typename allocator_type::const_pointer const_pointer;
 
-		//typedef iterator
+		typedef typename ft::vectorIterator iterator;
+		typedef typename ft::vectorConstIterator const_iterator;
 
-		//typedef reverse_iterator
-
+		typedef typename ft::vectorReverseIterator reverse_iterator;
+		typedef typename ft::vectorConstReverseIterator const_reverse_iterator;
 
 		/*
 			Type qui compte le nombre d'éléments dans un vecteur.
