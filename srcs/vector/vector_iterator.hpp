@@ -18,9 +18,9 @@ namespace ft
 
 
 			vectorIterator(){ };
-			vectorIterator(pointer ptr){ _ptr(ptr); };
+			vectorIterator(pointer ptr){ _ptr = ptr; };
 			vectorIterator(const vectorIterator &src){ *this = src; };
-			~vectorIterator();
+			~vectorIterator() {};
 
 			vectorIterator &operator=(const vectorIterator& src) {
 				_ptr = src._ptr;

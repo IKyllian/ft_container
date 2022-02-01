@@ -2,6 +2,7 @@
 #define VECTOR_HPP
 
 #include <iostream>
+#include <memory>
 #include "vector_iterator.hpp"
 #include "vector_const_iterator.hpp"
 #include "vector_reverse_iterator.hpp"
@@ -64,6 +65,8 @@ namespace ft
 		*/
 		typedef typename allocator_type::size_type	size_type;
 
+		typedef typename std::ptrdiff_t difference_type;
+
 
 
 		// ---------------------- Constructor / Destructor / Asigment operator ---------------------------
@@ -71,35 +74,41 @@ namespace ft
 			-> https://webdevdesigner.com/q/what-does-the-explicit-keyword-mean-23047/ */
 
 		// Default constructor. Constructs an empty container, with no elements.
-		explicit vector(const allocator_type& alloc = allocator_type()): _alloc_size(0), _fill_size(0), _ptr(NULL) {};
+		explicit vector(const allocator_type& alloc = allocator_type()): _alloc_size(0), _fill_size(0), _ptr(NULL), _alloc(alloc) {};
 
 		// Fill constructor. Constructs a container with n elements. Each element is a copy of val. 
-		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc)
 		{
+			_ptr = _alloc.allocate(n);
 			//need to allocate ptr before loop (could be with allocate function of allocator class or reserve function of vector class)
 			for (size_type i = 0; i < n; i++)
-				alloc.construct(_ptr + i, val);
+				_alloc.construct(_ptr + i, val);
 			this->_fill_size = n;
 			this->_alloc_size = n;
 		};
 
 		// Range constructor. Constructs a container with as many elements as the range [first,last), with each element constructed from its corresponding element in that range, in the same order.
-		template <class InputIterator>
-        vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+		// template <class InputIterator>
+        // vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 
 		// Copy constructor. Constructs a container with a copy of each of the elements in x, in the same order.
-		vector(const vector& x) { *this = x };
+		vector(const vector& x) { *this = x; };
 
 		//Destructor
 		~vector() {
-			if (alloc_size > 0)
+			if (_fill_size > 0)
+			{
+				for (size_type i = 0; i < _fill_size; i++)
+					_alloc.destroy(_ptr + i);
+			}
+			if (_alloc_size > 0)
 				_alloc.deallocate(_ptr, _alloc_size);
 			_alloc_size = 0;
 			_fill_size = 0;
 		};
 
 		//Asigment operator
-		vector& operator=(const vector& x);
+		// vector& operator=(const vector& x);
 
 
 		// Iterators
@@ -128,26 +137,38 @@ namespace ft
 		size_type size() const { return (_fill_size); };
 		size_type max_size() const { return (std::numeric_limits<size_type>::max()); };
 		void resize (size_type n, value_type val = value_type()) {
-			T *new_ptr;
-
-			if (n > this->_alloc_size)
-				new_ptr = this->_alloc.allocate(n);
-			else
-				new_ptr = this->_alloc.allocate(this->_alloc_size);
 			if (n < this->_fill_size)
 			{
-				for (size_type i = this->_fill_size; i > n; i--)
+				for (size_type i = 0; i <= n; i++)
 				{
-					this->_alloc.destroy(this->_end_ptr);
-					--this->_end_ptr;
+					if (i == n)
+					{
+						for (; i <= this->_fill_size; i++)
+						{
+							if (i == this->_fill_size)
+							{
+								this->_fill_size = n;
+								return ;
+							}
+							this->_alloc.destroy(this->_ptr + i);
+						}
+					}
 				}
 			}
 			else
 			{
+				T *new_ptr;
+
+				if (n > this->_alloc_size)
+					new_ptr = this->_alloc.allocate(n);
+				else
+					new_ptr = this->_alloc.allocate(this->_alloc_size);
 				for (size_type i = 0; i < this->_fill_size; i++)
 					this->_alloc.construct(this->_ptr + i, *(this->_ptr + i));
 				for (size_type i = this->_fill_size; i < n; i++)
 					this->_alloc.construct(this->_ptr + i, val);
+				_ptr = new_ptr;
+				_fill_size = n;
 				// Peut faire cette partie plus proprement avec la fontion insert (quand elle sera faite), qui allouera automatiquent.
 			}
 		};
@@ -159,16 +180,18 @@ namespace ft
 		};
 		void reserve (size_type n) {
 			if (n > this->max_size())
-				throw std::length_error();
+				throw std::length_error("Size is greater than the vector maximum size");
 			if (n > this->_alloc_size)
 			{
+				T *new_ptr;
 				// Fill new ptr with values of old one
+				new_ptr = this->_alloc.allocate(n);
 				for (size_type i = 0; i < this->_fill_size; i++)
-					new_ptr.construct(new_ptr + i, *(this->_ptr + i);
+					this->_alloc.construct(new_ptr + i, *(this->_ptr + i));
 				// Free old ptr
 				for (size_type i = 0; i < this->_fill_size; i++)
 					this->_alloc.destroy(this->_ptr + i);
-				this->_alloc.dealocate(this->_ptr, this->_alloc_size);
+				this->_alloc.deallocate(this->_ptr, this->_alloc_size);
 				this->_ptr = new_ptr;
 				this->_alloc_size = n;
 			}
@@ -181,12 +204,12 @@ namespace ft
 
 	 	reference at(size_type n) {
 			if (n >= this->size())
-			 	throw std::out_of_range();
+			 	throw std::out_of_range("Out of range");
 			return (this->_ptr[n]);
 		 };
 		const_reference at(size_type n) const {
 			if (n >= this->size())
-			 	throw std::out_of_range();
+			 	throw std::out_of_range("Out of range");
 			return (this->_ptr[n]);
 		};
 
@@ -199,31 +222,52 @@ namespace ft
 		// Modifiers
 		template <class InputIterator>
   		void assign (InputIterator first, InputIterator last) {
-
+			this->clear();
+			
 		};
-		void assign (size_type n, const value_type& val);
+		// void assign (size_type n, const value_type& val);
 
-		void push_back (const value_type& val);
-		void pop_back();
+		// void push_back (const value_type& val);
+		// void pop_back();
 
-		iterator insert (iterator position, const value_type& val);
-		void insert (iterator position, size_type n, const value_type& val);
-		template <class InputIterator>
-    	void insert (iterator position, InputIterator first, InputIterator last);
+		iterator insert(iterator position, const value_type& val) {
+			difference_type diff = position - begin();
+			if (this->_fill_size + 1 > this->_alloc_size)
+				this->reserve(this->_alloc_size + 1);
+			if (_fill_size == diff)
+			{
+				_alloc.construct(_ptr + _fill_size, val);
+				_fill_size++;
+				return (position + 1);
+			}
+			_alloc.construct(_ptr + _fill_size, _ptr[_fill_size - 1]);
+			for (size_type i = _fill_size - 1; i > diff; i--)
+				_ptr[i] = _ptr[i - 1];
+			this->at(diff) = val;
+			_fill_size++;
+			return (position + 1);
+		};
+		// void insert (iterator position, size_type n, const value_type& val);
+		// template <class InputIterator>
+    	// void insert (iterator position, InputIterator first, InputIterator last);
 
-		iterator erase (iterator position);
-		iterator erase (iterator first, iterator last);
+		// iterator erase (iterator position);
+		// iterator erase (iterator first, iterator last);
 
-		void swap (vector& x);
-		void clear();
+		// void swap (vector& x);
+		void clear() {
+			for (int i = 0; i < this->_fill_size; i++)
+				this->_alloc.destroy(this->_ptr + i);
+			this->_fill_size = 0;
+		};
 
 		//Allocator
-		allocator_type get_allocator() const;
+		// allocator_type get_allocator() const;
 
 		private :
 			Alloc _alloc;
 			T *_ptr;
-			T *_end_ptr; // Sert pour resize plus facilement le container
+			// T *_end_ptr; // Sert pour resize plus facilement le container
 			size_t _alloc_size;
 			size_t _fill_size;
 	};
