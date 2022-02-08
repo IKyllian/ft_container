@@ -9,6 +9,7 @@
 #include "vector_const_iterator.hpp"
 #include "vector_reverse_iterator.hpp"
 #include "vector_const_reverse_iterator.hpp"
+#include "../utils.hpp"
 
 namespace ft
 {
@@ -82,7 +83,6 @@ namespace ft
 		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc)
 		{
 			_ptr = _alloc.allocate(n);
-			//need to allocate ptr before loop (could be with allocate function of allocator class or reserve function of vector class)
 			for (size_type i = 0; i < n; i++)
 				_alloc.construct(_ptr + i, val);
 			this->_fill_size = n;
@@ -158,7 +158,9 @@ namespace ft
 		size_type size() const { return (_fill_size); };
 		size_type max_size() const { return (std::numeric_limits<size_type>::max()); };
 		void resize (size_type n, value_type val = value_type()) {
-			if (n < this->_fill_size)
+			if (n > this->max_size())
+			 	throw std::out_of_range("Vector:: resize error");
+			else if (n < this->_fill_size)
 			{
 				for (size_type i = 0; i <= n; i++)
 				{
@@ -179,18 +181,19 @@ namespace ft
 			else
 			{
 				T *new_ptr;
+				size_type size = get_new_alloc_size(n);
 
-				if (n > this->_alloc_size)
-				{
-					new_ptr = this->_alloc.allocate(n);
-					_alloc_size = n;
-				}
-				else
-					new_ptr = this->_alloc.allocate(this->_alloc_size);
+				// if (n > this->_alloc_size)
+				// {
+					new_ptr = this->_alloc.allocate(size);
+					_alloc_size = size;
+				// }
+				// else
+				// 	new_ptr = this->_alloc.allocate(this->_alloc_size);
 				for (size_type i = 0; i < this->_fill_size; i++)
-					this->_alloc.construct(this->_ptr + i, *(this->_ptr + i));
+					this->_alloc.construct(new_ptr + i, *(this->_ptr + i));
 				for (size_type i = this->_fill_size; i < n; i++)
-					this->_alloc.construct(this->_ptr + i, val);
+					this->_alloc.construct(new_ptr + i, val);
 				_ptr = new_ptr;
 				_fill_size = n;
 				// Peut faire cette partie plus proprement avec la fontion insert (quand elle sera faite), qui allouera automatiquent.
@@ -237,8 +240,8 @@ namespace ft
 			return (this->_ptr[n]);
 		};
 
-		reference front() { return (this->*_ptr); };
-		const_reference front() const { return (this->*_ptr); };
+		reference front() { return (*(this->_ptr)); };
+		const_reference front() const { return (*(this->_ptr)); };
 
 		reference back() { return (*(this->_ptr + (this->_fill_size - 1))); };
 		const_reference back() const { return (*(this->_ptr + (this->_fill_size - 1))); };
@@ -382,9 +385,23 @@ namespace ft
 			T *_ptr;
 			size_t _alloc_size;
 			size_t _fill_size;
+			
+			// Fonction qui sert pour realloc le container a la bonne taille
+			size_t get_new_alloc_size(size_type n) {
+				if (n > this->max_size())
+					throw std::out_of_range("Vector:: resize error");
+				else if (n <= this->_alloc_size)
+					return (this->_alloc_size);
+				if (this->_alloc_size * 2 >= n)
+				{
+					if (this->_alloc_size * 2 > this->max_size())
+						throw std::out_of_range("Vector:: resize error");
+					return (this->_alloc_size * 2);
+				}
+				else
+					return (n);
+			}
 	};
-}
-
 
 template <class T, class Alloc>
 bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
@@ -396,32 +413,31 @@ bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
 	return (true);
 };	
 
-template <class T, class Alloc>
-bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (!(lhs == rhs)); };
+	template <class T, class Alloc>
+	bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (!(lhs == rhs)); };
 
-template <class T, class Alloc>
-bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
-	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
-};
-
-
-template <class T, class Alloc>
-bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (!(rhs < lhs)); };
+	template <class T, class Alloc>
+	bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	};
 
 
-template <class T, class Alloc>
-bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (rhs < lhs); };
+	template <class T, class Alloc>
+	bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (!(rhs < lhs)); };
 
 
-template <class T, class Alloc>
-bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (!(lhs < rhs)); };
+	template <class T, class Alloc>
+	bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (rhs < lhs); };
 
 
-template <class T, class Alloc>
-void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y) {
-	x.swap(y);
-};
+	template <class T, class Alloc>
+	bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (!(lhs < rhs)); };
 
 
+	template <class T, class Alloc>
+	void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y) {
+		x.swap(y);
+	};
+}
 
 #endif
