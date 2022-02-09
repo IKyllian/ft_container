@@ -92,12 +92,12 @@ namespace ft
 		// Range constructor. Constructs a container with as many elements as the range [first,last), with each element constructed from its corresponding element in that range, in the same order.
 		template<class InputIterator>
 		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-		typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _alloc(alloc), _fill_size(0), _alloc_size(0), _ptr(NULL) {
-			while (first != last)
-			{
+		typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _alloc(alloc), _fill_size(0), _alloc_size(0), _ptr(NULL) {
+			difference_type size = last - first;
+			this->_alloc_size = size;
+			this->_ptr = _alloc.allocate(size);
+			for (; first != last; first++)
 				this->push_back(*first);
-				first++;
-			}
 		};
 
 		// Copy constructor. Constructs a container with a copy of each of the elements in x, in the same order.
@@ -249,7 +249,7 @@ namespace ft
 		// Modifiers
 		template <class InputIterator>
   		void assign (InputIterator first, InputIterator last,
-			typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type* = NULL) {
+			typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type* = NULL) {
 			difference_type size = last - first;
 			this->clear();
 			if (this->_alloc_size < size)
@@ -284,7 +284,7 @@ namespace ft
 		void insert (iterator position, size_type n, const value_type& val) {
 			difference_type idx = position - begin();
 			if (this->_fill_size + n > this->_alloc_size)
-				this->reserve(this->_alloc_size + n);
+				this->reserve(get_new_alloc_size(this->_fill_size + n));
 			if (_fill_size == idx)
 			{
 				for (size_type i = 0; i < n; i++)
@@ -304,11 +304,12 @@ namespace ft
 		};
 		template <class InputIterator>
     	void insert (iterator position, InputIterator first, InputIterator last,
-			typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type* = NULL ) {
+			typename ft::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type* = NULL ) {
 			difference_type size = last - first;
 			difference_type idx = position - begin();
+
 			if (this->_fill_size + size > this->_alloc_size)
-				this->reserve(this->_alloc_size + size);
+				this->reserve(get_new_alloc_size(this->_fill_size + size));
 			if (_fill_size == idx)
 			{
 				for (iterator it(first); it != last; it++)
@@ -324,7 +325,7 @@ namespace ft
 				_fill_size++;
 			}
 			for (iterator it(first); it != last; it++)
-					this->at(idx++) = *it;
+				this->at(idx++) = *it;
 		};
 
 		iterator erase (iterator position) {
@@ -420,7 +421,6 @@ bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
 	bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
 		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	};
-
 
 	template <class T, class Alloc>
 	bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) { return (!(rhs < lhs)); };
