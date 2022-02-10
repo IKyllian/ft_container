@@ -298,7 +298,7 @@ int main()
 		// -------------- Container size of 4 -----------
 		std::cout << "Test a container with a size of 4 :" <<  std::endl << std::endl;
 		ft::vector<int> vect(4, 100);
-		ft::vectorIterator<int> it;
+		ft::vector<int>::iterator it;
 		// ft::vector<std::string> vect(4, "Ceci est un test");
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
@@ -365,7 +365,7 @@ int main()
 		std::cout << "Test a container with a size of 1:" <<  std::endl << std::endl;
 
 		ft::vector<int> vect(1, 0);
-		ft::vectorIterator<int> it;
+		ft::vector<int>::iterator it;
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		std::cout << "At start vect contains:";
@@ -508,7 +508,7 @@ int main()
 	std::cout << "iterator erase (iterator position)" << std::endl << std::endl;	
 	{
 		ft::vector<int> vect;
-		ft::vectorIterator<int> it;
+		ft::vector<int>::iterator it;
 
 		for (int i=0;i<=10;i++) vect.push_back(i);
 		show_vector(vect);
@@ -527,7 +527,7 @@ int main()
 	std::cout << "iterator erase (iterator first, iterator last)" << std::endl << std::endl;
 	{
 		ft::vector<int> vect;
-		ft::vectorIterator<int> it;
+		ft::vector<int>::iterator it;
 
 		for (int i=0;i<=10;i++) vect.push_back(i);
 
@@ -626,8 +626,8 @@ int main()
 
 		for (int i = 0; i <= 10; i++)
 			vect.push_back(i);
-		ft::vectorIterator<int> it = vect.begin();
-		ft::vectorIterator<int> it_end = vect.end();
+		ft::vector<int>::iterator it = vect.begin();
+		ft::vector<int>::iterator it_end = vect.end();
 
 		show_vector(vect);
 		std::cout << "Vect Begin = " << *it << " - End = " << *(it_end - 1) << std::endl;
@@ -652,39 +652,39 @@ int main()
 
 	}
 
-	// std::cout << "----------------------- FT RBEGIN/REND -----------------------" << std::endl;
-	// std::cout << "void clear()" << std::endl << std::endl;
+	std::cout << "----------------------- FT RBEGIN/REND -----------------------" << std::endl;
+	std::cout << "void clear()" << std::endl << std::endl;
 
-	// {
-	// 	ft::vector<int> vect;
-	// 	for (int i = 0; i <= 10; i++)
-	// 		vect.push_back(i);
+	{
+		ft::vector<int> vect;
+		for (int i = 0; i <= 10; i++)
+			vect.push_back(i);
 
-	// 	ft::vectorReverseIterator<ft::vectorIterator> r_it = vect.rbegin();
-	// 	ft::vectorReverseIterator<ft::vectorIterator> r_it_end = vect.rend();
+		ft::vector<int>::reverse_iterator it(vect.rbegin());
+		ft::vector<int>::reverse_iterator it_end(vect.rend());
 
-	// 	show_vector(vect);
-	// 	std::cout << "Vect Begin = " << *it << " - End = " << *it_end << std::endl;
+		show_vector(vect);
+		std::cout << "Vect Begin = " << *it << " - End = " << *it_end << std::endl;
 		
-	// 	std::cout << "Reverse Begin to Reverse End" << std::endl;
-	// 	for (; it != vect.rend(); it--)
-	// 		std::cout << "Elem = " << *it << std::endl;
-	// 	std::cout << std::endl;
+		std::cout << "Reverse Begin to Reverse End" << std::endl;
+		for (; it != vect.rend(); it--)
+			std::cout << "Elem = " << *it << std::endl;
+		std::cout << std::endl;
 		
-	// 	std::cout << "Reverse End to Reverse Begin" << std::endl;
-	// 	for (; it_end - 1 >= vect.rbegin(); it_end++)
-	// 		std::cout << "Elem = " << *(it_end - 1) << std::endl;
-	// 	std::cout << std::endl;
+		std::cout << "Reverse End to Reverse Begin" << std::endl;
+		for (; it_end - 1 >= vect.rbegin(); it_end++)
+			std::cout << "Elem = " << *(it_end - 1) << std::endl;
+		std::cout << std::endl;
 
-	// 	vect.push_back(42);
-	// 	std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *vect.rend() << std::endl;
+		vect.push_back(42);
+		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *vect.rend() << std::endl;
 
-	// 	vect.pop_back();
-	// 	vect.pop_back();
-	// 	vect.pop_back();
-	// 	std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *vect.rend() << std::endl;
+		vect.pop_back();
+		vect.pop_back();
+		vect.pop_back();
+		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *vect.rend() << std::endl;
 
-	// }
+	}
 
 
 	return (0);
