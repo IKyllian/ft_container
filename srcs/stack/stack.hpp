@@ -11,55 +11,54 @@ namespace ft
 	{
 		public : 
 
-			typedef Container container_type;
+			typedef T value_type;
 			typedef typename Container::value_type container_type;
 			typedef typename Container::size_type size_type;
 
-			explicit stack(const Container &cont = Container());
+			explicit stack(const Container &cont = Container()) : _cont(cont) {};
 
-			bool empty() const {return (_cont.size());};
-			size_type size() const {return (_cont.empty());};
+			bool empty() const { return (_cont.empty()); };
+			size_type size() const { return (_cont.size()); };
 
-			value_type& top(){return(_cont.back())};
-			const value_type& top(){return(_cont.back())} const;
+			value_type& top(){ return (_cont.back()); };
+			const value_type& top() const { return (_cont.back()); };
 
-			void push (const value_type& val) {_cont.push_back(val)};
-			void pop() {c.pop_back()};
+			void push (const value_type& val) { _cont.push_back(val); };
+			void pop() { _cont.pop_back(); };
 
 		protected :
-			container_type _cont;
+			Container _cont;
 
-			
 	};
 
 	template <class T, class Container>
 	bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
-		return (lhc.ct == rhc.ct);
+		return (lhs.ct == rhs.ct);
 	};
 
 	template <class T, class Container>
 	bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
-		return (lhc.ct != rhc.ct);
+		return (lhs.ct != rhs.ct);
 	};
 
 	template <class T, class Container>
 	bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
-		return (lhc.ct < rhc.ct);
+		return (lhs.ct < rhs.ct);
 	};
 
 	template <class T, class Container>
 	bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
-		return (lhc.ct <= rhc.ct);
+		return (lhs.ct <= rhs.ct);
 	};
 
 	template <class T, class Container>
 	bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
-		return (lhc.ct > rhc.ct);
+		return (lhs.ct > rhs.ct);
 	};
 
 	template <class T, class Container>
 	bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs) {
-		return (lhc.ct >= rhc.ct);
+		return (lhs.ct >= rhs.ct);
 	};
 }
 

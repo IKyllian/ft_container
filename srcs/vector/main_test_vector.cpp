@@ -383,7 +383,7 @@ int main()
 
 		std::cout << "After Changes ------> Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl << std::endl;
 	}
-
+	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	{
 		std::cout << "void insert (iterator position, size_type n, const value_type& val)" << std::endl << std::endl;
 
@@ -413,6 +413,7 @@ int main()
 		show_vector(vect);
 		std::cout << "After Changes ------> Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl << std::endl;
 	}
+	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	{
 		std::cout << "void insert (iterator position, size_type n, const value_type& val)" << std::endl << std::endl;
 
@@ -443,7 +444,7 @@ int main()
 		show_vector(vect);
 		std::cout << "After Changes ------> Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl << std::endl;
 	}
-
+	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	{
 		std::cout << "void insert (iterator position, InputIterator first, InputIterator last)" << std::endl << std::endl;
 
@@ -514,6 +515,7 @@ int main()
 
 		std::cout << "After Changes ------> Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl << std::endl;
 	}
+	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	std::cout << "iterator erase (iterator first, iterator last)" << std::endl << std::endl;
 	{
 		std::vector<int> vect;
@@ -522,7 +524,7 @@ int main()
 		for (int i=0;i<=10;i++) vect.push_back(i);
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl << std::endl;
-
+		show_vector(vect);
 
 		std::cout << "Erase first three elements" << std::endl;
 		it = vect.erase(vect.begin(), vect.begin() + 3);
@@ -609,6 +611,74 @@ int main()
 		show_vector(vect);
 			
 	}
+
+	std::cout << "----------------------- BEGIN/END -----------------------" << std::endl;
+	std::cout << "void clear()" << std::endl << std::endl;
+
+	{
+		std::vector<int> vect;
+
+		for (int i = 0; i <= 10; i++)
+			vect.push_back(i);
+		std::vector<int>::iterator it = vect.begin();
+		std::vector<int>::iterator it_end = vect.end();
+
+		show_vector(vect);
+		std::cout << "Vect Begin = " << *it << " - End = " << *(it_end - 1) << std::endl;
+		
+		std::cout << "Begin to End" << std::endl;
+		for (; it != vect.end(); it++)
+			std::cout << "Elem = " << *it << std::endl;
+		std::cout << std::endl;
+		
+		std::cout << "End to Begin" << std::endl;
+		for (; it_end - 1 >= vect.begin(); it_end--)
+			std::cout << "Elem = " << *(it_end - 1) << std::endl;
+		std::cout << std::endl;
+
+		vect.push_back(42);
+		std::cout << "Begin = " << *(vect.begin()) << " - End = " << *(vect.end() - 1) << std::endl;
+
+		vect.pop_back();
+		vect.pop_back();
+		vect.pop_back();
+		std::cout << "Begin = " << *(vect.begin()) << " - End = " << *(vect.end() - 1) << std::endl;
+
+	}
+
+	// std::cout << "----------------------- BEGIN/END (const)-----------------------" << std::endl;
+	// std::cout << "void clear()" << std::endl << std::endl;
+
+	// {
+	// 	std::vector<int> vect;
+
+	// 	for (int i = 0; i <= 10; i++)
+	// 		vect.push_back(i);
+	// 	std::vector<int>::const_iterator it = vect.begin();
+	// 	std::vector<int>::const_iterator it_end = vect.end();
+
+	// 	show_vector(vect);
+	// 	std::cout << "Vect Begin = " << *it << " - End = " << *(it_end - 1) << std::endl;
+		
+	// 	std::cout << "Begin to End" << std::endl;
+	// 	for (; it != vect.end(); it++)
+	// 		std::cout << "Elem = " << *it << std::endl;
+	// 	std::cout << std::endl;
+		
+	// 	std::cout << "End to Begin" << std::endl;
+	// 	for (; it_end - 1 >= vect.begin(); it_end--)
+	// 		std::cout << "Elem = " << *(it_end - 1) << std::endl;
+	// 	std::cout << std::endl;
+
+	// 	vect.push_back(42);
+	// 	std::cout << "Begin = " << *(vect.begin()) << " - End = " << *(vect.end() - 1) << std::endl;
+
+	// 	vect.pop_back();
+	// 	vect.pop_back();
+	// 	vect.pop_back();
+	// 	std::cout << "Begin = " << *(vect.begin()) << " - End = " << *(vect.end() - 1) << std::endl;
+
+	// }
 
 	return 0;
 }

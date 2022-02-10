@@ -144,7 +144,7 @@ namespace ft
 		const_iterator end() const {
 			if (this->empty())
 				return (this->begin());
-			return (iterator(this->_ptr + this->size()));
+			return (const_iterator(this->_ptr + this->size()));
 		};
 		
 		reverse_iterator rbegin() { return (reverse_iterator(this->end())); }; // A revoir pour la position de l'iterateur
@@ -182,14 +182,8 @@ namespace ft
 			{
 				T *new_ptr;
 				size_type size = get_new_alloc_size(n);
-
-				// if (n > this->_alloc_size)
-				// {
-					new_ptr = this->_alloc.allocate(size);
-					_alloc_size = size;
-				// }
-				// else
-				// 	new_ptr = this->_alloc.allocate(this->_alloc_size);
+				new_ptr = this->_alloc.allocate(size);
+				_alloc_size = size;
 				for (size_type i = 0; i < this->_fill_size; i++)
 					this->_alloc.construct(new_ptr + i, *(this->_ptr + i));
 				for (size_type i = this->_fill_size; i < n; i++)
