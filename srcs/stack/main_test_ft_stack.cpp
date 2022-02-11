@@ -1,5 +1,5 @@
 #include "stack.hpp"
-#include <deque>
+#include "../vector/vector.hpp"
 
 int main()
 {
@@ -7,9 +7,9 @@ int main()
 	std::cout << "explicit stack (const container_type& ctnr = container_type())" << std::endl << std::endl;
 
 	{
-		std::deque<int> deque(5, 42);
+		ft::vector<int> vector(5, 42);
         ft::stack<int> stack;
-        ft::stack<int> stack2(deque);
+        ft::stack<int> stack2(vector);
 
 		std::cout << "Stack Size = " << stack.size() << std::endl;
         std::cout << "Stack2 Size = " << stack2.size() << std::endl;
@@ -24,9 +24,9 @@ int main()
 	std::cout << "bool empty() const" << std::endl << std::endl;
 
 	{
-		std::deque<int> deque(1, 42);
+		ft::vector<int> vector(1, 42);
         ft::stack<int> stack;
-        ft::stack<int> stack2(deque);
+        ft::stack<int> stack2(vector);
 
 		std::cout << "Stack is empty = " << stack.empty() << std::endl;
         std::cout << "Stack2 is empty = " << stack.empty() << std::endl;
@@ -38,9 +38,9 @@ int main()
 	std::cout << "size_type size() const" << std::endl << std::endl;
 
 	{
-        std::deque<int> deque(10000, 42);
+        ft::vector<int> vector(10000, 42);
         ft::stack<int> stack;
-        ft::stack<int> stack2(deque);
+        ft::stack<int> stack2(vector);
 
 		std::cout << "Stack Size = " << stack.size() << std::endl;
         for (int i = 0; i < 2; i++)
@@ -58,8 +58,8 @@ int main()
 	std::cout << "value_type& top()" << std::endl << std::endl;
 
 	{
-        std::deque<int> deque(5, 42);
-        ft::stack<int> stack(deque);
+        ft::vector<int> vector(5, 42);
+        ft::stack<int> stack(vector);
 
 		std::cout << "Stack Size = " << stack.size() << std::endl;
 		for (; !stack.empty(); )
@@ -79,22 +79,11 @@ int main()
 	std::cout << "const value_type& top() const" << std::endl << std::endl;
 
 	{
-        std::deque<int> deque(5, 42);
-        ft::stack<int> stack(deque);
+        ft::vector<int> vector(5, 42);
+        const ft::stack<int> stack(vector);
 
-		std::cout << "Stack Size = " << stack.size() << std::endl;
-		for (; !stack.empty(); )
-        {
-            std::cout << "Elem = " << stack.top() << std::endl;
-            stack.pop();
-        }
-		std::cout << std::endl;
-        stack.push(20);
-        stack.top() += 5;
         std::cout << "Top Elem = " << stack.top() << std::endl;
-		stack.top() -= 20;
-        std::cout << "Top Elem = " << stack.top() << std::endl;
-	}
+    }
 
 	std::cout << std::endl << "----------------------- FT PUSH -----------------------" << std::endl;
 	std::cout << "void push (const value_type& val)" << std::endl << std::endl;

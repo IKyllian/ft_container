@@ -646,39 +646,49 @@ int main()
 
 	}
 
-	// std::cout << "----------------------- BEGIN/END (const)-----------------------" << std::endl;
-	// std::cout << "void clear()" << std::endl << std::endl;
+	std::cout << "-----------------------  RBEGIN/REND -----------------------" << std::endl;
+	std::cout << "void clear()" << std::endl << std::endl;
 
-	// {
-	// 	std::vector<int> vect;
+	{
+		std::vector<int> vect;
+		for (int i = 1; i <= 10; i++)
+			vect.push_back(i);
 
-	// 	for (int i = 0; i <= 10; i++)
-	// 		vect.push_back(i);
-	// 	std::vector<int>::const_iterator it = vect.begin();
-	// 	std::vector<int>::const_iterator it_end = vect.end();
+		std::vector<int>::reverse_iterator it;
+		std::vector<int>::reverse_iterator it_end;
 
-	// 	show_vector(vect);
-	// 	std::cout << "Vect Begin = " << *it << " - End = " << *(it_end - 1) << std::endl;
+
+		it = vect.rbegin();
+		it_end = vect.rend();
+
+		// std::cout << "End = " << *(vect.end() - 1) << " - Begin = " << *(vect.begin()) << std::endl;
+		// std::cout << "Rbegin = " << *it << " - --Rend = " << *(--it_end) << std::endl;
+
+		show_vector(vect);
+		std::cout << "Vect Begin = " << *it << " - End = " << *(--it_end) << std::endl;
 		
-	// 	std::cout << "Begin to End" << std::endl;
-	// 	for (; it != vect.end(); it++)
-	// 		std::cout << "Elem = " << *it << std::endl;
-	// 	std::cout << std::endl;
+		std::cout << "Reverse Begin to Reverse End" << std::endl;
+		for (; it != vect.rend(); it++)
+			std::cout << "Elem = " << *it << std::endl;
+		std::cout << std::endl;
 		
-	// 	std::cout << "End to Begin" << std::endl;
-	// 	for (; it_end - 1 >= vect.begin(); it_end--)
-	// 		std::cout << "Elem = " << *(it_end - 1) << std::endl;
-	// 	std::cout << std::endl;
+		std::cout << "Reverse End to Reverse Begin" << std::endl;
+		--it_end;
+		for (; it_end != vect.rbegin(); it_end--)
+			std::cout << "Elem = " << *it_end << std::endl;
+		std::cout << std::endl;
 
-	// 	vect.push_back(42);
-	// 	std::cout << "Begin = " << *(vect.begin()) << " - End = " << *(vect.end() - 1) << std::endl;
+		vect.push_back(42);
+		show_vector(vect);
+		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *(--vect.rend()) << std::endl;
 
-	// 	vect.pop_back();
-	// 	vect.pop_back();
-	// 	vect.pop_back();
-	// 	std::cout << "Begin = " << *(vect.begin()) << " - End = " << *(vect.end() - 1) << std::endl;
+		vect.pop_back();
+		vect.pop_back();
+		vect.pop_back();
+		show_vector(vect);
+		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *(--vect.rend()) << std::endl;
 
-	// }
+	}
 
 	return 0;
 }

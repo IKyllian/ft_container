@@ -147,11 +147,11 @@ namespace ft
 			return (const_iterator(this->_ptr + this->size()));
 		};
 		
-		reverse_iterator rbegin() { return (reverse_iterator(this->end())); }; // A revoir pour la position de l'iterateur
-		const_reverse_iterator rbegin() const { return (const_reverse_iterator(this->end())); }; // A revoir pour la position de l'iterateur
+		reverse_iterator rbegin() { return (reverse_iterator(--(this->end()))); }; // A revoir pour la position de l'iterateur
+		const_reverse_iterator rbegin() const { return (const_reverse_iterator(--(this->end()))); }; // A revoir pour la position de l'iterateur
 
-		reverse_iterator rend() { return (reverse_iterator(this->begin())); }; // A revoir pour la position de l'iterateur
-		const_reverse_iterator rend() const { return (const_reverse_iterator(this->begin())); }; // A revoir pour la position de l'iterateur
+		reverse_iterator rend() { return (reverse_iterator(--(this->begin()))); }; // A revoir pour la position de l'iterateur
+		const_reverse_iterator rend() const { return (const_reverse_iterator(--(this->begin()))); }; // A revoir pour la position de l'iterateur
 
 
 		//Capacity

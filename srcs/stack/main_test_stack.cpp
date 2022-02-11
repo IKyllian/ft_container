@@ -77,6 +77,16 @@ int main()
 
 	}
 
+    std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+	std::cout << "const value_type& top() const" << std::endl << std::endl;
+
+	{
+        std::deque<int> deque(5, 42);
+        const std::stack<int> stack(deque);
+
+        std::cout << "Top Elem = " << stack.top() << std::endl;
+    }
+
     std::cout << std::endl << "----------------------- PUSH -----------------------" << std::endl;
 	std::cout << "void push (const value_type& val)" << std::endl << std::endl;
 

@@ -657,32 +657,41 @@ int main()
 
 	{
 		ft::vector<int> vect;
-		for (int i = 0; i <= 10; i++)
+		for (int i = 1; i <= 10; i++)
 			vect.push_back(i);
 
-		ft::vector<int>::reverse_iterator it(vect.rbegin());
-		ft::vector<int>::reverse_iterator it_end(vect.rend());
+		ft::vector<int>::reverse_iterator it;
+		ft::vector<int>::reverse_iterator it_end;
 
+
+		it = vect.rbegin();
+		it_end = vect.rend();
+
+		// std::cout << "End = " << *(vect.end() - 1) << " - Begin = " << *(vect.begin()) << std::endl;
+		// std::cout << "Rbegin = " << *it << " - --Rend = " << *(--it_end) << std::endl;
 		show_vector(vect);
-		std::cout << "Vect Begin = " << *it << " - End = " << *it_end << std::endl;
+		std::cout << "Vect Begin = " << *it << " - End = " << *(--it_end) << std::endl;
 		
 		std::cout << "Reverse Begin to Reverse End" << std::endl;
-		for (; it != vect.rend(); it--)
+		for (; it != vect.rend(); it++)
 			std::cout << "Elem = " << *it << std::endl;
 		std::cout << std::endl;
 		
 		std::cout << "Reverse End to Reverse Begin" << std::endl;
-		for (; it_end - 1 >= vect.rbegin(); it_end++)
-			std::cout << "Elem = " << *(it_end - 1) << std::endl;
+		--it_end;
+		for (; it_end != vect.rbegin(); it_end--)
+			std::cout << "Elem = " << *it_end << std::endl;
 		std::cout << std::endl;
 
 		vect.push_back(42);
-		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *vect.rend() << std::endl;
+		show_vector(vect);
+		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *(--vect.rend()) << std::endl;
 
 		vect.pop_back();
 		vect.pop_back();
 		vect.pop_back();
-		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *vect.rend() << std::endl;
+		show_vector(vect);
+		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *(--vect.rend()) << std::endl;
 
 	}
 

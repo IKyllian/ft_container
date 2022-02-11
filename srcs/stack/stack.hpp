@@ -3,10 +3,11 @@
 
 #include <iostream>
 #include <deque>
+#include "../vector/vector.hpp"
 
 namespace ft
 {
-	template <class T, class Container = std::deque<T> >
+	template <class T, class Container = ft::vector<T> >
 	class stack
 	{
 		public : 

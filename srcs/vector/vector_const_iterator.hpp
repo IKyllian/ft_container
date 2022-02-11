@@ -9,12 +9,12 @@ namespace ft
 	class vectorConstIterator {
 		public :
 
-			typedef const T value_type;
-			typedef T* pointer;
-			typedef const T* const_pointer;
-			typedef T& reference;
-			typedef const T& const_reference;
-			typedef typename std::ptrdiff_t difference_type;
+			typedef const T		value_type;
+			typedef T*			pointer;
+			typedef const T*	const_pointer;
+			typedef T&			reference;
+			typedef const T&	const_reference;
+			typedef typename	std::ptrdiff_t difference_type;
 
 
 			vectorConstIterator(){ };
@@ -43,7 +43,7 @@ namespace ft
 			}
 			vectorConstIterator operator++(int) {
 				vectorConstIterator tmp = *this;
-				++(*this);
+				_ptr++;
 				return (tmp);
 			}
 			vectorConstIterator &operator--(void) {
@@ -52,7 +52,7 @@ namespace ft
 			}
 			vectorConstIterator operator--(int) {
 				vectorConstIterator tmp = *this;
-				--(*this);
+				_ptr--;
 				return (tmp);
 			}
 			
