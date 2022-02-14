@@ -60,7 +60,7 @@ namespace ft
 		typedef typename ft::vectorConstIterator<T> const_iterator;
 
 		typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
-		typedef typename ft::vectorConstReverseIterator<iterator> const_reverse_iterator;
+		typedef typename ft::vectorConstReverseIterator<const_iterator> const_reverse_iterator;
 
 		/*
 			Type qui compte le nombre d'éléments dans un vecteur.

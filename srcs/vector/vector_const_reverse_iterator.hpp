@@ -19,7 +19,7 @@ namespace ft
 
 			vectorConstReverseIterator(){ };
 			vectorConstReverseIterator(pointer ptr) { _ptr = ptr; };
-			vectorConstReverseIterator(const vectorIterator<value_type> &src) { _ptr = src.operator->(); } ;
+			vectorConstReverseIterator(iterator src) { _ptr = src.operator->(); } ;
 			vectorConstReverseIterator(const vectorConstReverseIterator &src){ *this = src; };
 			~vectorConstReverseIterator();
 

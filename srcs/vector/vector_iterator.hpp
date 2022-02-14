@@ -73,8 +73,11 @@ namespace ft
 
 			// -----------Dereferencing/Address----------
 			reference operator[](difference_type n){ return (*(_ptr + n)); };
+			const_reference operator [](difference_type n) const { return (*(_ptr + n)); };
 			pointer operator->(){ return (_ptr); };
+			pointer operator ->() const { return (_ptr); };		
 			reference operator*(){ return (*(_ptr)); };
+			const_reference operator *() const { return (*_ptr); };
 
 		private :
 			pointer _ptr;
