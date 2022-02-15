@@ -4,6 +4,8 @@
 #include <iostream>
 #include <functional>
 
+#define NOIR 0
+#define ROUGE 1
 
 namespace ft
 {
@@ -219,7 +221,7 @@ namespace ft
 	};
 
 
-	template <class T1, class T2> struct pair;
+	template <class T1, class T2>
 	class pair
 	{
 		public :
@@ -289,17 +291,171 @@ namespace ft
 		return (ft::pair<T1,T2>(x,y));
 	};
 
-	template <class Key, class T>
-	struct node {
-		node	*left;
-		node	*right;
-		Key		key;
-		T		value;
-	}
+	template <class Key, class Comapare>
+	class node
+	{
+		public :
+
+		node();
+		node& operator=(const node& src);
+		~node();
+
+		node* get_parent() { return (this->_parent) };
+		node* get_grandparent() { 
+			node *p = get_parent();
+			if (p == NULL) // Noeud sans parent n'a pas de grand parent
+				return (NULL);
+			return (p->get_parent());
+		};
+		node* get_brother() {
+			node *p = get_parent();
+			if (p == NULL) // Noeud sans parent n'a pas de frere
+				return (NULL);
+			if (this == p->_left)
+				return (p->_right);
+			return (p->left);
+		};
+		node* get_oncle() {
+			node *p = get_parent();
+			node *g = get_grandparent();
+			if (g == NULL) // Noeud sans grand parent n'a pas d'oncle
+				return (NULL);
+			return (p->get_brother());
+		};
+
+		void left_rotation() {
+			node *y = this->_right;
+
+			// -------- 1 --------
+			this->_right = y->_left;
+			if (y->_left != NULL)
+				y->_left->_parent = this;
+			// -------------------
+
+			// -------- 2 --------
+			y->_parent = this->_parent;
+			if (this->_parent == NULL)
+				this = y;
+			else if (this == this->_parent->_left)
+				this->_parent->_left = y;
+			else
+				this->_parent->_right = y;
+			// -------------------
+
+			// -------- 3 --------
+			y->_left = this;
+			this->parent = y;
+			// -------------------
+		}
+
+		void right_rotation() {
+			node *y = this->_left;
+
+			// -------- 1 --------
+			this->_left = y->_right;
+			if (y->_right != NULL)
+				y->_right->_parent = this;
+			// -------------------
+
+			// -------- 2 --------
+			y->_parent = this->_parent;
+			if (this->_parent == NULL)
+				this = y;
+			else if (this == this->_parent->_right)
+				this->_parent->_right = y;
+			else
+				this->_parent->_left = y;
+			// -------------------
+
+			// -------- 3 --------
+			y->_right = this;
+			this->parent = y;
+			// -------------------
+		}
+
+		node *search_node(Key key) {
+			node *tmp = this;
+
+			while (tmp != NULL)
+			{
+				if (tmp->_key == key)
+					return (tmp);
+				if (key > tmp->_key)
+					tmp = tmp->_right;
+				else
+					tmp = tmp->_left;
+			}
+			return (NULL);
+		};
+
+		void insert_repare()
+		{
+			if (this->parent() == NULL)
+				this->>_color = NOIR;
+			else if (parent(n)->couleur == NOIR)
+				return ;
+			else if (this->>get_oncle()->_color == ROUGE) {
+				this->get_parent()->_color = NOIR;
+				this->get_oncle()->_color = NOIR;
+
+				node *g = this->get_grandparent();
+				g->_color = ROUGE;
+				g.insert_repare();
+			}
+			else {
+				node *p = this->get_parent();
+				node *g = this->get_grandparent();
+			}
+		}
+
+		node *insert_node(node *new_node) {
+			while (this != NULL)
+			{
+				if (new_node->_key > this->_key) {
+					if (this->_right != NULL)
+						this = this->_right;
+					else {
+						this->_right = new_node;
+						break ;
+					}
+				}
+				else {
+					if (this->_left != NULL)
+						this = this->_left;
+					else {
+						this->_left = new_node;
+						break ;
+					}
+				}
+			}
+			new_node->parent = this;
+			new_node->_right = NULL;
+			new_node->_left = NULL;
+			new_node = ROUGE;
+
+			// Equilibrer arbre si il le faut
+			new_node->insert_repare();
+			
+			while (this->parent() != NULL)
+				this = this->parent();
+			return (this);
+		};
+
+
+		private :
+
+			node(const node& src);
+
+			node	*_left;
+			node	*_right;
+			node	*_parent;
+			int		_color;
+			Key		_key;
+	};
 
 	template < class Key,                                     // map::key_type
            class T,                                       // map::mapped_type
-           class Compare = ft::less<Key>,                     // map::key_compare
+           class Compare = std::less<Key>,                     // map::key_compare
            class Alloc = allocator<ft::pair<const Key,T> >    // map::allocator_type;
     >
 	class map 
@@ -314,7 +470,7 @@ namespace ft
 
 			typedef Compare key_compare;
 
-			// typedef Compare:: value_compare;
+			typedef Compare value_compare;
 
 			typedef Alloc allocator_type;
 
@@ -435,7 +591,6 @@ namespace ft
 		private :
 			Alloc		_alloc;
 			Compare		_comp;
-			// value_type	_pair;
 			node		*_node;
 			size_type	_fill_size;
 			size_type	_alloc_size;
