@@ -10,217 +10,6 @@
 namespace ft
 {
 
-	template <typename T>
-	class mapIterator {
-		public :
-
-			typedef T			value_type;
-			typedef T*			pointer;
-			typedef const T*	const_pointer;
-			typedef T&			reference;
-			typedef const T&	const_reference;
-			typedef typename	std::ptrdiff_t difference_type;
-
-			mapIterator(){ };
-			mapIterator(pointer ptr){ _ptr = ptr; };
-			mapIterator(const mapIterator &src){ *this = src; };
-			~mapIterator() {};
-
-			mapIterator &operator=(const mapIterator& src) {
-				_ptr = src._ptr;
-				return (*this);
-			};
-
-			// ---------Increment/Decrement---------
-			mapIterator &operator++(void) {
-				_ptr++;
-				return (*this);
-			}
-			mapIterator operator++(int) {
-				mapIterator tmp = *this;
-				_ptr++;
-				return (tmp);
-			}
-			mapIterator &operator--(void) {
-				_ptr--;
-				return (*this);
-			}
-			mapIterator operator--(int) {
-				mapIterator tmp = *this;
-				_ptr--;
-				return (tmp);
-			}
-			
-			// -----------Dereferencing/Address----------
-			pointer operator->(){ return (_ptr); };
-			pointer operator ->() const { return (_ptr); };		
-			reference operator*(){ return (*(_ptr)); };
-			const_reference operator *() const { return (*_ptr); };
-
-		private :
-			pointer _ptr;
-	};
-
-	template <typename T>
-	class mapConstIterator {
-		public :
-
-			typedef T			value_type;
-			typedef T*			pointer;
-			typedef const T*	const_pointer;
-			typedef T&			reference;
-			typedef const T&	const_reference;
-			typedef typename	std::ptrdiff_t difference_type;
-
-			mapConstIterator(){ };
-			mapConstIterator(pointer ptr){ _ptr = ptr; };
-			mapConstIterator(const mapConstIterator &src){ *this = src; };
-			~mapConstIterator() {};
-
-			mapConstIterator &operator=(const mapConstIterator& src) {
-				_ptr = src._ptr;
-				return (*this);
-			};
-
-			// ---------Increment/Decrement---------
-			mapConstIterator &operator++(void) {
-				_ptr++;
-				return (*this);
-			}
-			mapConstIterator operator++(int) {
-				mapConstIterator tmp = *this;
-				_ptr++;
-				return (tmp);
-			}
-			mapConstIterator &operator--(void) {
-				_ptr--;
-				return (*this);
-			}
-			mapConstIterator operator--(int) {
-				mapConstIterator tmp = *this;
-				_ptr--;
-				return (tmp);
-			}
-			
-			// -----------Dereferencing/Address----------
-			pointer operator->(){ return (_ptr); };
-			pointer operator ->() const { return (_ptr); };		
-			reference operator*(){ return (*(_ptr)); };
-			const_reference operator *() const { return (*_ptr); };
-
-		private :
-			pointer _ptr;
-	};
-
-	template <typename iterator>
-	class mapConstReverseIterator {
-		public :
-
-			typedef typename iterator::value_type		value_type;
-			typedef typename iterator::pointer			pointer;
-			typedef typename iterator::const_pointer	const_pointer;
-			typedef typename iterator::reference		reference;
-			typedef typename iterator::const_reference	const_reference;
-			typedef typename iterator::difference_type	difference_type;
-
-
-			mapConstReverseIterator(){ };
-			mapConstReverseIterator(pointer ptr) { _ptr = ptr; };
-			mapConstReverseIterator(iterator src) { _ptr = src.operator->(); } ;
-			mapConstReverseIterator(const mapConstReverseIterator &src){ *this = src; };
-			~mapConstReverseIterator() {};
-
-			mapConstReverseIterator &operator=(const mapConstReverseIterator& src) {
-				_ptr = src._ptr;
-				return (*this);
-			};
-			
-
-			// ---------Increment/Decrement---------
-			mapConstReverseIterator &operator++(void) {
-				_ptr--;
-				return (*this);
-			}
-			mapConstReverseIterator operator++(int) {
-				mapConstReverseIterator tmp = *this;
-				_ptr--;
-				return (tmp);
-			}
-			mapConstReverseIterator &operator--(void) {
-				_ptr++;
-				return (*this);
-			}
-			mapConstReverseIterator operator--(int) {
-				mapConstReverseIterator tmp = *this;
-				_ptr++;
-				return (tmp);
-			}
-
-			// -----------Dereferencing/Address----------
-			pointer operator->(){ return (_ptr); };
-			pointer operator ->() const { return (_ptr); };		
-			reference operator*(){ return (*(_ptr)); };
-			const_reference operator *() const { return (*_ptr); };
-
-		private :
-			pointer _ptr;
-	};
-
-	template <typename iterator>
-	class mapReverseIterator {
-		public :
-
-			typedef typename iterator::value_type		value_type;
-			typedef typename iterator::pointer			pointer;
-			typedef typename iterator::const_pointer	const_pointer;
-			typedef typename iterator::reference		reference;
-			typedef typename iterator::const_reference	const_reference;
-			typedef typename iterator::difference_type	difference_type;
-
-
-			mapReverseIterator(){ };
-			mapReverseIterator(pointer ptr) { _ptr = ptr; };
-			mapReverseIterator(iterator src) { _ptr = src.operator->(); } ;
-			mapReverseIterator(const mapReverseIterator &src){ *this = src; };
-			~mapReverseIterator() {};
-
-			mapReverseIterator &operator=(const mapReverseIterator& src) {
-				_ptr = src._ptr;
-				return (*this);
-			};
-			
-
-			// ---------Increment/Decrement---------
-			mapReverseIterator &operator++(void) {
-				_ptr--;
-				return (*this);
-			}
-			mapReverseIterator operator++(int) {
-				mapReverseIterator tmp = *this;
-				_ptr--;
-				return (tmp);
-			}
-			mapReverseIterator &operator--(void) {
-				_ptr++;
-				return (*this);
-			}
-			mapReverseIterator operator--(int) {
-				mapReverseIterator tmp = *this;
-				_ptr++;
-				return (tmp);
-			}
-
-			// -----------Dereferencing/Address----------
-			pointer operator->(){ return (_ptr); };
-			pointer operator ->() const { return (_ptr); };		
-			reference operator*(){ return (*(_ptr)); };
-			const_reference operator *() const { return (*_ptr); };
-
-		private :
-			pointer _ptr;
-	};
-
-
 	template <class T1, class T2>
 	class pair
 	{
@@ -246,9 +35,11 @@ namespace ft
 			*/
 			pair(const first_type& a, const second_type& b) : first(a), second(b) {};
 			
-			pair& operator=(const pair &pr) {
-				this->first = pr.first;
-				this->second = pr.second;
+			pair& operator=(const pair &src) {
+				if (*this == src)
+					return (this);
+				this->first = src.first;
+				this->second = src.second;
 			};
 
 			template <class T1, class T2>
@@ -297,7 +88,22 @@ namespace ft
 		public :
 
 		node();
-		node& operator=(const node& src);
+		node& operator=(const node& src) {
+			if (*this == src)
+				return (this);
+			this->_left = src._left;
+			this->_right = src._right;
+			this->_parent = src._parent;
+			this->_color = src._color;
+			this->_key = src._key;
+		};
+
+		bool operator==(const node& src) {
+			if (this->_key == src._key)
+				return (true);
+			return (false);
+		};
+		
 		~node();
 
 		node* get_parent() { return (this->_parent) };
@@ -390,11 +196,29 @@ namespace ft
 
 		void insert_repare()
 		{
+			/*
+				Une fois qu'on ajoute un noeud il faut check si toutes les regles sont encore respectés
+				Differents cas possible lors d'une insertion.
+
+				Cas 1 : Si le parent du nouveau noeud est NULL c'est que celui ci est la racine
+					-> Juste mettre la couleur du noeud en noir
+				Cas 2 : Si la couleur du parent est noir les proprietés sont toujours respectés donc rien a faire
+
+				Cas 3 : Si la couleur du parent est rouge il y a deux cas possible
+					3.1 : Si la couleur de l'oncle est rouge, alors, le pere et l'oncle du nouveau sont colorié en noir
+						  et le grand parent (qui est logiquement noir de base) et colorié en rouge.
+						  Toutefois, ces modification ont pu crées de nouvelles violations des regles, il faut donc 
+						  reappeler la fonction (insert_repare()) pour refaire les check necessaire.
+					3.2 : Si la couleur de l'oncle est noir il faut effectuer des rotations (droite ou gauche en fontion de la configuration du noeud inseré)
+						  afin de rétablir l'équilibre dans l'arbre.
+				
+				Source + Schéma : https://fr.wikipedia.org/wiki/Arbre_bicolore#:~:text=Un%20arbre%20bicolore%20est%20un%20arbre%20binaire%20de%20recherche%20dans,est%20soit%20rouge%20soit%20noire.&text=Le%20chemin%20de%20la%20racine,n%C5%93uds%20noirs%20la%20hauteur%20noire 
+			*/
 			if (this->parent() == NULL)
-				this->>_color = NOIR;
+				this->_color = NOIR;
 			else if (parent(n)->couleur == NOIR)
 				return ;
-			else if (this->>get_oncle()->_color == ROUGE) {
+			else if (this->get_oncle()->_color == ROUGE) {
 				this->get_parent()->_color = NOIR;
 				this->get_oncle()->_color = NOIR;
 
@@ -405,10 +229,41 @@ namespace ft
 			else {
 				node *p = this->get_parent();
 				node *g = this->get_grandparent();
+
+				if (this == g->_left->_right) {
+					this->left_rotation();
+					this = this->_left;
+				}
+				else if (this == g->_right->_left) {
+					this->right_rotation();
+					this = this->_right;
+				}
+
+				node *p2 = this->get_parent();
+				node *g2 = this->get_grandparent();
+				
+				if (this == p2->_left)
+					this->right_rotation();
+				else
+					this->left_rotation();
+				
+				p2->_color = NOIR;
+				g2->_color = ROUGE;
+				
 			}
 		}
 
 		node *insert_node(node *new_node) {
+			/*
+				Regles a respecté pour un arbre binaire rouge et noir.
+
+				Un nœud est soit rouge soit noir ;
+				La racine est noire ;
+				Les enfants d'un nœud rouge sont noirs;
+				Tous les nœuds ont 2 enfants. Ce sont d'autres nœuds ou des feuilles (NULL), qui ne possèdent pas de valeur et qui sont les seuls nœuds sans enfants. Leur couleur est toujours noire et rentre donc en compte lors du calcul de la hauteur noire.
+				Le chemin de la racine à n'importe quelle feuille (NULL) contient le même nombre de nœuds noirs. On peut appeler ce nombre de nœuds noirs la hauteur noire
+
+			*/
 			while (this != NULL)
 			{
 				if (new_node->_key > this->_key) {
@@ -438,6 +293,7 @@ namespace ft
 			
 			while (this->parent() != NULL)
 				this = this->parent();
+			// Return the racine (the potential new one or the old one)
 			return (this);
 		};
 
@@ -456,7 +312,7 @@ namespace ft
 	template < class Key,                                     // map::key_type
            class T,                                       // map::mapped_type
            class Compare = std::less<Key>,                     // map::key_compare
-           class Alloc = allocator<ft::pair<const Key,T> >    // map::allocator_type;
+           class Alloc = std::allocator<ft::pair<const Key,T> >    // map::allocator_type;
     >
 	class map 
 	{
@@ -596,3 +452,6 @@ namespace ft
 			size_type	_alloc_size;
 	};
 }
+
+
+#endif
