@@ -2,86 +2,94 @@
 #define VECTOR_ITERATOR_HPP
 
 #include <iostream>
+#include "../iterators.hpp"
 
 namespace ft
 {
 	template <typename T>
 	class vectorIterator {
 		public :
-
-			typedef T			value_type;
-			typedef T*			pointer;
-			typedef const T*	const_pointer;
-			typedef T&			reference;
-			typedef const T&	const_reference;
-			typedef typename	std::ptrdiff_t difference_type;
-
-
+			typedef T* pointer;
+			typedef T& reference;
+			typedef typename iterator_traits<pointer>::difference_type difference_type;
+			typedef typename iterator_traits<pointer>::value_type value_type;
+			typedef typename iterator_traits<pointer>::iterator_category iterator_category;
+			
 			vectorIterator(){ };
-			vectorIterator(pointer ptr){ _ptr = ptr; };
+			vectorIterator(pointer ptr) : current(ptr) {};
 			vectorIterator(const vectorIterator &src){ *this = src; };
 			~vectorIterator() {};
 
 			vectorIterator &operator=(const vectorIterator& src) {
-				_ptr = src._ptr;
+				current = src.current;
 				return (*this);
 			};
 			
 			// ---------Bool--------
-			bool operator==(const vectorIterator& src) const { return (_ptr == src._ptr); };
-			bool operator!=(const vectorIterator& src) const { return (_ptr != src._ptr); };
-			bool operator<(const vectorIterator& src) const { return (_ptr < src._ptr); };
-			bool operator<=(const vectorIterator& src) const { return (_ptr <= src._ptr); };
-			bool operator>(const vectorIterator& src) const { return (_ptr > src._ptr); };
-			bool operator>=(const vectorIterator& src) const { return (_ptr >= src._ptr); };
+			bool operator==(const vectorIterator& src) const { return (current == src.current); };
+			bool operator!=(const vectorIterator& src) const { return (current != src.current); };
+			bool operator<(const vectorIterator& src) const { return (current < src.current); };
+			bool operator<=(const vectorIterator& src) const { return (current <= src.current); };
+			bool operator>(const vectorIterator& src) const { return (current > src.current); };
+			bool operator>=(const vectorIterator& src) const { return (current >= src.current); };
 
 
 			// ---------Increment/Decrement---------
 			vectorIterator &operator++(void) {
-				_ptr++;
+				current++;
 				return (*this);
 			}
 			vectorIterator operator++(int) {
 				vectorIterator tmp = *this;
-				_ptr++;
+				current++;
 				return (tmp);
 			}
 			vectorIterator &operator--(void) {
-				_ptr--;
+				current--;
 				return (*this);
 			}
 			vectorIterator operator--(int) {
 				vectorIterator tmp = *this;
-				_ptr--;
+				current--;
 				return (tmp);
 			}
 			
 			// -----------Arithmetic operators---------
-			vectorIterator operator+(difference_type n){ return (vectorIterator(_ptr + n)); };
-			vectorIterator operator-(difference_type n){ return (vectorIterator(_ptr - n)); };
-			difference_type operator+(vectorIterator b){ return (_ptr + b._ptr); };
-			difference_type operator-(vectorIterator b){ return (_ptr - b._ptr); };
+			vectorIterator operator+(difference_type n){ return (vectorIterator(current + n)); };
+			vectorIterator operator-(difference_type n){ return (vectorIterator(current - n)); };
+			difference_type operator+(vectorIterator b){ return (current + b.current); };
+			difference_type operator-(vectorIterator b){ return (current - b.current); };
 
 			vectorIterator &operator+=(difference_type n) {
-				_ptr += n;
+				current += n;
 				return (*this);
 			};
 			vectorIterator &operator-=(difference_type n) {
-				_ptr += n;
+				current += n;
 				return (*this);
 			};
 
 			// -----------Dereferencing/Address----------
-			reference operator[](difference_type n){ return (*(_ptr + n)); };
-			const_reference operator [](difference_type n) const { return (*(_ptr + n)); };
-			pointer operator->(){ return (_ptr); };
-			pointer operator ->() const { return (_ptr); };		
-			reference operator*(){ return (*(_ptr)); };
-			const_reference operator *() const { return (*_ptr); };
+			reference operator [](difference_type n) const { return (*(current + n)); };
+			pointer operator ->() const { return (current); };		
+			reference operator*() const { return (*(current)); };
 
 		private :
-			pointer _ptr;
+			pointer current;
 	};
+
+	// template <class Iterator>
+    // bool operator== (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() == rhs.base(); }
+    // template <class Iterator>
+    // bool operator!= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() != rhs.base(); }
+    // template <class Iterator>
+    // bool operator<  (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() < rhs.base(); }
+    // template <class Iterator>
+    // bool operator<= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() <= rhs.base(); }
+    // template <class Iterator>
+    // bool operator>  (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() > rhs.base(); }
+    // template <class Iterator>
+    // bool operator>= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() >= rhs.base(); }
 }
 
 #endif
