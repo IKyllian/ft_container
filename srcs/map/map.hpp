@@ -5,9 +5,59 @@
 #include <functional>
 #include "utils.hpp"
 #include "node_tree.hpp"
+#include "../vector/vector_reverse_iterator.hpp"
 
 namespace ft
 {
+	template <class Iter>
+	class mapIterator {
+		public :
+
+			typedef typename ft::iterator_traits<Iter>::value_type value_type;
+			typedef typename ft::iterator_traits<Iter>::pointer pointer;
+			typedef typename ft::iterator_traits<Iter>::reference reference;
+			typedef typename ft::iterator_traits<Iter>::difference_type difference_type;
+			typedef ft::bidirectional_iterator_tag iterator_category;
+			
+			mapIterator(){ };
+			mapIterator(Iter iterator) : current(iterator) {};
+			mapIterator(const mapIterator &src) : current(src.current) {};
+			~mapIterator() {};
+
+			mapIterator &operator=(const mapIterator& src) {
+				current = src.current;
+				return (*this);
+			};
+
+			// ---------Increment/Decrement---------
+			mapIterator &operator++(void) {
+				current++;
+				return (*this);
+			}
+			mapIterator operator++(int) {
+				mapIterator tmp = *this;
+				current++;
+				return (tmp);
+			}
+			mapIterator &operator--(void) {
+				current--;
+				return (*this);
+			}
+			mapIterator operator--(int) {
+				mapIterator tmp = *this;
+				current--;
+				return (tmp);
+			}
+
+			// -----------Dereferencing/Address----------
+			pointer operator ->() const { return (current); };		
+			reference operator*() const { return (*(current)); };
+			pointer base() const { return (current); }
+		private :
+			Iter current;
+	};
+
+
 	template < class Key,                                     // map::key_type
            class T,                                       // map::mapped_type
            class Compare = std::less<Key>,                     // map::key_compare
@@ -35,14 +85,6 @@ namespace ft
 			
 			typedef typename allocator_type::const_pointer const_pointer;
 
-			// typedef typename ft::mapIterator<key_type, Compare> iterator;
-
-			// typedef type name ft::mapIterator<value_type> const_iterator;
-
-			// typedef typename ft::mapIterator<iterator> reverse_iterator;
-
-			// typedef typename ft::mapIterator<const_iterator> const_reverse_iterator;
-
 			typedef typename allocator_type::size_type	size_type;
 
 			typedef typename std::ptrdiff_t difference_type;
@@ -51,7 +93,7 @@ namespace ft
 			{
 				protected:
 					key_compare comp;
-					// value_compare(Compare c) : comp(c) {} // A verifier. Normalement le constructeur devrait respecté en protected mais probleme pour passé comp à _tree
+					// value_compare(Compare c) : comp(c) {} // A verifier. Normalement le constructeur devrait etre en protected mais probleme pour passé comp à _tree
 				public:
 					value_compare(Compare c) : comp(c) {}
 					bool operator() (const value_type& x, const value_type& y) const {
@@ -60,6 +102,14 @@ namespace ft
 			};
 
 			typedef typename ft::tree<value_type, value_compare> tree;
+
+			typedef typename ft::mapIterator<typename tree::iterator> iterator;
+
+			typedef typename ft::mapIterator<typename tree::const_iterator> const_iterator;
+
+			typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
+
+			typedef typename ft::vectorReverseIterator<const_iterator> const_reverse_iterator;
 
 
 			// ---------------------- Constructor / Destructor / Asigment operator ---------------------------
@@ -89,18 +139,20 @@ namespace ft
 
 			map& operator= (const map& x) {
 				this->_tree = x._tree;
-				std::cout << "TEST" << std::endl;
+				// std::cout << "TEST" << std::endl;
 				this->_comp = x._comp;
 				return (*this);
 			};
 
+			tree get_tree() { return (_tree);}; // Temporaire
+
 			// ---------------------- Iterators ---------------------------
 
-			// iterator begin();
-			// const_iterator begin() const;
+			iterator begin() { return (iterator(_tree.begin())); };
+			const_iterator begin() const { return (const_iterator(_tree.begin())); };
 
-			// iterator end();
-			// const_iterator end() const;
+			iterator end() { return (iterator(_tree.end())); };
+			const_iterator end() const { return (const_iterator(_tree.end())); };
 
 			// reverse_iterator rbegin();
 			// const_reverse_iterator rbegin() const;
@@ -110,8 +162,8 @@ namespace ft
 
 			// ---------------------- Capacity ---------------------------
 
-			bool empty() const { _tree.empty(); };
-			size_type size() const { _tree.size(); };
+			bool empty() const { return (_tree.empty()); };
+			size_type size() const { return (_tree.size()); };
 			size_type max_size() const;
 
 			// ---------------------- Element Access ---------------------------
@@ -146,16 +198,16 @@ namespace ft
 
 			// ---------------------- Operations ---------------------------
 
-			// iterator find (const key_type& k);
-			// const_iterator find (const key_type& k) const;
+			iterator find (const key_type& k) { return (_tree.find(ft::make_pair(k, mapped_type()))); };
+			const_iterator find (const key_type& k) const { return (_tree.find(ft::make_pair(k, mapped_type()))); };
 
-			size_type count (const key_type& k) const;
+			size_type count(const key_type& k) const { return (_tree.count(ft::make_pair(k, mapped_type()))); };
 
-			// iterator lower_bound (const key_type& k);
-			// const_iterator lower_bound (const key_type& k) const;
+			iterator lower_bound(const key_type& k) { return (_tree.lower_bound(ft::make_pair(k, mapped_type()))); };
+			const_iterator lower_bound (const key_type& k) const { return (_tree.lower_bound(ft::make_pair(k, mapped_type()))); };
 
-			// iterator upper_bound (const key_type& k);
-			// const_iterator upper_bound (const key_type& k) const;
+			iterator upper_bound (const key_type& k) { return (_tree.upper_bound(ft::make_pair(k, mapped_type()))); };
+			const_iterator upper_bound (const key_type& k) const { return (_tree.upper_bound(ft::make_pair(k, mapped_type()))); };
 
 			// pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 			// pair<iterator,iterator>             equal_range (const key_type& k);

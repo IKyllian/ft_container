@@ -11,61 +11,81 @@
 
 namespace ft
 {
-	template <class Tree, class Node>
-	class mapIterator {
+	template <class Node, class Compare>
+	class treeIterator {
 		public :
-
 			typedef typename ft::iterator_traits<Node>::value_type value_type;
 			typedef typename ft::iterator_traits<Node>::pointer pointer;
 			typedef typename ft::iterator_traits<Node>::reference reference;
 			typedef typename ft::iterator_traits<Node>::difference_type difference_type;
 			typedef ft::bidirectional_iterator_tag iterator_category;
 
-			mapIterator(){ };
-			mapIterator(pointer ptr) : current(ptr) {};
-			mapIterator(const mapIterator &src){ *this = src; };
-			~mapIterator() {};
+			treeIterator(){ };
+			treeIterator(pointer ptr, const Compare& comp = Compare()) : current(ptr), _comp(comp) {};
+			treeIterator(const treeIterator &src) : current(src.current), _comp(src._comp) {};
+			~treeIterator() {};
 
-			mapIterator &operator=(const mapIterator& src) {
+			treeIterator &operator=(const treeIterator& src) {
 				current = src.current;
 				return (*this);
 			};
-			
-			// ---------Bool--------
-			bool operator==(const mapIterator& src) const { return (current == src.current); };
-			bool operator!=(const mapIterator& src) const { return (current != src.current); };
-			bool operator<(const mapIterator& src) const { return (current < src.current); };
-			bool operator<=(const mapIterator& src) const { return (current <= src.current); };
-			bool operator>(const mapIterator& src) const { return (current > src.current); };
-			bool operator>=(const mapIterator& src) const { return (current >= src.current); };
 
 			// ---------Increment/Decrement---------
-			mapIterator &operator++(void) {
-				current++;
+			treeIterator &operator++(void) {
+				if (current == NULL)
+					return (*this);
+				if (current->_right != NULL) {
+					current = current->_right;
+					while (current->_left)
+						current = current->_left;
+				}
+				else {
+					while (current->_parent != NULL && current == current->_parent->_right)
+						current = current->_parent;
+					current = current->_parent;
+				}
 				return (*this);
 			}
-			mapIterator operator++(int) {
-				mapIterator tmp = *this;
-				current++;
+			treeIterator operator++(int) {
+				treeIterator tmp = *this;
+				operator++();
 				return (tmp);
 			}
-			mapIterator &operator--(void) {
-				current--;
+			treeIterator &operator--(void) {
+				if (current == NULL)
+					return (*this);
+				if (current->_left != NULL) {
+					current = current->_left;
+					while (current->_right)
+						current = current->_right;
+				}
+				else {
+					while (current->_parent != NULL && current == current->_parent->_left)
+						current = current->_parent;
+					current = current->_parent;
+				}
 				return (*this);
 			}
-			mapIterator operator--(int) {
-				mapIterator tmp = *this;
-				current--;
+			treeIterator operator--(int) {
+				treeIterator tmp = *this;
+				operator--();
 				return (tmp);
 			}
 			
 			// -----------Dereferencing/Address----------
 			pointer operator ->() const { return (current); };		
 			reference operator *() const { return (*current); };
+			Node base() const { return (current); };
 
 		private :
 			Node current;
+			Compare _comp;
 	};
+
+	template <class Node, class Compare>
+	bool operator==(const ft::treeIterator<Node, Compare>& lhs, const ft::treeIterator<Node, Compare>& rhs) { return (lhs.base() == rhs.base()); };
+	template <class Node, class Compare>
+	bool operator!=(const ft::treeIterator<Node, Compare>& lhs, const ft::treeIterator<Node, Compare>& rhs) { return (lhs.base() != rhs.base()); };
 
 	template <class Pair>
 	struct node {
@@ -75,7 +95,27 @@ namespace ft
 		int		_color;
 		Pair	_pair;
 
-		node(const Pair &pair = Pair()) : _left(NULL), _right(NULL), _parent(NULL), _color(ROUGE), _pair(pair) {};
+		node(const Pair &pair = Pair()) : _left(nullptr), _right(nullptr), _parent(nullptr), _color(ROUGE), _pair(pair) {};
+
+		node& operator=(const node& src) {
+			_left = src._left;
+			_right = src._right;
+			_parent = src._parent;
+			_color = src._color;
+			_pair = src._pair;
+		}
+	};
+
+	struct Trunk
+	{
+		Trunk *prev;
+		std::string str;
+	
+		Trunk(Trunk *prev, std::string str)
+		{
+			this->prev = prev;
+			this->str = str;
+		}
 	};
 
 	template <class Pair, class Compare, class Alloc = std::allocator<ft::node<Pair> > >
@@ -90,6 +130,8 @@ namespace ft
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
+			typedef typename ft::treeIterator<pointer, value_compare> iterator;
+			typedef typename ft::treeIterator<const pointer, value_compare> const_iterator;
 			typedef std::ptrdiff_t difference_type;
 			typedef std::size_t size_type;
 
@@ -98,6 +140,53 @@ namespace ft
 			tree(const tree& src) : _alloc(src._alloc),  _comp(src._comp), _root(nullptr), _tree_size(0) { 
 				*this = src;
 			};
+
+			void showTrunks(Trunk *p)
+			{
+				if (p == nullptr) {
+					return;
+				}
+			
+				showTrunks(p->prev);
+				std::cout << p->str;
+			}
+			
+			void printTree(pointer root, Trunk *prev, bool isLeft)
+			{
+				if (root == nullptr) {
+					return;
+				}
+			
+				std::string prev_str = "    ";
+				Trunk *trunk = new Trunk(prev, prev_str);
+			
+				printTree(root->_right, trunk, true);
+			
+				if (!prev) {
+					trunk->str = "———";
+				}
+				else if (isLeft)
+				{
+					trunk->str = ".———";
+					prev_str = "   |";
+				}
+				else {
+					trunk->str = "`———";
+					prev->str = prev_str;
+				}
+			
+				showTrunks(trunk);
+				if (root->_color == ROUGE)
+					std::cout << " " << root->_pair.first << "(R)" << std::endl;
+				else
+					std::cout << " " << root->_pair.first << "(N)" << std::endl;
+				if (prev) {
+					prev->str = prev_str;
+				}
+				trunk->str = "   |";
+			
+				printTree(root->_left, trunk, false);
+			}
 
 			tree& operator=(const tree& src) {
 				std::cout << "operator=() tree" << std::endl;
@@ -116,27 +205,40 @@ namespace ft
 
 			pointer get_parent(pointer n) { return (n->_parent); };
 			pointer get_grandparent(pointer n) { 
-				pointer p = n->get_parent();
+				pointer p = get_parent(n);
 				if (p == NULL) // Noeud sans parent n'a pas de grand parent
 					return (NULL);
-				return (p->get_parent());
+				return (get_parent(p));
 			};
 			pointer get_left(pointer n) { return (n->_left); };
 			pointer get_right(pointer n) { return (n->_right); };
-			// pointer get_brother(pointer n) {
-			// 	pointer p = n->get_parent();
-			// 	if (p == NULL) // Noeud sans parent n'a pas de frere
-			// 		return (NULL);
-			// 	if (n == p->_left)
-			// 		return (p->_right);
-			// 	return (p->left);
-			// };
+			pointer get_brother(pointer n) {
+				pointer p = get_parent(n);
+				if (p == NULL)
+					return (NULL);
+				if (n == p->_left)
+					return (p->_right);
+				return (p->_left);
+			};
 			pointer get_oncle(pointer n) {
-				pointer p = n->get_parent();
-				pointer g = n->get_grandparent();
+				pointer p = get_parent(n);
+				pointer g = get_grandparent(n);
 				if (g == NULL) // Noeud sans grand parent n'a pas d'oncle
 					return (NULL);
-				return (p->get_brother());
+				return (get_brother(p));
+			};
+
+			pointer get_root() { return (_root); };
+
+			pointer search_node(pointer root, value_type to_search) const {
+				if (!root)
+					return (nullptr);
+				if (_comp(to_search, root->_pair))
+					return (search_node(root->_left, to_search));
+				else if (_comp(root->_pair, to_search))
+					return (search_node(root->_right, to_search));
+				else
+					return (root);
 			};
 
 			void left_rotation(pointer x) {
@@ -151,8 +253,8 @@ namespace ft
 				// -------- 2 --------
 				y->_parent = x->_parent;
 				if (x->_parent == NULL)
-					x = y;
-				else if (x == x->_parent->_left)
+					_root = y;
+				else if (x->_parent && x == x->_parent->_left)
 					x->_parent->_left = y;
 				else
 					x->_parent->_right = y;
@@ -160,7 +262,7 @@ namespace ft
 
 				// -------- 3 --------
 				y->_left = x;
-				x->parent = y;
+				x->_parent = y;
 				// -------------------
 			}
 
@@ -176,8 +278,8 @@ namespace ft
 				// -------- 2 --------
 				y->_parent = x->_parent;
 				if (x->_parent == NULL)
-					x = y;
-				else if (x == x->_parent->_right)
+					_root = y;
+				else if (x->_parent && x == x->_parent->_right)
 					x->_parent->_right = y;
 				else
 					x->_parent->_left = y;
@@ -185,26 +287,9 @@ namespace ft
 
 				// -------- 3 --------
 				y->_right = x;
-				x->parent = y;
+				x->_parent = y;
 				// -------------------
 			}
-
-			// pointer search_node(Key key) {
-			// 	pointer tmp = this;
-
-			// 	while (tmp != NULL)
-			// 	{
-			// 		if (tmp->_pair == key)
-			// 			return (tmp);
-			// 		if (key > tmp->_pair)
-			// 			tmp = tmp->_right;
-			// 		else
-			// 			tmp = tmp->_left;
-			// 	}
-			// 	return (NULL);
-			// };
-
-			pointer get_root() { return (this); };
 
 			void insert_repare(pointer n)
 			{
@@ -226,46 +311,70 @@ namespace ft
 					
 					Source + Schéma : https://fr.wikipedia.org/wiki/Arbre_bicolore#:~:text=Un%20arbre%20bicolore%20est%20un%20arbre%20binaire%20de%20recherche%20dans,est%20soit%20rouge%20soit%20noire.&text=Le%20chemin%20de%20la%20racine,n%C5%93uds%20noirs%20la%20hauteur%20noire 
 				*/
-				if (n->parent() == NULL)
+				if (n->_parent == NULL)
 					n->_color = NOIR;
-				else if (parent(n)->couleur == NOIR)
+				else if (get_parent(n)->_color == NOIR)
 					return ;
-				else if (n->get_oncle()->_color == ROUGE) {
-					n->get_parent()->_color = NOIR;
-					n->get_oncle()->_color = NOIR;
-
-					pointer g = n->get_grandparent();
+				else if (get_oncle(n) && get_oncle(n)->_color == ROUGE) {
+					get_parent(n)->_color = NOIR;
+					get_oncle(n)->_color = NOIR;
+					pointer g = get_grandparent(n);
 					g->_color = ROUGE;
-					g.insert_repare();
+					insert_repare(g);
 				}
 				else {
-					pointer p = n->get_parent();
-					pointer g = n->get_grandparent();
+					pointer p = get_parent(n);
+					pointer g = get_grandparent(n);
 
-					if (n == g->_left->_right) {
-						n->left_rotation();
+					if (g->_left && n == g->_left->_right) {
+						left_rotation(p);
 						n = n->_left;
 					}
-					else if (n == g->_right->_left) {
-						n->right_rotation();
+					else if (g->_right && n == g->_right->_left) {
+						right_rotation(p);
 						n = n->_right;
 					}
-
-					pointer p2 = n->get_parent();
-					pointer g2 = n->get_grandparent();
+					pointer p2 = get_parent(n);
+					pointer g2 = get_grandparent(n);
 					
 					if (n == p2->_left)
-						n->right_rotation();
+						right_rotation(g2);
 					else
-						n->left_rotation();
+						left_rotation(g2);
 					
 					p2->_color = NOIR;
-					g2->_color = ROUGE;
-					
+					g2->_color = ROUGE;	
 				}
 			}
 
-			void insert_node(pointer new_node) {
+			void insert_node(pointer &racine, pointer n) {
+				if (!racine) {
+					_root = n;
+					return ;
+				}
+				if (racine != nullptr && _comp(n->_pair, racine->_pair)) {
+					if (racine->_left != nullptr) {
+						insert_node(racine->_left, n);
+						return;
+					}
+					else {
+						racine->_left = n;
+						racine->_left->_parent = racine;
+					}
+				} 
+				else if (racine != nullptr) {
+					if (racine->_right != nullptr) {
+						insert_node(racine->_right, n);
+						return;
+					}
+					else {
+						racine->_right = n;
+						racine->_right->_parent = racine;
+					}
+				}
+			}
+
+			pointer _insert(pointer n) {
 			// 	/*
 			// 		Regles a respecté pour un arbre binaire rouge et noir.
 
@@ -277,44 +386,10 @@ namespace ft
 
 			// 	*/
 
-				if (!_root)
-				{
-					_root = new_node;
-					_root->_parent = NULL;
-					_root->_right = NULL;
-					_root->_left = NULL;
-					_root->_color = ROUGE;
-				}
-			// 	while (this != NULL)
-			// 	{
-			// 		if (new_node->_pair > this->_pair) {
-			// 			if (this->_right != NULL)
-			// 				this = this->_right;
-			// 			else {
-			// 				this->_right = new_node;
-			// 				break ;
-			// 			}
-			// 		}
-			// 		else {
-			// 			if (this->_left != NULL)
-			// 				this = this->_left;
-			// 			else {
-			// 				this->_left = new_node;
-			// 				break ;
-			// 			}
-			// 		}
-			// 	}
-				// new_node->parent = this;
-				// new_node->_right = NULL;
-				// new_node->_left = NULL;
-				// new_node->_color = ROUGE;
-
-			// 	// Equilibrer arbre si il le faut
-			// 	new_node->insert_repare();
-				
-			// 	while (this->parent() != NULL)
-			// 		this = this->parent();
-			// 	// Return la racine
+				insert_node(_root, n);
+				insert_repare(n);
+				printTree(_root,nullptr, false);
+				return (_root);
 			};
 
 			// pointer search_node_to_swap() {
@@ -380,9 +455,40 @@ namespace ft
 
 			// Functions for map container
 
+			iterator begin() { return (iterator(min_element(_root), _comp)); };
+			const_iterator begin() const { return (const_iterator(min_element(_root), _comp)); };
 
-			bool empty() const { return (!_root ? true : false);};
+			iterator end() { return (iterator(max_element(_root), _comp)); };
+			const_iterator end() const { return (const_iterator(max_element(_root, _comp))); };
+
+			bool empty() const { return (!_root ? true : false); };
 			size_type size() const { return (_tree_size); };
+
+
+			iterator find (value_type k) {
+				pointer result = search_node(_root, k);
+				if (result == nullptr)
+					return (end());
+				return (iterator(result, _comp));
+			};
+
+			size_type count(value_type k) const {
+				if (search_node(_root, k) != nullptr)
+					return (1);
+				return (0);
+			};
+
+			iterator lower_bound(value_type k) {
+				iterator it = begin();
+				for (; it != end() && _comp((*it)._pair, k); it++) ;
+				return (it);
+			};
+
+			iterator upper_bound(value_type k) {
+				iterator it = begin();
+				for (; it != end() && !(_comp(k, (*it)._pair)); it++) ;
+				return (it);
+			};
 
 			void clear() {
 				_clear_tree(_root);
@@ -394,11 +500,9 @@ namespace ft
 				pointer node = _alloc.allocate(1);
 
 				_alloc.construct(node, val);
-				insert_node(node);
+				_root = _insert(node);
 
-				std::cout << "Key = " << _root->_pair.first << " - Value = " << _root->_pair.second << std::endl;
 			};
-
 
 		private :
 			pointer			 _root;
@@ -420,7 +524,6 @@ namespace ft
 			}
 
 			void tree_copy(pointer cpy_from, pointer cpy_to, pointer parent) {
-				// std::cout << "TEST" << std::endl;
 				if (!cpy_from)
 					return ;
 				cpy_to = _alloc.allocate(1);
@@ -428,6 +531,24 @@ namespace ft
 				cpy_to->_parent = parent;
 				tree_copy(cpy_from->_left, cpy_to->_left, cpy_to);
 				tree_copy(cpy_from->_right, cpy_to->_right, cpy_to);
+			};
+
+			pointer min_element(pointer node) {
+				if (node == nullptr || node->_left == nullptr)
+					return (node);
+				return (min_element(node->_left));
+			}
+
+			pointer max_element(pointer node) {
+				if (node == nullptr || node->_right == nullptr)
+					return (node);
+				return (max_element(node->_right));
+			}
+
+			pointer search_root(pointer n) { 
+				while (n->_parent != NULL)
+					n = n->_parent;
+				return (n);
 			};
 	};
 }

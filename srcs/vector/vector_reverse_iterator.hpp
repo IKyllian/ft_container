@@ -6,25 +6,25 @@
 
 namespace ft
 {
-	template <typename Iterator>
+	template <typename Iter>
 	class vectorReverseIterator : ft::iterator <
-		typename ft::iterator_traits<Iterator>::iterator_category, 
-		typename ft::iterator_traits<Iterator>::value_type,
-		typename ft::iterator_traits<Iterator>::difference_type,
-		typename ft::iterator_traits<Iterator>::pointer,
-		typename ft::iterator_traits<Iterator>::reference > {
+		typename ft::iterator_traits<Iter>::iterator_category, 
+		typename ft::iterator_traits<Iter>::value_type,
+		typename ft::iterator_traits<Iter>::difference_type,
+		typename ft::iterator_traits<Iter>::pointer,
+		typename ft::iterator_traits<Iter>::reference > {
 		public :
 
-			typedef Iterator													iterator_type;
-			typedef typename ft::iterator_traits<Iterator>::iterator_category 	iterator_category;
-            typedef typename ft::iterator_traits<Iterator>::value_type      	value_type;
-            typedef typename ft::iterator_traits<Iterator>::difference_type     difference_type;
-            typedef typename ft::iterator_traits<Iterator>::pointer     		pointer;
-            typedef typename ft::iterator_traits<Iterator>::reference   		reference;
+			typedef Iter													iterator_type;
+			typedef typename ft::iterator_traits<Iter>::iterator_category 	iterator_category;
+            typedef typename ft::iterator_traits<Iter>::value_type      	value_type;
+            typedef typename ft::iterator_traits<Iter>::difference_type     difference_type;
+            typedef typename ft::iterator_traits<Iter>::pointer     		pointer;
+            typedef typename ft::iterator_traits<Iter>::reference   		reference;
 
 			vectorReverseIterator(){ };
 			vectorReverseIterator(iterator_type ptr) : current(ptr) {};
-			vectorReverseIterator(const vectorReverseIterator &src){ *this = src; };
+			vectorReverseIterator(const vectorReverseIterator &src) : current(src.base()) {};
 			~vectorReverseIterator() {};
 
 			vectorReverseIterator &operator=(const vectorReverseIterator& src) {
@@ -80,7 +80,7 @@ namespace ft
 			reference operator [](difference_type n) const { return (*(current + n)); };
 			pointer operator ->() const { return (current); };		
 			reference operator *() const { return (*current); };
-			iterator_type base() const { return current; }
+			iterator_type base() const { return (current); }
 		protected :
 			iterator_type current;
 	};

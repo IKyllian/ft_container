@@ -17,7 +17,7 @@ namespace ft
 			
 			vectorIterator(){ };
 			vectorIterator(pointer ptr) : current(ptr) {};
-			vectorIterator(const vectorIterator &src){ *this = src; };
+			vectorIterator(const vectorIterator &src) : current(src.base()) {};
 			~vectorIterator() {};
 
 			vectorIterator &operator=(const vectorIterator& src) {
@@ -73,7 +73,7 @@ namespace ft
 			reference operator [](difference_type n) const { return (*(current + n)); };
 			pointer operator ->() const { return (current); };		
 			reference operator*() const { return (*(current)); };
-
+			pointer base() const { return (current); }
 		private :
 			pointer current;
 	};
