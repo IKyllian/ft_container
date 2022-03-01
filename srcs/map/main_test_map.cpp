@@ -51,16 +51,43 @@ int main()
 	map.insert(std::pair<int, int>(10, 10));
 	std::cout << " ------------------" << std::endl;
 
+	std::pair<std::map<int, int>::iterator, bool> pair = map.insert(std::pair<int, int>(7, 11));
 
-	std::cout << "Count = " << map.count(0) << std::endl;
+	std::cout << "First (Key) = " << pair.first->first << " - (Value) = " << pair.first->second << " - Second = " << pair.second << std::endl;
 
-	std::map<int, int>::iterator it = map.lower_bound(1);
-	std::cout << "Key = " << (*it).first << std::endl;
 
-	std::map<int, int>::iterator it2 = map.upper_bound(4);
-	std::cout << "Key = " << (*it2).first << std::endl;
+	// std::cout << "Count = " << map.count(0) << std::endl;
 
-	std::map<int, int>::iterator  it3 = map.find(7);
-	std::cout << "Key = " << (*it3).first << std::endl;
+	// std::map<int, int>::iterator it = map.lower_bound(1);
+	// std::cout << "Key = " << (*it).first << std::endl;
+
+	// std::map<int, int>::iterator it2 = map.upper_bound(4);
+	// std::cout << "Key = " << (*it2).first << std::endl;
+
+	// std::map<int, int>::iterator  it3 = map.find(7);
+	// std::cout << "Key = " << (*it3).first << std::endl;
+
+	// std::pair<std::map<int, int>::iterator, std::map<int, int>::iterator> pair = map.equal_range(5);
+	// std::cout << "First Key = " << pair.first->first << " - Second Key = " << pair.second->second << std::endl;
+
+	// std::map<char,int> foo,bar;
+
+	// foo['x']=100;
+	// foo['y']=200;
+
+	// bar['a']=11;
+	// bar['b']=22;
+	// bar['c']=33;
+
+	// foo.swap(bar);
+
+	// std::cout << "foo contains:\n";
+	// for (std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+	// 	std::cout << it->first << " => " << it->second << '\n';
+
+	// std::cout << "bar contains:\n";
+	// for (std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+	// 	std::cout << it->first << " => " << it->second << '\n';
+
 	return (0);	
 }

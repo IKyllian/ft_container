@@ -5,6 +5,7 @@
 #include <functional>
 #include "utils.hpp"
 #include "../iterators.hpp"
+#include "../vector/vector_reverse_iterator.hpp"
 
 #define NOIR 0
 #define ROUGE 1
@@ -20,7 +21,7 @@ namespace ft
 			typedef typename ft::iterator_traits<Node>::difference_type difference_type;
 			typedef ft::bidirectional_iterator_tag iterator_category;
 
-			treeIterator(){ };
+			treeIterator(const Compare& comp = Compare()) : _comp(comp), current(nullptr) { };
 			treeIterator(pointer ptr, const Compare& comp = Compare()) : current(ptr), _comp(comp) {};
 			treeIterator(const treeIterator &src) : current(src.current), _comp(src._comp) {};
 			~treeIterator() {};
@@ -106,6 +107,7 @@ namespace ft
 		}
 	};
 
+	//Sert juste pour la fonctions qui print l'arbre
 	struct Trunk
 	{
 		Trunk *prev;
@@ -132,6 +134,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef typename ft::treeIterator<pointer, value_compare> iterator;
 			typedef typename ft::treeIterator<const pointer, value_compare> const_iterator;
+			typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
+			typedef typename ft::vectorReverseIterator<const_iterator> const_reverse_iterator;
 			typedef std::ptrdiff_t difference_type;
 			typedef std::size_t size_type;
 
@@ -141,81 +145,34 @@ namespace ft
 				*this = src;
 			};
 
-			void showTrunks(Trunk *p)
-			{
-				if (p == nullptr) {
-					return;
-				}
-			
-				showTrunks(p->prev);
-				std::cout << p->str;
-			}
-			
-			void printTree(pointer root, Trunk *prev, bool isLeft)
-			{
-				if (root == nullptr) {
-					return;
-				}
-			
-				std::string prev_str = "    ";
-				Trunk *trunk = new Trunk(prev, prev_str);
-			
-				printTree(root->_right, trunk, true);
-			
-				if (!prev) {
-					trunk->str = "———";
-				}
-				else if (isLeft)
-				{
-					trunk->str = ".———";
-					prev_str = "   |";
-				}
-				else {
-					trunk->str = "`———";
-					prev->str = prev_str;
-				}
-			
-				showTrunks(trunk);
-				if (root->_color == ROUGE)
-					std::cout << " " << root->_pair.first << "(R)" << std::endl;
-				else
-					std::cout << " " << root->_pair.first << "(N)" << std::endl;
-				if (prev) {
-					prev->str = prev_str;
-				}
-				trunk->str = "   |";
-			
-				printTree(root->_left, trunk, false);
-			}
+			~tree() {
+				std::cout << "Tree Destructor" << std::endl;
+				this->clear();
+			};
 
 			tree& operator=(const tree& src) {
-				std::cout << "operator=() tree" << std::endl;
 				clear();
 				_comp = src._comp;
 				_tree_size = src._tree_size;
-				tree_copy(src._root, _root, nullptr);
+				tree_copy(src._root, this->_root, nullptr);
 				// std::cout << "New Tree -----> Key = " << _root->_pair.first << " - Value = " << _root->_pair.second << std::endl;
 				// !!!! Probleme avec la copie !!!!
 				return (*this);
 			};
 
-			~tree() {
-				this->clear();
-			};
-
 			pointer get_parent(pointer n) { return (n->_parent); };
 			pointer get_grandparent(pointer n) { 
 				pointer p = get_parent(n);
-				if (p == NULL) // Noeud sans parent n'a pas de grand parent
-					return (NULL);
+				if (p == nullptr) // Noeud sans parent n'a pas de grand parent
+					return (nullptr);
 				return (get_parent(p));
 			};
 			pointer get_left(pointer n) { return (n->_left); };
 			pointer get_right(pointer n) { return (n->_right); };
 			pointer get_brother(pointer n) {
 				pointer p = get_parent(n);
-				if (p == NULL)
-					return (NULL);
+				if (p == nullptr)
+					return (nullptr);
 				if (n == p->_left)
 					return (p->_right);
 				return (p->_left);
@@ -223,8 +180,8 @@ namespace ft
 			pointer get_oncle(pointer n) {
 				pointer p = get_parent(n);
 				pointer g = get_grandparent(n);
-				if (g == NULL) // Noeud sans grand parent n'a pas d'oncle
-					return (NULL);
+				if (g == nullptr) // Noeud sans grand parent n'a pas d'oncle
+					return (nullptr);
 				return (get_brother(p));
 			};
 
@@ -246,13 +203,13 @@ namespace ft
 
 				// -------- 1 --------
 				x->_right = y->_left;
-				if (y->_left != NULL)
+				if (y->_left != nullptr)
 					y->_left->_parent = x;
 				// -------------------
 
 				// -------- 2 --------
 				y->_parent = x->_parent;
-				if (x->_parent == NULL)
+				if (x->_parent == nullptr)
 					_root = y;
 				else if (x->_parent && x == x->_parent->_left)
 					x->_parent->_left = y;
@@ -271,13 +228,13 @@ namespace ft
 
 				// -------- 1 --------
 				x->_left = y->_right;
-				if (y->_right != NULL)
+				if (y->_right != nullptr)
 					y->_right->_parent = x;
 				// -------------------
 
 				// -------- 2 --------
 				y->_parent = x->_parent;
-				if (x->_parent == NULL)
+				if (x->_parent == nullptr)
 					_root = y;
 				else if (x->_parent && x == x->_parent->_right)
 					x->_parent->_right = y;
@@ -302,16 +259,16 @@ namespace ft
 					Cas 2 : Si la couleur du parent est noir les proprietés sont toujours respectés donc rien a faire
 
 					Cas 3 : Si la couleur du parent est rouge il y a deux cas possible
-						3.1 : Si la couleur de l'oncle est rouge, alors, le pere et l'oncle du nouveau sont colorié en noir
-							et le grand parent (qui est logiquement noir de base) et colorié en rouge.
-							Toutefois, ces modification ont pu crées de nouvelles violations des regles, il faut donc 
-							reappeler la fonction (insert_repare()) pour refaire les check necessaire.
+						3.1 : Si la couleur de l'oncle est rouge, alors, le pere et l'oncle du nouveau noeud sont coloriés en noir
+							et le grand parent (qui est logiquement noir de base) est colorié en rouge.
+							Toutefois, ces modifications ont pu crées de nouvelles violations des regles, il faut donc 
+							reappeler la fonction (insert_repare()) pour refaire les checks necessaires.
 						3.2 : Si la couleur de l'oncle est noir il faut effectuer des rotations (droite ou gauche en fontion de la configuration du noeud inseré)
 							afin de rétablir l'équilibre dans l'arbre.
 					
 					Source + Schéma : https://fr.wikipedia.org/wiki/Arbre_bicolore#:~:text=Un%20arbre%20bicolore%20est%20un%20arbre%20binaire%20de%20recherche%20dans,est%20soit%20rouge%20soit%20noire.&text=Le%20chemin%20de%20la%20racine,n%C5%93uds%20noirs%20la%20hauteur%20noire 
 				*/
-				if (n->_parent == NULL)
+				if (n->_parent == nullptr)
 					n->_color = NOIR;
 				else if (get_parent(n)->_color == NOIR)
 					return ;
@@ -374,7 +331,7 @@ namespace ft
 				}
 			}
 
-			pointer _insert(pointer n) {
+			pointer _insert(pointer &root, pointer n) {
 			// 	/*
 			// 		Regles a respecté pour un arbre binaire rouge et noir.
 
@@ -386,84 +343,192 @@ namespace ft
 
 			// 	*/
 
-				insert_node(_root, n);
+				insert_node(root, n);
 				insert_repare(n);
 				printTree(_root,nullptr, false);
+				_tree_size++;
 				return (_root);
 			};
 
-			// pointer search_node_to_swap() {
-			// 	pointer tmp = this;
-			// 	Key key_to_swap = this->_pair;
+			
 
-			// 	// Faire un check sur la longueur du sous arbre gauche et droit pour savoir dans quel sous arbre delete le noeud
+			void _erase(pointer n) {
+				/*
+					Pour commencé on recherche le noeud a supprimé dans l'arbre.
+					Pour pouvoir supprimé le noeud correctement il faut que celui-ci ait au plus un enfant qui ne soit pas une feuille (noeud NULL).
+					Si le noeud contient deux enfants qui ne sont pas des feuilles il faut recherché soit le successeur le plus proche (le noeud le plus a gauche du sous arbre droit)
+					ou le predecesseur le plus proche (le noeud le plus a droite du sous arbre gauche)
 
-			// 	this = this->_right;
-			// 	while (this->_left->_left != NULL)
-			// 		this = this->_left;
-			// 	tmp->_pair = this->_pair;
-			// 	this->_pair = key_to_swap;
-			// 	return (this);
-			// }
+				*/
+				if (n->_left == nullptr && n->_right == nullptr) {
+					if (n == n->_parent->_left)
+						n->_parent->_left = nullptr;
+					else
+						n->_parent->_right = nullptr;
+					delete_node(n);
+					n = nullptr;
+				}
+				else if (n->_left != nullptr && n->_right != nullptr) {
+					pointer node_to_swap = min_element(n->_right);
+					// std::cout << "Key To swap = " << node_to_swap->_pair.first << std::endl;
 
-			// void delete_node(pointer to_delete) {
-			// 	/*
-			// 		Pour commencé on recherche le noeud a supprimé dans l'arbre.
-			// 		Pour pouvoir supprimé le noeud correctement il faut que celui-ci ait au plus un enfant qui ne soit pas une feuille (noeud NULL).
-			// 		Si le noeud contient deux enfants qui ne sont pas des feuilles il faut recherché soit le successeur le plus proche (le noeud le plus a gauche du sous arbre droit)
-			// 		ou le predecesseur le plus proche (le noeud le plus a droite du sous arbre gauche)
+					// Change le parent de n (n qui est la valeur a delete)
+					if (n->_parent) {
+						if (n->_parent->_right == n)
+							n->_parent->_right = node_to_swap;
+						else
+							n->_parent->_left = node_to_swap;
+					}
+					
+					// si le parent du noeud a swap n'est pas le noeud a delete alors on met son enfant gauche a null car il va etre deplacé
+					if (node_to_swap->_parent != n)
+						node_to_swap->_parent->_left = nullptr;
+					
+					// remplace les freres du noeud a swap par les freres du noeud a delete avant de le swap
+					if (n->_left == node_to_swap)
+						node_to_swap->_left = nullptr;
+					else
+						node_to_swap->_left = n->_left;
+						
+					if (n->_right == node_to_swap)
+						node_to_swap->_right = nullptr;
+					else
+						node_to_swap->_right = n->_right;
 
-			// 	*/
+					// remplace le parent du noeud a swap par le parent du noeud a delete avant de le swap
+					node_to_swap->_parent = n->_parent;
 
-			// 	pointer racine = this;
-			// 	while (this->_pair != to_delete->_pair) {
-			// 		if (to_delete->_pair > this->_pair) {
-			// 			if (this->_right == NULL)
-			// 				return (NULL);
-			// 			this = this->_right;
-			// 		}
-			// 		else {
-			// 			if (this->_left == NULL)
-			// 				return (NULL);
-			// 			this = this->_left;
-			// 		}
-			// 	}
-			// 	if (this->_left != NULL && this->_right != NULL)
-			// 		this = search_node_to_swap();
+					
+					// remplace le parent du frere gauche du noeud a delete si il est non null 
+					if (n->_left)
+						n->_left->_parent = node_to_swap;
+		
+					delete_node(n);
 
-			// 	if (this->_left == NULL) {
-			// 		if (this == this->_parent->_right) {
-			// 			this->_parent->_right = this->_right;
-			// 			this->_right->_parent = this->_parent;
-			// 		} else {
-			// 			this->_parent->_left = this->_right;
-			// 			this->_right->_parent = this->_parent;
-			// 		}
-			// 		_alloc.destroy(this);
-			// 	}
-			// 	else {
-			// 		if (this == this->_parent->_right) {
-			// 			this->_parent->_right = this->_left;
-			// 			this->_right->_parent = this->_parent;
-			// 		} else {
-			// 			this->_parent->_left = this->_left;
-			// 			this->_left->_parent = this->_parent;
-			// 		}
-			// 		_alloc.destroy(this);
-			// 	}
-			// }
+					n = node_to_swap;
+					if (n->_parent == nullptr)
+						_root = n;
+
+					// std::cout << "n = " << n->_pair.first << std::endl;
+					// if (n->_right == nullptr)
+					// 	std::cout << "Right NULL" << std::endl;
+					// else
+					// 	std::cout << "Right NON NULL = " << n->_right->_pair.first << std::endl;
+				
+					// std::cout << "n left = " << n->_left->_pair.first << std::endl;
+					// std::cout << "n left parent = " << n->_left->_parent->_pair.first << std::endl;
+
+					// if (n->_parent) {
+					// 	std::cout << "n parent = " << n->_parent->_pair.first << std::endl;
+					// 	std::cout << "n parent right = " << n->_parent->_right->_pair.first << std::endl;
+					// }
+
+					// if (n->_right->_left == nullptr)
+					// 	std::cout << "left NULL" << std::endl;
+					// else
+					// 	std::cout << "left NON NULL = " << n->_right->_left->_pair.first << std::endl;
+
+				}
+				else if (n->_left == nullptr) {
+					if (n == n->_parent->_right) {
+						n->_parent->_right = n->_right;
+						if (n->_right)
+							n->_right->_parent = n->_parent;
+						if (n->_left)
+							n->_left->_parent = n->_parent;
+					} else {
+						n->_parent->_left = n->_right;
+						if (n->_right)
+							n->_right->_parent = n->_parent;
+						if (n->_left)
+							n->_left->_parent = n->_parent;
+					}
+					delete_node(n);
+				}
+				else {
+					if (n == n->_parent->_right) {
+						n->_parent->_right = n->_left;
+						if (n->_right)
+							n->_right->_parent = n->_parent;
+						if (n->_left)
+							n->_left->_parent = n->_parent;
+					} else {
+						n->_parent->_left = n->_left;
+						if (n->_right)
+							n->_right->_parent = n->_parent;
+						if (n->_left)
+							n->_left->_parent = n->_parent;
+					}
+					delete_node(n);
+				}
+
+				printTree(_root,nullptr, false);
+			}
 
 			// Functions for map container
 
 			iterator begin() { return (iterator(min_element(_root), _comp)); };
 			const_iterator begin() const { return (const_iterator(min_element(_root), _comp)); };
 
-			iterator end() { return (iterator(max_element(_root), _comp)); };
+			iterator end() { return (++(iterator(max_element(_root), _comp))); };
 			const_iterator end() const { return (const_iterator(max_element(_root, _comp))); };
+
+			reverse_iterator rbegin() { return (reverse_iterator(--(end()))); };
+			const_reverse_iterator rbegin() const { return (const_reverse_iterator(--(end()))); };
+
+			reverse_iterator rend() { return (reverse_iterator(--(begin()))); };
+			const_reverse_iterator rend() const { return (const_reverse_iterator(--(begin()))); };
+			
 
 			bool empty() const { return (!_root ? true : false); };
 			size_type size() const { return (_tree_size); };
 
+			pair<iterator,bool> insert(const value_type& val) {
+				pointer search = search_node(_root, val);
+				if (search != nullptr)
+					return (ft::make_pair(iterator(search, _comp), false));
+
+				pointer node = _alloc.allocate(1);
+				_alloc.construct(node, val);
+				_root = _insert(_root, node);			
+
+				return (ft::make_pair(iterator(node, _comp), true));
+
+			};
+
+			iterator insert (iterator position, const value_type& val) {
+				// if (position.base() && _comp(position.base()->_pair, val))
+				// {
+				// 	pointer search = search_node(_root, val);
+				// 	if (search != nullptr)
+				// 		return (iterator(search, _comp));
+
+				// 	pointer node = _alloc.allocate(1);
+				// 	pointer from = position.base();
+				// 	_alloc.construct(node, val);
+				// 	_root = _insert(from, node);		
+
+				// 	return (iterator(node, _comp));
+				// }
+				// else
+					return (insert(val).first);
+			};
+
+			template <class InputIterator>
+			void insert (InputIterator first, InputIterator last) {
+				for (; first != last; first++)
+					insert(first->_pair);
+			};
+
+			size_type erase(const value_type& k) {
+				pointer node = search_node(_root, k);
+				if (node == nullptr)
+					return (0);
+				else{
+					_erase(node);
+					return (1);
+				}
+			};
 
 			iterator find (value_type k) {
 				pointer result = search_node(_root, k);
@@ -490,19 +555,28 @@ namespace ft
 				return (it);
 			};
 
+			pair<iterator,iterator>	equal_range(value_type k) {
+				return (ft::make_pair(lower_bound(k), upper_bound(k)));
+			};
+
 			void clear() {
 				_clear_tree(_root);
 				_root = nullptr;
 				_tree_size = 0;
 			};
 
-			void insert (const value_type& val) {
-				pointer node = _alloc.allocate(1);
+			void swap (tree & x) {
+				pointer root = x._root;
+				size_type size = x._tree_size;
 
-				_alloc.construct(node, val);
-				_root = _insert(node);
+				x._tree_size = this->_tree_size;
+				x._root = this->_root;
 
+				this->_tree_size = size;
+				this->_root = root;
 			};
+
+			
 
 		private :
 			pointer			 _root;
@@ -516,14 +590,18 @@ namespace ft
 			};
 
 			void _clear_tree(pointer node) {
-				if (node == NULL)
+				// if (node)
+				// 	std::cout << "Clear Tree node = " << node->_pair.first << std::endl;
+				// else
+		 		// 	std::cout << "Clear Tree node = " << std::endl;
+				if (node == nullptr)
 					return ;
 				_clear_tree(node->_left);
 				_clear_tree(node->_right);
 				delete_node(node);
 			}
 
-			void tree_copy(pointer cpy_from, pointer cpy_to, pointer parent) {
+			void tree_copy(pointer cpy_from, pointer &cpy_to, pointer parent) {
 				if (!cpy_from)
 					return ;
 				cpy_to = _alloc.allocate(1);
@@ -550,6 +628,48 @@ namespace ft
 					n = n->_parent;
 				return (n);
 			};
+
+			void showTrunks(Trunk *p)
+			{
+				if (p == nullptr)
+					return;
+				showTrunks(p->prev);
+				std::cout << p->str;
+			}
+			
+			void printTree(pointer root, Trunk *prev, bool isLeft)
+			{
+				if (root == nullptr)
+					return;
+				std::string prev_str = "    ";
+				Trunk *trunk = new Trunk(prev, prev_str);
+			
+				printTree(root->_right, trunk, true);
+			
+				if (!prev)
+					trunk->str = "———";
+				else if (isLeft)
+				{
+					trunk->str = ".———";
+					prev_str = "   |";
+				}
+				else {
+					trunk->str = "`———";
+					prev->str = prev_str;
+				}
+			
+				showTrunks(trunk);
+				if (root->_color == ROUGE)
+					std::cout << " " << root->_pair.first << "(R)" << std::endl;
+				else
+					std::cout << " " << root->_pair.first << "(N)" << std::endl;
+				if (prev) {
+					prev->str = prev_str;
+				}
+				trunk->str = "   |";
+			
+				printTree(root->_left, trunk, false);
+			}
 	};
 }
 #endif

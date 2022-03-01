@@ -31,9 +31,10 @@ namespace ft
 			
 			pair& operator=(const pair &src) {
 				if (*this == src)
-					return (this);
+					return (*this);
 				this->first = src.first;
 				this->second = src.second;
+				return (*this);
 			};
 			
 			// Member Type

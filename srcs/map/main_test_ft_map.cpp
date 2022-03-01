@@ -4,7 +4,6 @@
 
 int main() {
 	ft::map<int, int> map;
-	ft::map<int, int> map2;
 
 	// std::cout << " !!!!!! 1 !!!!!"  << std::endl;
 	map.insert(ft::pair<int, int>(1, 1));
@@ -26,26 +25,63 @@ int main() {
 	map.insert(ft::pair<int, int>(10, 10));
 	std::cout << " ------------------" << std::endl;
 
+	ft::pair<ft::map<int, int>::iterator, bool> pair = map.insert(ft::pair<int, int>(11, 11));
+	std::cout << " ------------------" << std::endl;
 
-	std::cout << "Count = " << map.count(0) << std::endl;
+	// std::cout << "First (Key) = " << pair.first->_pair.first << " - (Value) = " << pair.first->_pair.second << " - Second = " << pair.second << std::endl;
 
-	ft::map<int, int>::iterator const it = map.lower_bound(1);
-	std::cout << "Key = " << (*it)._pair.first << std::endl;
+	map.erase(4);
 
-	ft::map<int, int>::iterator  it2 = map.upper_bound(4);
-	std::cout << "Key = " << (*it2)._pair.first << std::endl;
+	// ft::map<int, int> map2;
 
-	ft::map<int, int>::iterator  it3 = map.find(7);
-	std::cout << "Key = " << (*it3)._pair.first << std::endl;
-	// std::cout << "Key = " << (*it)._pair.first << " - Value = " << (*it)._pair.second << std::endl;
-	// it++;
-	// std::cout << "Key = " << (*it)._pair.first << " - Value = " << (*it)._pair.second << std::endl;
+	// map2.insert(ft::pair<int, int>(1, 1));
+
+	// map2.insert(map.begin(), map.end());
+
+	// for (ft::map<int,int>::iterator it=map2.begin(); it!=map2.end(); ++it)
+	// 	std::cout << it->_pair.first << " => " << it->_pair.second << '\n';
 
 
-	// map.get_tree().printMap();
+	
 
-	// map2 = map;
+	// std::cout << "Count = " << map.count(0) << std::endl;
 
+	// ft::map<int, int>::iterator const it = map.lower_bound(1);
+	// std::cout << "Key = " << (*it)._pair.first << std::endl;
+
+	// ft::map<int, int>::iterator  it2 = map.upper_bound(4);
+	// std::cout << "Key = " << (*it2)._pair.first << std::endl;
+
+	// ft::map<int, int>::iterator  it3 = map.find(7);
+	// std::cout << "Key = " << (*it3)._pair.first << std::endl;
+
+	// // ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator> pair = map.equal_range(43);
+	// // std::cout << "First Key = " << pair.first->_pair.first << " - Second Key = " << pair.second->_pair.second << std::endl;
+
+	// ft::map<char,int> foo,bar;
+
+	// foo.insert(ft::pair<char, int>('x', 100));
+	// foo.insert(ft::pair<char, int>('y', 200));
+	// bar.insert(ft::pair<char, int>('a', 11));
+	// bar.insert(ft::pair<char, int>('b', 22));
+	// bar.insert(ft::pair<char, int>('c', 233));
+	// std::cout << "foo contains:\n";
+	// for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+	// 	std::cout << it->_pair.first << " => " << it->_pair.second << '\n';
+
+	// std::cout << "bar contains:\n";
+	// for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+	// 	std::cout << it->_pair.first << " => " << it->_pair.second << '\n';
+
+	// foo.swap(bar);
+
+	// std::cout << "foo contains:\n";
+	// for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+	// 	std::cout << it->_pair.first << " => " << it->_pair.second << '\n';
+
+	// std::cout << "bar contains:\n";
+	// for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+	// 	std::cout << it->_pair.first << " => " << it->_pair.second << '\n';
 
 	return (0);
 }

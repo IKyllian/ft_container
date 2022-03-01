@@ -2,7 +2,6 @@
 #define STACK_HPP
 
 #include <iostream>
-#include <deque>
 #include "../vector/vector.hpp"
 
 namespace ft

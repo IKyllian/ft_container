@@ -9,53 +9,58 @@
 
 namespace ft
 {
-	template <class Iter>
-	class mapIterator {
-		public :
+	// template <class Iter>
+	// class mapIterator {
+	// 	public :
 
-			typedef typename ft::iterator_traits<Iter>::value_type value_type;
-			typedef typename ft::iterator_traits<Iter>::pointer pointer;
-			typedef typename ft::iterator_traits<Iter>::reference reference;
-			typedef typename ft::iterator_traits<Iter>::difference_type difference_type;
-			typedef ft::bidirectional_iterator_tag iterator_category;
+	// 		typedef typename ft::iterator_traits<Iter>::value_type value_type;
+	// 		typedef typename ft::iterator_traits<Iter>::pointer pointer;
+	// 		typedef typename ft::iterator_traits<Iter>::reference reference;
+	// 		typedef typename ft::iterator_traits<Iter>::difference_type difference_type;
+	// 		typedef ft::bidirectional_iterator_tag iterator_category;
 			
-			mapIterator(){ };
-			mapIterator(Iter iterator) : current(iterator) {};
-			mapIterator(const mapIterator &src) : current(src.current) {};
-			~mapIterator() {};
+	// 		mapIterator() : current() { };
+	// 		mapIterator(Iter iterator) : current(iterator) {};
+	// 		mapIterator(const mapIterator &src) : current(src.current) {};
+	// 		~mapIterator() {};
 
-			mapIterator &operator=(const mapIterator& src) {
-				current = src.current;
-				return (*this);
-			};
+	// 		mapIterator &operator=(const mapIterator& src) {
+	// 			current = src.current;
+	// 			return (*this);
+	// 		};
 
-			// ---------Increment/Decrement---------
-			mapIterator &operator++(void) {
-				current++;
-				return (*this);
-			}
-			mapIterator operator++(int) {
-				mapIterator tmp = *this;
-				current++;
-				return (tmp);
-			}
-			mapIterator &operator--(void) {
-				current--;
-				return (*this);
-			}
-			mapIterator operator--(int) {
-				mapIterator tmp = *this;
-				current--;
-				return (tmp);
-			}
+	// 		// ---------Increment/Decrement---------
+	// 		mapIterator &operator++(void) {
+	// 			current++;
+	// 			return (*this);
+	// 		}
+	// 		mapIterator operator++(int) {
+	// 			mapIterator tmp = *this;
+	// 			current++;
+	// 			return (tmp);
+	// 		}
+	// 		mapIterator &operator--(void) {
+	// 			current--;
+	// 			return (*this);
+	// 		}
+	// 		mapIterator operator--(int) {
+	// 			mapIterator tmp = *this;
+	// 			current--;
+	// 			return (tmp);
+	// 		}
 
-			// -----------Dereferencing/Address----------
-			pointer operator ->() const { return (current); };		
-			reference operator*() const { return (*(current)); };
-			pointer base() const { return (current); }
-		private :
-			Iter current;
-	};
+	// 		// -----------Dereferencing/Address----------
+	// 		Iter operator ->() const { return (current); };		
+	// 		reference operator*() const { return (*(current)); };
+	// 		Iter base() const { return (current); }
+	// 	private :
+	// 		Iter current;
+	// };
+
+	// template <class Iter>
+	// bool operator==(const ft::mapIterator<Iter>& lhs, const ft::mapIterator<Iter>& rhs) { return (lhs.base() == rhs.base()); };
+	// template <class Iter>
+	// bool operator!=(const ft::mapIterator<Iter>& lhs, const ft::mapIterator<Iter>& rhs) { return (lhs.base() != rhs.base()); };
 
 
 	template < class Key,                                     // map::key_type
@@ -103,9 +108,17 @@ namespace ft
 
 			typedef typename ft::tree<value_type, value_compare> tree;
 
-			typedef typename ft::mapIterator<typename tree::iterator> iterator;
+			// typedef typename ft::mapIterator<typename tree::iterator> iterator;
 
-			typedef typename ft::mapIterator<typename tree::const_iterator> const_iterator;
+			// typedef typename ft::mapIterator<typename tree::const_iterator> const_iterator;
+
+			// typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
+
+			// typedef typename ft::vectorReverseIterator<const_iterator> const_reverse_iterator;
+
+			typedef typename tree::iterator iterator;
+
+			typedef typename tree::const_iterator const_iterator;
 
 			typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
 
@@ -119,16 +132,10 @@ namespace ft
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _comp(comp), _tree(comp, alloc) {};
 
 			// Range Constructor
-			// template <class InputIterator>
-			// map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _comp(comp) {
-				// difference_type size = last - first;
-				// _alloc_size = size;
-				// _pair = _alloc.allocate(size);
-				// for (ft::map<Key, T>::iterator it(first); it != end; it++) {
-				// 	_alloc.construct(_pair + _fill_size, ft::pair<(*it).first, (*it).second>);
-				// 	_fill_size++;
-				// }
-			// };
+			template <class InputIterator>
+			map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _comp(comp), _tree(comp, alloc) {
+				insert(first, last);
+			};
 
 			// Copy Constructor
 			map(const map& x) : _alloc(x._alloc), _comp(x._comp) {
@@ -139,7 +146,6 @@ namespace ft
 
 			map& operator= (const map& x) {
 				this->_tree = x._tree;
-				// std::cout << "TEST" << std::endl;
 				this->_comp = x._comp;
 				return (*this);
 			};
@@ -148,17 +154,22 @@ namespace ft
 
 			// ---------------------- Iterators ---------------------------
 
-			iterator begin() { return (iterator(_tree.begin())); };
-			const_iterator begin() const { return (const_iterator(_tree.begin())); };
+			// iterator begin() { return (iterator(_tree.begin())); };
+			// const_iterator begin() const { return (const_iterator(_tree.begin())); };
 
-			iterator end() { return (iterator(_tree.end())); };
-			const_iterator end() const { return (const_iterator(_tree.end())); };
+			// iterator end() { return (iterator(_tree.end())); };
+			// const_iterator end() const { return (const_iterator(_tree.end())); };
+			iterator begin() { return (_tree.begin()); };
+			const_iterator begin() const { return (_tree.begin()); };
 
-			// reverse_iterator rbegin();
-			// const_reverse_iterator rbegin() const;
+			iterator end() { return (_tree.end()); };
+			const_iterator end() const { return (_tree.end()); };
 
-			// reverse_iterator rend();
-			// const_reverse_iterator rend() const;
+			reverse_iterator rbegin() { return (_tree.rbegin()); };
+			const_reverse_iterator rbegin() const { return (_tree.rbegin()); };
+
+			reverse_iterator rend() { return (_tree.rend()); };
+			const_reverse_iterator rend() const { return (_tree.rend()); };
 
 			// ---------------------- Capacity ---------------------------
 
@@ -172,22 +183,19 @@ namespace ft
 
 			// ---------------------- Modifiers ---------------------------
 
-			// pair<iterator,bool> insert (const value_type& val);
-			void insert (const value_type& val) {
-				_tree.insert(val);
-			};
+			pair<iterator,bool> insert (const value_type& val) { return (_tree.insert(val)); };
 
-			// iterator insert (iterator position, const value_type& val);
+			iterator insert (iterator position, const value_type& val) { return (_tree.insert(position, val)); };
 
-			// template <class InputIterator>
-			// void insert (InputIterator first, InputIterator last);
+			template <class InputIterator>
+			void insert (InputIterator first, InputIterator last) { _tree.insert(first, last); };
 
 
 			// void erase (iterator position);
-			// size_type erase (const key_type& k);
+			size_type erase (const key_type& k) { return (_tree.erase(ft::make_pair(k, mapped_type()))); };
 			// void erase (iterator first, iterator last);
 
-			void swap (map& x);
+			void swap (map& x) { return (_tree.swap(x._tree)); };
 
 			void clear() { _tree.clear(); };
 
@@ -209,8 +217,8 @@ namespace ft
 			iterator upper_bound (const key_type& k) { return (_tree.upper_bound(ft::make_pair(k, mapped_type()))); };
 			const_iterator upper_bound (const key_type& k) const { return (_tree.upper_bound(ft::make_pair(k, mapped_type()))); };
 
-			// pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
-			// pair<iterator,iterator>             equal_range (const key_type& k);
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const { return (_tree.equal_range(ft::make_pair(k, mapped_type()))); };
+			pair<iterator,iterator>	equal_range (const key_type& k) { return (_tree.equal_range(ft::make_pair(k, mapped_type()))); };
 
 			// ---------------------- Allocator ---------------------------
 
@@ -222,6 +230,5 @@ namespace ft
 			tree		_tree;
 	};
 }
-
 
 #endif
