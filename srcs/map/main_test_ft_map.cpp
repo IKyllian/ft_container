@@ -6,31 +6,52 @@ int main() {
 	ft::map<int, int> map;
 
 	// std::cout << " !!!!!! 1 !!!!!"  << std::endl;
-	map.insert(ft::pair<int, int>(1, 1));
-	std::cout << " ------------------ "  << std::endl;
-	map.insert(ft::pair<int, int>(4, 4));
-	std::cout << " ------------------ "  << std::endl;
-	map.insert(ft::pair<int, int>(2, 2));
-	std::cout << " ------------------ "  << std::endl;
-	map.insert(ft::pair<int, int>(6, 6));
-	std::cout << " ------------------"  << std::endl;
-	map.insert(ft::pair<int, int>(5, 5));
-	std::cout << " ------------------"  << std::endl;
-	map.insert(ft::pair<int, int>(3, 3));
-	std::cout << " ------------------"  << std::endl;
-	map.insert(ft::pair<int, int>(9, 9));
-	std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(1, 1));
+	// std::cout << " ------------------ "  << std::endl;
+	// map.insert(ft::pair<int, int>(4, 4));
+	// std::cout << " ------------------ "  << std::endl;
+	// map.insert(ft::pair<int, int>(2, 2));
+	// std::cout << " ------------------ "  << std::endl;
+	// map.insert(ft::pair<int, int>(6, 6));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(5, 5));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(3, 3));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(9, 9));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(7, 7));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(10, 10));
+	// std::cout << " ------------------" << std::endl;
+
+	// ft::pair<ft::map<int, int>::iterator, bool> pair = map.insert(ft::pair<int, int>(11, 11));
+	// std::cout << " ------------------" << std::endl;
+
+	// // std::cout << "First (Key) = " << pair.first->_pair.first << " - (Value) = " << pair.first->_pair.second << " - Second = " << pair.second << std::endl;
+
+	// map.erase(7);
+
+
 	map.insert(ft::pair<int, int>(7, 7));
-	std::cout << " ------------------"  << std::endl;
+	std::cout << " ------------------ "  << std::endl;
+	map.insert(ft::pair<int, int>(3, 3));
+	std::cout << " ------------------ "  << std::endl;
+	map.insert(ft::pair<int, int>(18, 18));
+	std::cout << " ------------------ "  << std::endl;
 	map.insert(ft::pair<int, int>(10, 10));
-	std::cout << " ------------------" << std::endl;
+	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(22, 22));
+	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(26, 26));
+	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(8, 8));
+	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(11, 11));
+	std::cout << " ------------------"  << std::endl;
 
-	ft::pair<ft::map<int, int>::iterator, bool> pair = map.insert(ft::pair<int, int>(11, 11));
-	std::cout << " ------------------" << std::endl;
+	map.erase(18);
 
-	// std::cout << "First (Key) = " << pair.first->_pair.first << " - (Value) = " << pair.first->_pair.second << " - Second = " << pair.second << std::endl;
-
-	map.erase(4);
 
 	// ft::map<int, int> map2;
 
