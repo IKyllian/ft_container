@@ -33,24 +33,76 @@ int main() {
 	// map.erase(7);
 
 
-	map.insert(ft::pair<int, int>(7, 7));
+	// map.insert(ft::pair<int, int>(7, 7));
+	// std::cout << " ------------------ "  << std::endl;
+	// map.insert(ft::pair<int, int>(3, 3));
+	// std::cout << " ------------------ "  << std::endl;
+	// map.insert(ft::pair<int, int>(18, 18));
+	// std::cout << " ------------------ "  << std::endl;
+	// map.insert(ft::pair<int, int>(10, 10));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(22, 22));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(26, 26));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(8, 8));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(11, 11));
+	// std::cout << " ------------------"  << std::endl;
+
+
+	// std::cout << "After Delete"  << std::endl << std::endl;
+	// map.erase(18);
+
+	map.insert(ft::pair<int, int>(13, 13));
 	std::cout << " ------------------ "  << std::endl;
-	map.insert(ft::pair<int, int>(3, 3));
-	std::cout << " ------------------ "  << std::endl;
-	map.insert(ft::pair<int, int>(18, 18));
-	std::cout << " ------------------ "  << std::endl;
-	map.insert(ft::pair<int, int>(10, 10));
-	std::cout << " ------------------"  << std::endl;
-	map.insert(ft::pair<int, int>(22, 22));
-	std::cout << " ------------------"  << std::endl;
-	map.insert(ft::pair<int, int>(26, 26));
-	std::cout << " ------------------"  << std::endl;
 	map.insert(ft::pair<int, int>(8, 8));
+	std::cout << " ------------------ "  << std::endl;
+	map.insert(ft::pair<int, int>(17, 17));
+	std::cout << " ------------------ "  << std::endl;
+	map.insert(ft::pair<int, int>(1, 1));
 	std::cout << " ------------------"  << std::endl;
 	map.insert(ft::pair<int, int>(11, 11));
 	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(6, 6));
+	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(15, 15));
+	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(25, 25));
+	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(22, 22));
+	std::cout << " ------------------"  << std::endl;
+	map.insert(ft::pair<int, int>(27, 27));
+	std::cout << " ------------------"  << std::endl;
 
-	map.erase(18);
+
+	std::cout << "After Delete"  << std::endl << std::endl;
+	map.erase(13);
+
+
+	// map.insert(ft::pair<int, int>(13, 13));
+	// std::cout << " ------------------ "  << std::endl;
+	// map.insert(ft::pair<int, int>(8, 8));
+	// std::cout << " ------------------ "  << std::endl;
+	// map.insert(ft::pair<int, int>(17, 17));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(1, 1));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(11, 11));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(6, 6));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(15, 15));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(25, 25));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(22, 22));
+	// std::cout << " ------------------"  << std::endl;
+	// map.insert(ft::pair<int, int>(27, 27));
+	// std::cout << " ------------------"  << std::endl;
+
+	// std::cout << "After Delete"  << std::endl << std::endl;
+	// map.erase(25);
 
 
 	// ft::map<int, int> map2;

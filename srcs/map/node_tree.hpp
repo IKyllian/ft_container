@@ -97,6 +97,7 @@ namespace ft
 		Pair	_pair;
 
 		node(const Pair &pair = Pair()) : _left(nullptr), _right(nullptr), _parent(nullptr), _color(ROUGE), _pair(pair) {};
+		node(node *left, node *right, node *parent, int color, const Pair &pair = Pair()) : _left(left), _right(right), _parent(parent), _color(color), _pair(pair) {};
 
 		node& operator=(const node& src) {
 			_left = src._left;
@@ -350,7 +351,7 @@ namespace ft
 				return (_root);
 			};
 
-			void swap_node(pointer n, pointer node_to_swap) {
+			void replace_node(pointer n, pointer node_to_swap) {
 					// Change le parent de n (n qui est la valeur a delete)
 				
 					if (n->_parent) {
@@ -361,27 +362,142 @@ namespace ft
 					}
 					
 					// si le parent du noeud a swap n'est pas le noeud a delete alors on met son enfant gauche a null car il va etre deplacé
+					// A Revoir
 					if (node_to_swap->_parent != n)
 						node_to_swap->_parent->_left = nullptr;
 					
 					// remplace les freres du noeud a swap par les freres du noeud a delete avant de le swap
+					// if (n->_left != node_to_swap)
 					node_to_swap->_left = n->_left;
+					// else
+					// 	node_to_swap->_left = nullptr;
 
 					if (n->_right != node_to_swap)
-						node_to_swap->_right = n->_right;					
+						node_to_swap->_right = n->_right;
+					else if (n->_right == node_to_swap && node_to_swap->_right == nullptr)
+						node_to_swap->_right = nullptr;
 
 					// remplace le parent du noeud a swap par le parent du noeud a delete avant de le swap
 					node_to_swap->_parent = n->_parent;
 					
+					
 					// remplace le parent du frere gauche du noeud a delete si il est non null 
-					if (n->_left)
+					if (n->_left && n->_left != node_to_swap)
 						n->_left->_parent = node_to_swap;
+
+					if (n->_right && n->_right != node_to_swap)
+						n->_right->_parent = node_to_swap;
 		
-					delete_node(n);
+					// delete_node(n);
 
 					n = node_to_swap;
+
+					// std::cout << " n = " << n->_pair.first << std::endl;
+					// std::cout << " n Parent = " << n->_parent->_pair.first << std::endl;
+					// if (n->_left)
+					// 	std::cout << "n Left Non NULL " << n->_left->_pair.first << std::endl;
+					// else
+					// 	std::cout << "n Left NULL" << std::endl;
+
+					// if (n->_right)
+					// 	std::cout << "n Right Non NULL " << n->_right->_pair.first << std::endl;
+					// else
+					// 	std::cout << "n Right NULL" << std::endl;
+
 					if (n->_parent == nullptr)
 						_root = n;
+			}
+
+			void swap_node(pointer n, pointer node_to_swap) {
+				pointer tmp = n;
+				int qw = n->_right == node_to_swap ? 1 : 0;
+
+				if (n->_parent) {
+					if (n->_parent->_left == n)
+						n->_parent->_left = node_to_swap;
+					else
+						n->_parent->_right = node_to_swap;
+				}
+				if (node_to_swap->_right)
+					node_to_swap->_right->_parent = n;
+				
+
+				pointer p_n = n->_parent;
+				pointer l_n = n->_left;
+				pointer r_n = n->_right;
+				int color_n = n->_color;
+
+				pointer p_s = node_to_swap->_parent;
+				pointer l_s = node_to_swap->_left;
+				pointer r_s = node_to_swap->_right;
+				int color_s = node_to_swap->_color;
+
+				if (!qw)
+					tmp->_parent = node_to_swap->_parent;
+
+				n = node_to_swap;
+
+				n->_color = color_n;
+
+				n->_parent = p_n;
+				n->_left = l_n;
+
+				//
+				if (qw)
+					n->_right = tmp;
+				else
+					n->_right = r_n;
+
+				node_to_swap = tmp;
+
+				node_to_swap->_color = color_s;
+
+				//
+				if (qw)
+					node_to_swap->_parent = n;
+				else {
+					node_to_swap->_parent = p_s;
+				}
+
+
+				node_to_swap->_left = l_s;
+				node_to_swap->_right = r_s;
+
+					
+
+				std::cout << "N = " << n->_pair.first << std::endl;
+				if (n->_parent)
+					std::cout << "N Parent = " << n->_parent->_pair.first << std::endl;
+				else
+					std::cout << "N Racine" << std::endl;
+				if (n->_left)
+					std::cout << "N Left = " << n->_left->_pair.first << std::endl;
+				else
+					std::cout << "N Left NULL " << std::endl;
+				if (n->_right)
+					std::cout << "N Right = " << n->_right->_pair.first << std::endl;
+				else
+					std::cout << "N Right NULL " << std::endl;
+
+				std::cout << std::endl;
+
+				std::cout << "Node to swap = " << node_to_swap->_pair.first << std::endl;
+				if (node_to_swap->_parent)
+					std::cout << "Node to swap Parent = " << node_to_swap->_parent->_pair.first << std::endl;
+				else
+					std::cout << "Node to swap Racine" << std::endl;
+				if (node_to_swap->_left)
+					std::cout << "Node to swap Left = " << node_to_swap->_left->_pair.first << std::endl;
+				else
+					std::cout << "Node to swap Left NULL " << std::endl;
+				if (node_to_swap->_right)
+					std::cout << "Node to swap Right = " << node_to_swap->_right->_pair.first << std::endl;
+				else
+					std::cout << "Node to swap Right NULL " << std::endl;
+
+
+				if (n->_parent == nullptr)
+					_root = n;
 			}
 
 			pointer search_replace(pointer n) {
@@ -395,17 +511,86 @@ namespace ft
 					return (n->_right);
 			}
 
+			void double_black_repare(pointer n) {
+				if (n == _root)
+					return ;
+				pointer brother = get_brother(n);
+				std::cout << "Brother = " << brother->_pair.first << std::endl;
+				pointer parent = get_parent(n);
+				if (brother == nullptr)
+					double_black_repare(parent);
+				else if (brother->_color == ROUGE) {
+					parent->_color = ROUGE;
+					brother->_color = NOIR;
+					if (brother->_parent->_right == brother)
+						left_rotation(parent);
+					else 
+						right_rotation(parent);
+					double_black_repare(n);
+				} else if (brother->_color == NOIR) {
+					if ((brother->_left && brother->_left->_color == ROUGE)
+						|| (brother->_right && brother->_right->_color == ROUGE)) {
+								std::cout << brother->_pair.first << brother->_parent->_pair.first  << std::endl;
+								std::cout << "TEST3" << std::endl;
+						if (brother->_parent->_left == brother) {
+							
+								std::cout << "TEST3" << std::endl;
+							if (brother->_left && brother->_left->_color == ROUGE) {
+								// Left Left
+								brother->_left->_color = brother->_color;
+								brother->_color = parent->_color;
+								right_rotation(parent);
+							}
+							else {
+								// Left Right
+								brother->_right->_color = parent->_color;
+								left_rotation(brother);
+								right_rotation(parent);
+							}
+						} else {
+
+								std::cout << "TEST3" << std::endl;
+							if (brother->_right && brother->_right->_color == ROUGE) {
+
+								//Right Right
+								brother->_right->_color = brother->_color;
+								brother->_color = parent->_color;
+								left_rotation(parent);
+							} else {
+								// Right Left
+								brother->_left->_color = parent->_color;
+								right_rotation(brother);
+								left_rotation(parent);
+							}
+						}
+					} else {
+						brother->_color = ROUGE;
+						if (parent->_color == NOIR)
+							double_black_repare(parent);
+						else
+							parent->_color = NOIR;
+					}
+				}
+			}
+
+
 			void _erase(pointer n) {
+				// std::cout << "Val n = "<< n->_pair.first << "N Parent = " << n->_parent->_pair.first << "N Color = " << n->_parent->_color << std::endl;
+				std::cout << "Val n = "<< n->_pair.first << std::endl;
 				pointer u = search_replace(n);
 				bool doubleBlack = ((u == nullptr || u->_color == NOIR) && n->_color == NOIR);
+				pointer parent = n->_parent;
 
 				if (u == nullptr) {
-					if (n == _root)
+					std::cout << "TEST" << _root->_pair.first << n->_pair.first << std::endl;
+					if (n == _root) {
 						_root = nullptr;
-					else {
-						// if (doubleBlack)
-						// 	//fix double black
-						if (!doubleBlack) {
+					} else {
+						if (doubleBlack) {
+							
+							double_black_repare(n);
+						}
+						else {
 							if (get_brother(n) != nullptr)
 								get_brother(n)->_color = ROUGE;
 						}
@@ -415,132 +600,60 @@ namespace ft
 							n->_parent->_right = nullptr;
 					}
 					delete_node(n);
-					printTree(_root,nullptr, false);
+					// printTree(_root,nullptr, false);
 					return ;
-				} 
-				else
-					swap_node(n, u);
+				}
+				if (n->_left == NULL || n->_right == NULL) {
+					if (n == _root)
+						replace_node(n, u);
+					else {
+						if (n->_parent->_left == n)
+							n->_parent->_left = u;
+						else
+							n->_parent->_right = u;
+					}
+					delete_node(n);
+					u->_parent = parent;
+					if (doubleBlack)
+						double_black_repare(n);
+					else
+						u->_color = NOIR;
+						return ;
+				}
+				swap_node(n, u);
+				_erase(n);
 				printTree(_root,nullptr, false);
 			}
 
 			// void _erase(pointer n) {
-			// 	/*
-			// 		Pour commencé on recherche le noeud a supprimé dans l'arbre.
-			// 		Pour pouvoir supprimé le noeud correctement il faut que celui-ci ait au plus un enfant qui ne soit pas une feuille (noeud NULL).
-			// 		Si le noeud contient deux enfants qui ne sont pas des feuilles il faut recherché soit le successeur le plus proche (le noeud le plus a gauche du sous arbre droit)
-			// 		ou le predecesseur le plus proche (le noeud le plus a droite du sous arbre gauche)
+			// 	pointer u = search_replace(n);
+			// 	bool doubleBlack = ((u == nullptr || u->_color == NOIR) && n->_color == NOIR);
 
-			// 	*/
-			// 	if (n->_left == nullptr && n->_right == nullptr) {
-			// 		if (n == n->_parent->_left)
-			// 			n->_parent->_left = nullptr;
-			// 		else
-			// 			n->_parent->_right = nullptr;
-			// 		delete_node(n);
-			// 	}
-			// 	else if (n->_left != nullptr && n->_right != nullptr) {
-			// 		pointer node_to_swap = min_element(n->_right);
-			// 		int color = n->_color;
-			// 		// std::cout << "Key To swap = " << node_to_swap->_pair.first << std::endl;
-
-			// 		// Change le parent de n (n qui est la valeur a delete)
-			// 		if (n->_parent) {
-			// 			if (n->_parent->_right == n)
-			// 				n->_parent->_right = node_to_swap;
+			// 	if (u == nullptr) {
+			// 		if (n == _root)
+			// 			_root = nullptr;
+			// 		else {
+			// 			if (doubleBlack)
+			// 				double_black_repare(n);
+			// 			else {
+			// 				if (get_brother(n) != nullptr)
+			// 					get_brother(n)->_color = ROUGE;
+			// 			}
+			// 			if (n == n->_parent->_left)
+			// 				n->_parent->_left = nullptr;
 			// 			else
-			// 				n->_parent->_left = node_to_swap;
-			// 		}
-					
-			// 		// si le parent du noeud a swap n'est pas le noeud a delete alors on met son enfant gauche a null car il va etre deplacé
-			// 		if (node_to_swap->_parent != n)
-			// 			node_to_swap->_parent->_left = nullptr;
-					
-			// 		// remplace les freres du noeud a swap par les freres du noeud a delete avant de le swap
-			// 		// if (n->_left == node_to_swap)
-			// 		// 	node_to_swap->_left = nullptr;
-			// 		// else
-			// 			node_to_swap->_left = n->_left;
-						
-			// 		// if (n->_right == node_to_swap)
-			// 		// 	node_to_swap->_right = nullptr;
-			// 		// else
-			// 		// 	node_to_swap->_right = n->_right;
-
-			// 		if (n->_right != node_to_swap)
-			// 			node_to_swap->_right = n->_right;					
-
-			// 		// remplace le parent du noeud a swap par le parent du noeud a delete avant de le swap
-			// 		node_to_swap->_parent = n->_parent;
-
-			// 		node_to_swap->_color = color;
-					
-			// 		// remplace le parent du frere gauche du noeud a delete si il est non null 
-			// 		if (n->_left)
-			// 			n->_left->_parent = node_to_swap;
-		
-			// 		delete_node(n);
-
-			// 		n = node_to_swap;
-			// 		if (n->_parent == nullptr)
-			// 			_root = n;
-
-			// 		// std::cout << "n = " << n->_pair.first << std::endl;
-			// 		// if (n->_right == nullptr)
-			// 		// 	std::cout << "Right NULL" << std::endl;
-			// 		// else
-			// 		// 	std::cout << "Right NON NULL = " << n->_right->_pair.first << std::endl;
-				
-			// 		// std::cout << "n left = " << n->_left->_pair.first << std::endl;
-			// 		// std::cout << "n left parent = " << n->_left->_parent->_pair.first << std::endl;
-
-			// 		// if (n->_parent) {
-			// 		// 	std::cout << "n parent = " << n->_parent->_pair.first << std::endl;
-			// 		// 	std::cout << "n parent right = " << n->_parent->_right->_pair.first << std::endl;
-			// 		// }
-
-			// 		// if (n->_right->_left == nullptr)
-			// 		// 	std::cout << "left NULL" << std::endl;
-			// 		// else
-			// 		// 	std::cout << "left NON NULL = " << n->_right->_left->_pair.first << std::endl;
-
-			// 	}
-			// 	else if (n->_left == nullptr) {
-			// 		if (n == n->_parent->_right) {
-			// 			n->_parent->_right = n->_right;
-			// 			n->_right->_color = n->_color;
-			// 			if (n->_right)
-			// 				n->_right->_parent = n->_parent;
-			// 			if (n->_left)
-			// 				n->_left->_parent = n->_parent;
-			// 		} else {
-			// 			n->_parent->_left = n->_right;
-			// 			n->_right->_color = n->_color;
-			// 			if (n->_right)
-			// 				n->_right->_parent = n->_parent;
-			// 			if (n->_left)
-			// 				n->_left->_parent = n->_parent;
+			// 				n->_parent->_right = nullptr;
 			// 		}
 			// 		delete_node(n);
+			// 		printTree(_root,nullptr, false);
+			// 		return ;
+			// 	} else {
+			// 		replace_node(n, u);
+			// 		if (doubleBlack)
+			// 			double_black_repare(n);
+			// 		else
+			// 			u->_color = NOIR;
 			// 	}
-			// 	else {
-			// 		if (n == n->_parent->_right) {
-			// 			n->_parent->_right = n->_left;
-			// 			n->_left->_color = n->_color;
-			// 			if (n->_right)
-			// 				n->_right->_parent = n->_parent;
-			// 			if (n->_left)
-			// 				n->_left->_parent = n->_parent;
-			// 		} else {
-			// 			n->_parent->_left = n->_left;
-			// 			n->_left->_color = n->_color;
-			// 			if (n->_right)
-			// 				n->_right->_parent = n->_parent;
-			// 			if (n->_left)
-			// 				n->_left->_parent = n->_parent;
-			// 		}
-			// 		delete_node(n);
-			// 	}
-
 			// 	printTree(_root,nullptr, false);
 			// }
 
