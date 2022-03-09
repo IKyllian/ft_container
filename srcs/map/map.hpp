@@ -138,8 +138,8 @@ namespace ft
 			};
 
 			// Copy Constructor
-			map(const map& x) : _alloc(x._alloc), _comp(x._comp) {
-				*this = x;
+			map(const map& x) : _alloc(x._alloc), _comp(x._comp), _tree(x._comp, x._alloc) {
+				_tree = x._tree;
 			};
 
 			~map() {};
@@ -179,7 +179,7 @@ namespace ft
 
 			// ---------------------- Element Access ---------------------------
 
-			mapped_type& operator[] (const key_type& k);	
+			mapped_type& operator[] (const key_type& k) { return ((*((this->insert(ft::make_pair(k,mapped_type()))).first))._pair.second); };	
 
 			// ---------------------- Modifiers ---------------------------
 
@@ -191,9 +191,9 @@ namespace ft
 			void insert (InputIterator first, InputIterator last) { _tree.insert(first, last); };
 
 
-			// void erase (iterator position);
+			void erase (iterator position) { _tree.erase(position); };
 			size_type erase (const key_type& k) { return (_tree.erase(ft::make_pair(k, mapped_type()))); };
-			// void erase (iterator first, iterator last);
+			void erase (iterator first, iterator last) { _tree.erase(first, last); };
 
 			void swap (map& x) { return (_tree.swap(x._tree)); };
 

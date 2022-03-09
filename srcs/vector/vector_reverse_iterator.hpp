@@ -77,9 +77,12 @@ namespace ft
 			};
 
 			// -----------Dereferencing/Address----------
-			reference operator [](difference_type n) const { return (*(current + n)); };
-			pointer operator ->() const { return (current); };		
-			reference operator *() const { return (*current); };
+			reference operator [](difference_type n) const { return (current[-n - 1]); };
+			pointer operator ->() const {
+				iterator_type tmp = current;
+				return (*--tmp);
+			};		
+			reference operator *() const { return (&operator*()); };
 			iterator_type base() const { return (current); }
 		protected :
 			iterator_type current;

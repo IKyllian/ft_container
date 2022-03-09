@@ -12,7 +12,7 @@
 
 namespace ft
 {
-	template <class Node, class Compare>
+	template <class Node>
 	class treeIterator {
 		public :
 			typedef typename ft::iterator_traits<Node>::value_type value_type;
@@ -21,9 +21,9 @@ namespace ft
 			typedef typename ft::iterator_traits<Node>::difference_type difference_type;
 			typedef ft::bidirectional_iterator_tag iterator_category;
 
-			treeIterator(const Compare& comp = Compare()) : _comp(comp), current(nullptr) { };
-			treeIterator(pointer ptr, const Compare& comp = Compare()) : current(ptr), _comp(comp) {};
-			treeIterator(const treeIterator &src) : current(src.current), _comp(src._comp) {};
+			treeIterator() : current(nullptr) { };
+			treeIterator(pointer ptr) : current(ptr) {};
+			treeIterator(const treeIterator &src) : current(src.current) {};
 			~treeIterator() {};
 
 			treeIterator &operator=(const treeIterator& src) {
@@ -33,6 +33,7 @@ namespace ft
 
 			// ---------Increment/Decrement---------
 			treeIterator &operator++(void) {
+				// std::cout << "Current = " << current->_pair.first <<  std::endl;
 				if (current == NULL)
 					return (*this);
 				if (current->_right != NULL) {
@@ -41,8 +42,11 @@ namespace ft
 						current = current->_left;
 				}
 				else {
-					while (current->_parent != NULL && current == current->_parent->_right)
+					// std::cout << "TEST" << std::endl;
+					while (current->_parent != NULL && current->_parent->_right == current) {
+						// std::cout << "TEST" << std::endl;
 						current = current->_parent;
+					}
 					current = current->_parent;
 				}
 				return (*this);
@@ -80,13 +84,12 @@ namespace ft
 
 		private :
 			Node current;
-			Compare _comp;
 	};
 
-	template <class Node, class Compare>
-	bool operator==(const ft::treeIterator<Node, Compare>& lhs, const ft::treeIterator<Node, Compare>& rhs) { return (lhs.base() == rhs.base()); };
-	template <class Node, class Compare>
-	bool operator!=(const ft::treeIterator<Node, Compare>& lhs, const ft::treeIterator<Node, Compare>& rhs) { return (lhs.base() != rhs.base()); };
+	template <class Node>
+	bool operator==(const ft::treeIterator<Node>& lhs, const ft::treeIterator<Node>& rhs) { return (lhs.base() == rhs.base()); };
+	template <class Node>
+	bool operator!=(const ft::treeIterator<Node>& lhs, const ft::treeIterator<Node>& rhs) { return (lhs.base() != rhs.base()); };
 
 	template <class Pair>
 	struct node {
@@ -133,8 +136,8 @@ namespace ft
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::treeIterator<pointer, value_compare> iterator;
-			typedef typename ft::treeIterator<const pointer, value_compare> const_iterator;
+			typedef typename ft::treeIterator<pointer> iterator;
+			typedef typename ft::treeIterator<const pointer> const_iterator;
 			typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
 			typedef typename ft::vectorReverseIterator<const_iterator> const_reverse_iterator;
 			typedef std::ptrdiff_t difference_type;
@@ -147,7 +150,7 @@ namespace ft
 			};
 
 			~tree() {
-				std::cout << "Tree Destructor" << std::endl;
+				// std::cout << "Tree Destructor" << std::endl;
 				this->clear();
 			};
 
@@ -346,7 +349,7 @@ namespace ft
 
 				insert_node(root, n);
 				insert_repare(n);
-				printTree(_root,nullptr, false);
+				// printTree(_root,nullptr, false);
 				_tree_size++;
 				return (_root);
 			};
@@ -388,8 +391,6 @@ namespace ft
 					if (n->_right && n->_right != node_to_swap)
 						n->_right->_parent = node_to_swap;
 		
-					delete_node(n);
-
 					n = node_to_swap;
 
 					if (n->_parent == nullptr)
@@ -549,7 +550,6 @@ namespace ft
 							n->_parent->_right = nullptr;
 					}
 					delete_node(n);
-					printTree(_root,nullptr, false);
 					return ;
 				}
 				if (n->_left == NULL || n->_right == NULL) {
@@ -567,20 +567,23 @@ namespace ft
 						double_black_repare(n);
 					else
 						u->_color = NOIR;
+					// printTree(_root,nullptr, false);
+					// std::cout << " ------------------ "  << std::endl;
 						return ;
 				}
 				swap_node(n, u);
 				_erase(n);
-				printTree(_root,nullptr, false);
+				// printTree(_root,nullptr, false);
+				// std::cout << " ------------------ "  << std::endl;
 			}
 
 			// Functions for map container
 
-			iterator begin() { return (iterator(min_element(_root), _comp)); };
-			const_iterator begin() const { return (const_iterator(min_element(_root), _comp)); };
+			iterator begin() { return (iterator(min_element(_root))); };
+			const_iterator begin() const { return (const_iterator(min_element(_root))); };
 
-			iterator end() { return (++(iterator(max_element(_root), _comp))); };
-			const_iterator end() const { return (const_iterator(max_element(_root, _comp))); };
+			iterator end() { return (++(iterator(max_element(_root)))); };
+			const_iterator end() const { return (const_iterator(max_element(_root))); };
 
 			reverse_iterator rbegin() { return (reverse_iterator(--(end()))); };
 			const_reverse_iterator rbegin() const { return (const_reverse_iterator(--(end()))); };
@@ -595,13 +598,13 @@ namespace ft
 			pair<iterator,bool> insert(const value_type& val) {
 				pointer search = search_node(_root, val);
 				if (search != nullptr)
-					return (ft::make_pair(iterator(search, _comp), false));
+					return (ft::make_pair(iterator(search), false));
 
 				pointer node = _alloc.allocate(1);
 				_alloc.construct(node, val);
 				_root = _insert(_root, node);			
 
-				return (ft::make_pair(iterator(node, _comp), true));
+				return (ft::make_pair(iterator(node), true));
 
 			};
 
@@ -633,17 +636,34 @@ namespace ft
 				pointer node = search_node(_root, k);
 				if (node == nullptr)
 					return (0);
-				else{
+				else {
 					_erase(node);
+					_tree_size--;
 					return (1);
 				}
+			};
+
+			void erase(iterator position) {
+				pointer to_search = (position++).base();
+				pointer node = search_node(_root, to_search->_pair);
+				if (node == nullptr)
+					return ;
+				else {
+					_erase(node);
+					_tree_size--;
+				}
+			};
+
+			void erase(iterator first, iterator last) {
+				for (; first != last; first++)
+					erase(first);
 			};
 
 			iterator find (value_type k) {
 				pointer result = search_node(_root, k);
 				if (result == nullptr)
 					return (end());
-				return (iterator(result, _comp));
+				return (iterator(result));
 			};
 
 			size_type count(value_type k) const {
@@ -685,8 +705,6 @@ namespace ft
 				this->_root = root;
 			};
 
-			
-
 		private :
 			pointer			 _root;
 			value_compare	_comp;
@@ -696,6 +714,7 @@ namespace ft
 			void delete_node(pointer node) {
 				_alloc.destroy(node);
 				_alloc.deallocate(node, sizeof(value_type));
+				node = nullptr;
 			};
 
 			void _clear_tree(pointer node) {
