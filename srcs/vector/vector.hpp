@@ -110,15 +110,15 @@ namespace ft
 
 		//Destructor
 		~vector() {
-			// if (_fill_size > 0)
-			// {
-			// 	for (size_type i = 0; i < _fill_size; i++)
-			// 		_alloc.destroy(_ptr + i);
-			// }
-			// if (_alloc_size > 0)
-			// 	_alloc.deallocate(_ptr, _alloc_size);
-			// _alloc_size = 0;
-			// _fill_size = 0;
+			if (_fill_size > 0)
+			{
+				for (size_type i = 0; i < _fill_size; i++)
+					_alloc.destroy(_ptr + i);
+			}
+			if (_alloc_size > 0)
+				_alloc.deallocate(_ptr, _alloc_size);
+			_alloc_size = 0;
+			_fill_size = 0;
 		};
 
 		//Asigment operator
@@ -145,16 +145,16 @@ namespace ft
 			return (const_iterator(this->_ptr + this->size()));
 		};
 		
-		reverse_iterator rbegin() { return (reverse_iterator(--(this->end()))); }; // A revoir pour la position de l'iterateur
-		const_reverse_iterator rbegin() const { return (const_reverse_iterator(--(this->end()))); }; // A revoir pour la position de l'iterateur
+		reverse_iterator rbegin() { return (reverse_iterator(this->end())); }; // A revoir pour la position de l'iterateur
+		const_reverse_iterator rbegin() const { return (const_reverse_iterator(this->end())); }; // A revoir pour la position de l'iterateur
 
-		reverse_iterator rend() { return (reverse_iterator(--(this->begin()))); }; // A revoir pour la position de l'iterateur
-		const_reverse_iterator rend() const { return (const_reverse_iterator(--(this->begin()))); }; // A revoir pour la position de l'iterateur
+		reverse_iterator rend() { return (reverse_iterator(this->begin())); }; // A revoir pour la position de l'iterateur
+		const_reverse_iterator rend() const { return (const_reverse_iterator(this->begin())); }; // A revoir pour la position de l'iterateur
 
 
 		//Capacity
 		size_type size() const { return (_fill_size); };
-		size_type max_size() const { return (std::numeric_limits<size_type>::max()); };
+		size_type max_size() const { return (_alloc.max_size()); };
 		void resize (size_type n, value_type val = value_type()) {
 			if (n > this->max_size())
 			 	throw std::out_of_range("Vector:: resize error");

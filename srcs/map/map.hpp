@@ -116,14 +116,6 @@ namespace ft
 
 			typedef typename ft::vectorReverseIterator<const_iterator> const_reverse_iterator;
 
-			// typedef typename tree::iterator iterator;
-
-			// typedef typename tree::const_iterator const_iterator;
-
-			// typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
-
-			// typedef typename ft::vectorReverseIterator<const_iterator> const_reverse_iterator;
-
 
 			// ---------------------- Constructor / Destructor / Asigment operator ---------------------------
 
@@ -154,11 +146,6 @@ namespace ft
 
 			// ---------------------- Iterators ---------------------------
 
-			// iterator begin() { return (iterator(_tree.begin())); };
-			// const_iterator begin() const { return (const_iterator(_tree.begin())); };
-
-			// iterator end() { return (iterator(_tree.end())); };
-			// const_iterator end() const { return (const_iterator(_tree.end())); };
 			iterator begin() { return (iterator(_tree.begin())); };
 			const_iterator begin() const { return (const_iterator(_tree.begin())); };
 
@@ -176,7 +163,7 @@ namespace ft
 
 			bool empty() const { return (_tree.empty()); };
 			size_type size() const { return (_tree.size()); };
-			size_type max_size() const;
+			size_type max_size() const { return (_alloc.max_size()); };
 
 			// ---------------------- Element Access ---------------------------
 
@@ -186,7 +173,7 @@ namespace ft
 
 			pair<iterator,bool> insert (const value_type& val) { return (_tree.insert(val)); };
 
-			// iterator insert (iterator position, const value_type& val) { return (iterator(_tree.insert(position.base(), val))); };
+			iterator insert (iterator position, const value_type& val) { return (iterator(_tree.insert(position.base(), val))); };
 
 			template <class InputIterator>
 			void insert (InputIterator first, InputIterator last) { _tree.insert(first.base(), last.base()); };

@@ -279,6 +279,19 @@ int main() {
 		{
 			std::cout << "iterator insert (iterator position, const value_type& val);" << std::endl << std::endl;
 
+			ft::map<int, int> map;
+
+			map.insert(ft::pair<int, int>(3, 3));
+			map.insert(ft::pair<int, int>(2, 2));
+			map.insert(ft::pair<int, int>(10, 10));
+			map.insert(ft::pair<int, int>(1, 1));
+
+			ft::map<int,int>::iterator it = map.begin();
+			map.insert(it, ft::pair<int,int>(300,300));  // max efficiency inserting
+			map.insert(it, ft::pair<int,int>(400,400));
+
+			for (ft::map<int, int>::iterator it=map.begin(); it!=map.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
 		}
 		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 		{
@@ -708,16 +721,13 @@ int main() {
 
 		std::cout << "----------------------- Ft Iterators -----------------------" << std::endl; 
 		{
-			std::cout << "iterator begin();" << std::endl << std::endl;
-			std::cout << "iterator end();" << std::endl << std::endl;
-			std::cout << "reverse_iterator rbegin();" << std::endl << std::endl;
+			std::cout << "iterator begin();" << std::endl;
+			std::cout << "iterator end();" << std::endl;
+			std::cout << "reverse_iterator rbegin();" << std::endl;
 			std::cout << "reverse_iterator rend();" << std::endl << std::endl;
 
 
 			ft::map<int, int> map;
-			ft::map<int, int>::iterator it = map.end();
-			ft::map<int, int>::reverse_iterator reverse_it = map.rend();
-			
 
 			map.insert(ft::pair<int, int>(4, 4));
 			map.insert(ft::pair<int, int>(5, 5));
@@ -727,23 +737,37 @@ int main() {
 			map.insert(ft::pair<int, int>(3, 3));
 			map.insert(ft::pair<int, int>(8, 8));
 
+			ft::map<int, int>::iterator it = map.end();
+			ft::map<int, int>::reverse_iterator reverse_it = map.rend();
+
 			std::cout << "Map Begin = " << map.begin()->first << " - End (-1) = " << (--it)->first << std::endl;
 			std::cout << "Map RBegin = " << map.rbegin()->first << " - REnd (-1) = " << (--reverse_it)->first << std::endl;
-
+			std::cout << std::endl;
+			
 			std::cout << "Map Contain : " << std::endl;
 			for (ft::map<int, int>::iterator begin = map.begin(); begin != map.end(); begin++)
-				std::cout << "First = " << it->first << " - Second = " << it->second << std::endl;
+				std::cout << "First = " << begin->first << " - Second = " << begin->second << std::endl;
+			std::cout << std::endl;
 
 			std::cout << "Map Contain (Reverse) : " << std::endl;
 			for (ft::map<int, int>::iterator end = map.end(); end != map.begin();) {
 				end--;
-				std::cout << "First = " << it->first << " - Second = " << it->second << std::endl;
+				std::cout << "First = " << end->first << " - Second = " << end->second << std::endl;
 			}
+			std::cout << std::endl;
 
 			ft::map<int, int>::iterator begin = map.begin();
 			ft::map<int, int>::iterator cpy_begin = map.begin();
 
+			std::cout << "Begin Copy Iterator = " << cpy_begin->first << std::endl;
 
+			std::cout << "Map Contain (With Copy Iterator): " << std::endl;
+			for (; cpy_begin != map.end(); cpy_begin++)
+				std::cout << "First = " << cpy_begin->first << " - Second = " << cpy_begin->second << std::endl;
+
+			std::cout << "Original Begin Iterator = " << begin->first << std::endl;
+
+			std::cout << std::endl;
 			std::cout << std::endl;
 			ft::map<char, int> map2;
 			std::cout << "Map of Size 1" << std::endl;
@@ -755,276 +779,5 @@ int main() {
 			std::cout << "Map2 RBegin = " << map2.rbegin()->first << " - REnd (-1) = " << (--reverse_it2)->first << std::endl;
 
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// ft::map<int, int> map;
-
-	// std::cout << " !!!!!! 1 !!!!!"  << std::endl;
-	// map.insert(ft::pair<int, int>(1, 1));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(4, 4));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(2, 2));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(6, 6));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(5, 5));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(3, 3));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(9, 9));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(7, 7));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(10, 10));
-	// std::cout << " ------------------" << std::endl;
-
-	// ft::pair<ft::map<int, int>::iterator, bool> pair = map.insert(ft::pair<int, int>(11, 11));
-	// std::cout << " ------------------" << std::endl;
-
-	// // std::cout << "First (Key) = " << pair.first->first << " - (Value) = " << pair.first->second << " - Second = " << pair.second << std::endl;
-
-	// map.erase(7);
-
-
-	// map.insert(ft::pair<int, int>(7, 7));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(3, 3));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(18, 18));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(10, 10));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(22, 22));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(26, 26));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(8, 8));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(11, 11));
-	// std::cout << " ------------------"  << std::endl;
-
-
-	// std::cout << "After Delete"  << std::endl << std::endl;
-	// map.erase(18);
-
-	// map.insert(ft::pair<int, int>(5, 5));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(2, 2));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(8, 8));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(1, 1));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(4, 4));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(7, 7));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(9, 9));
-	// std::cout << " ------------------"  << std::endl;
-
-
-	// std::cout << "After Delete"  << std::endl << std::endl;
-	// map.erase(2);
-
-
-	// map.insert(ft::pair<int, int>(7, 7));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(3, 3));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(18, 18));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(10, 10));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(22, 22));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(8, 8));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(11, 11));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(26, 26));
-	// std::cout << " ------------------"  << std::endl;
-
-
-	// std::cout << "After Delete"  << std::endl << std::endl;
-	// map.erase(3);
-
-	// map.insert(ft::pair<int, int>(13, 13));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(8, 8));
-	// std::cout << " ------------------ "  << std::endl;
-	// map.insert(ft::pair<int, int>(17, 17));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(1, 1));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(11, 11));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(6, 6));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(15, 15));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(25, 25));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(22, 22));
-	// std::cout << " ------------------"  << std::endl;
-	// map.insert(ft::pair<int, int>(27, 27));
-	// std::cout << " ------------------"  << std::endl;
-
-	// std::cout << "After Delete"  << std::endl << std::endl;
-	// ft::map<int,int>::iterator it = map.find(11);
-	// map.erase(it);
-
-
-	// it++;
-	// std::cout << "map contains:\n";
-	// for (; it !=map.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
-	// map.erase(it, map.end());
-
-	// std::cout << "map contains:\n";
-	// for (ft::map<int,int, classcomp>::iterator it=map.begin(); it!=map.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
-
-
-	// ft::map<int, int> map2;
-
-	// map2.insert(ft::pair<int, int>(1, 1));
-
-	// map2.insert(map.begin(), map.end());
-
-	// for (ft::map<int,int>::iterator it=map2.begin(); it!=map2.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
-
-
-	
-
-	// std::cout << "Count = " << map.count(0) << std::endl;
-
-	// ft::map<int, int>::iterator const it = map.lower_bound(1);
-	// std::cout << "Key = " << (*it).first << std::endl;
-
-	// ft::map<int, int>::iterator  it2 = map.upper_bound(4);
-	// std::cout << "Key = " << (*it2).first << std::endl;
-
-	// ft::map<int, int>::iterator  it3 = map.find(7);
-	// std::cout << "Key = " << (*it3).first << std::endl;
-
-	// // ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator> pair = map.equal_range(43);
-	// // std::cout << "First Key = " << pair.first->first << " - Second Key = " << pair.second->second << std::endl;
-
-	// ft::map<char,int> foo,bar;
-
-	// foo.insert(ft::pair<char, int>('x', 100));
-	// foo.insert(ft::pair<char, int>('y', 200));
-	// bar.insert(ft::pair<char, int>('a', 11));
-	// bar.insert(ft::pair<char, int>('b', 22));
-	// bar.insert(ft::pair<char, int>('c', 233));
-	// std::cout << "foo contains:\n";
-	// for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
-
-	// std::cout << "bar contains:\n";
-	// for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
-
-	// foo.swap(bar);
-
-	// std::cout << "foo contains:\n";
-	// for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
-
-	// std::cout << "bar contains:\n";
-	// for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
-
 	return (0);
 }

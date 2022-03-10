@@ -28,6 +28,7 @@ namespace ft
 
 			treeIterator &operator=(const treeIterator& src) {
 				current = src.current;
+				tree = src.tree;
 				return (*this);
 			};
 
@@ -369,10 +370,7 @@ namespace ft
 						node_to_swap->_parent->_left = nullptr;
 					
 					// remplace les freres du noeud a swap par les freres du noeud a delete avant de le swap
-					// if (n->_left != node_to_swap)
 					node_to_swap->_left = n->_left;
-					// else
-					// 	node_to_swap->_left = nullptr;
 
 					if (n->_right != node_to_swap)
 						node_to_swap->_right = n->_right;
@@ -381,7 +379,6 @@ namespace ft
 
 					// remplace le parent du noeud a swap par le parent du noeud a delete avant de le swap
 					node_to_swap->_parent = n->_parent;
-					
 					
 					// remplace le parent du frere gauche du noeud a delete si il est non null 
 					if (n->_left && n->_left != node_to_swap)
@@ -527,8 +524,6 @@ namespace ft
 			}
 
 			void _erase(pointer n) {
-				// std::cout << "Val n = "<< n->_pair.first << "N Parent = " << n->_parent->_pair.first << "N Color = " << n->_parent->_color << std::endl;
-				// std::cout << "Val n = "<< n->_pair.first << std::endl;
 				pointer u = search_replace(n);
 				bool doubleBlack = ((u == nullptr || u->_color == NOIR) && n->_color == NOIR);
 				pointer parent = n->_parent;
@@ -582,14 +577,7 @@ namespace ft
 			const_iterator begin() const { return (const_iterator(most_left(_root), this)); };
 
 			iterator end() { return (++(iterator(most_right(_root), this))); };
-			const_iterator end() const { return (const_iterator(most_right(_root), this)); };
-
-			// reverse_iterator rbegin() { return (reverse_iterator(--(end()))); };
-			// const_reverse_iterator rbegin() const { return (const_reverse_iterator(--(end()))); };
-
-			// reverse_iterator rend() { return (reverse_iterator(--(begin()))); };
-			// const_reverse_iterator rend() const { return (const_reverse_iterator(--(begin()))); };
-			
+			const_iterator end() const { return (const_iterator(most_right(_root), this)); };			
 
 			bool empty() const { return (!_root ? true : false); };
 			size_type size() const { return (_tree_size); };
@@ -607,25 +595,23 @@ namespace ft
 
 			};
 
-			// iterator insert (iterator position, const value_type& val) {
-				// if (position.base() && _comp(position.base()->_pair, val))
-				// {
-				// 	pointer search = search_node(_root, val);
-				// 	if (search != nullptr)
-				// 		return (iterator(search, _comp));
+			iterator insert (iterator position, const value_type& val) {
+				if (position.base() && _comp(position.base()->_pair, val))
+				{
+					pointer search = search_node(_root, val);
+					if (search != nullptr)
+						return (iterator(search, this));
+					pointer node = _alloc.allocate(1);
+					pointer from = position.base();
+					_alloc.construct(node, val);
+					_root = _insert(_root, node);		
 
-				// 	pointer node = _alloc.allocate(1);
-				// 	pointer from = position.base();
-				// 	_alloc.construct(node, val);
-				// 	_root = _insert(from, node);		
+					return (iterator(node, this));
+				}
+				else
+					return (insert(val).first);
+			};
 
-				// 	return (iterator(node, _comp));
-				// }
-				// else
-			// 		return (insert(val).first);
-			// };
-
-			// template <class InputIterator>
 			void insert (iterator first, iterator last) {
 				for (; first != last; first++)
 					insert(first->_pair);
@@ -641,7 +627,6 @@ namespace ft
 					return (1);
 				}
 			};
-
 
 			void erase(iterator position) {
 				pointer to_search = (position++).base();
@@ -735,10 +720,6 @@ namespace ft
 			};
 
 			void _clear_tree(pointer node) {
-				// if (node)
-				// 	std::cout << "Clear Tree node = " << node->_pair.first << std::endl;
-				// else
-		 		// 	std::cout << "Clear Tree node = " << std::endl;
 				if (node == nullptr)
 					return ;
 				_clear_tree(node->_left);
