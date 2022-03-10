@@ -515,7 +515,194 @@ int main()
 			mymap.clear();
 		}
 
+		std::cout << "----------------------- Key_comp -----------------------" << std::endl; 
+		{
+			std::cout << "key_compare key_comp() const;" << std::endl << std::endl;
 
+			std::map<char,int> mymap;
+
+			std::map<char,int>::key_compare mycomp = mymap.key_comp();
+
+			mymap['a']=100;
+			mymap['b']=200;
+			mymap['c']=300;
+
+			std::cout << "mymap contains:\n";
+
+			char highest = mymap.rbegin()->first;     // key value of last element
+
+
+			std::map<char,int>::iterator it = mymap.begin();
+			do {
+				std::cout << it->first << " => " << it->second << '\n';
+			} while ( mycomp((*it++).first, highest) );
+
+			std::cout << '\n';
+
+			std::map<char,int, classcomp> mymap2;
+
+			std::map<char,int, classcomp>::key_compare mycomp2 = mymap2.key_comp();
+
+			mymap2['a']=100;
+			mymap2['b']=200;
+			mymap2['c']=300;
+
+			std::cout << "mymap2 contains:\n";
+
+			char highest2 = mymap2.rbegin()->first;     // key value of last element
+
+			std::map<char,int, classcomp>::iterator it2 = mymap2.begin();
+			do {
+				std::cout << it2->first << " => " << it2->second << '\n';
+			} while ( mycomp2((*it2++).first, highest2) );
+
+			std::cout << '\n';
+		}
+		std::cout << "----------------------- Value_Comp -----------------------" << std::endl; 
+		{
+			std::cout << "value_compare value_comp() const;" << std::endl << std::endl;
+
+			std::map<char,int> mymap;
+
+			mymap['x']=1001;
+			mymap['y']=2002;
+			mymap['z']=3003;
+
+			std::cout << "mymap contains:\n";
+
+			std::pair<char,int> highest = *mymap.rbegin();          // last element
+
+			std::map<char,int>::iterator it = mymap.begin();
+			do {
+				std::cout << it->first << " => " << it->second << '\n';
+  			} while ( mymap.value_comp()(*it++, highest) );
+		}
+		std::cout << "----------------------- Find -----------------------" << std::endl; 
+		{
+			std::cout << "iterator find (const key_type& k);" << std::endl << std::endl;
+
+			std::map<char,int> mymap;
+			std::map<char,int>::iterator it;
+
+			mymap['a']=50;
+			mymap['b']=100;
+			mymap['c']=150;
+			mymap['d']=200;
+
+			it = mymap.find('b');
+			if (it != mymap.end())
+				mymap.erase (it);
+
+			// print content:
+			std::cout << "elements in mymap:" << '\n';
+			std::cout << "a => " << mymap.find('a')->second << '\n';
+			std::cout << "c => " << mymap.find('c')->second << '\n';
+			std::cout << "d => " << mymap.find('d')->second << '\n';
+		}
+		std::cout << "----------------------- Count -----------------------" << std::endl; 
+		{
+			std::cout << "size_type count (const key_type& k) const;" << std::endl << std::endl;
+
+			std::map<char,int> mymap;
+			char c;
+
+			mymap ['a']=101;
+			mymap ['c']=202;
+			mymap ['f']=303;
+
+			for (c='a'; c<'h'; c++)
+			{
+				std::cout << c;
+				if (mymap.count(c)>0)
+				std::cout << " is an element of mymap.\n";
+				else 
+				std::cout << " is not an element of mymap.\n";
+			}
+		}
+		std::cout << "----------------------- Lower/Upper Bound -----------------------" << std::endl; 
+		{
+			std::cout << "iterator lower_bound (const key_type& k);" << std::endl << std::endl;
+			std::cout << "iterator upper_bound (const key_type& k);" << std::endl << std::endl;
+
+
+			std::map<char,int> mymap;
+			std::map<char,int>::iterator itlow,itup;
+
+			mymap['a']=20;
+			mymap['b']=40;
+			mymap['c']=60;
+			mymap['d']=80;
+			mymap['e']=100;
+
+			itlow=mymap.lower_bound ('b');  // itlow points to b
+			std::cout << "Lower = " << itlow->first << std::endl;
+			itup=mymap.upper_bound ('d');   // itup points to e (not d!)
+			std::cout << "Upper = " << itup->first << std::endl;
+			mymap.erase(itlow,itup);        // erases [itlow,itup)
+
+			//	print content:
+			for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
+
+			std::map<int, int> map;
+
+			map.insert(std::pair<int, int>(4, 4));
+			map.insert(std::pair<int, int>(5, 5));
+			map.insert(std::pair<int, int>(1, 1));
+			map.insert(std::pair<int, int>(2, 2));
+			map.insert(std::pair<int, int>(6, 6));
+			map.insert(std::pair<int, int>(3, 3));
+			map.insert(std::pair<int, int>(8, 8));
+
+			std::cout << "Lower(1) = " << map.lower_bound(1)->first << std::endl;
+			std::cout << "Lower(6) = " << map.lower_bound(6)->first << std::endl;
+			std::cout << "Lower(3) = " << map.lower_bound(3)->first << std::endl;
+			std::cout << "Lower(-1) = " << map.lower_bound(-1)->first << std::endl;
+			std::cout << "Lower(7) = " << map.lower_bound(7)->first << std::endl;
+
+			std::cout << "Upper(1) = " << map.upper_bound(1)->first << std::endl;
+			std::cout << "Upper(5) = " << map.upper_bound(5)->first << std::endl;
+			std::cout << "Upper(3) = " << map.upper_bound(3)->first << std::endl;
+			std::cout << "Upper(-1) = " << map.upper_bound(-1)->first << std::endl;
+			std::cout << "Upper(7) = " << map.upper_bound(7)->first << std::endl;
+		}
+		std::cout << "----------------------- Equal_range -----------------------" << std::endl; 
+		{
+			std::cout << "pair<iterator,iterator>equal_range (const key_type& k);" << std::endl << std::endl;
+			
+			std::map<char,int> mymap;
+
+			mymap['a']=10;
+			mymap['b']=20;
+			mymap['c']=30;
+
+			std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> ret;
+			ret = mymap.equal_range('b');
+
+			std::cout << "lower bound points to: ";
+			std::cout << ret.first->first << " => " << ret.first->second << '\n';
+
+			std::cout << "upper bound points to: ";
+			std::cout << ret.second->first << " => " << ret.second->second << '\n';
+		}
+		std::cout << "----------------------- Get_allocator -----------------------" << std::endl; 
+		{
+			std::cout << "allocator_type get_allocator() const;" << std::endl << std::endl;
+
+			int psize;
+			std::map<char,int> mymap;
+			std::pair<const char,int>* p;
+
+			// allocate an array of 5 elements using mymap's allocator:
+			p=mymap.get_allocator().allocate(5);
+
+			// assign some values to array
+			psize = sizeof(std::map<char,int>::value_type)*5;
+
+			std::cout << "The allocated array has a size of " << psize << " bytes.\n";
+
+			mymap.get_allocator().deallocate(p,5);
+		}
 
 
 

@@ -78,11 +78,11 @@ namespace ft
 
 			// -----------Dereferencing/Address----------
 			reference operator [](difference_type n) const { return (current[-n - 1]); };
-			pointer operator ->() const {
+			reference operator *() const {
 				iterator_type tmp = current;
-				return (*--tmp);
-			};		
-			reference operator *() const { return (&operator*()); };
+				return (*(--tmp));
+			}	
+			pointer operator->() const { return (&operator*()); };
 			iterator_type base() const { return (current); }
 		protected :
 			iterator_type current;

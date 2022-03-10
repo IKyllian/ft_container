@@ -12,7 +12,7 @@
 
 namespace ft
 {
-	template <class Node>
+	template <class Node, class Tree>
 	class treeIterator {
 		public :
 			typedef typename ft::iterator_traits<Node>::value_type value_type;
@@ -22,8 +22,8 @@ namespace ft
 			typedef ft::bidirectional_iterator_tag iterator_category;
 
 			treeIterator() : current(nullptr) { };
-			treeIterator(pointer ptr) : current(ptr) {};
-			treeIterator(const treeIterator &src) : current(src.current) {};
+			treeIterator(pointer ptr, Tree *tree) : current(ptr), tree(tree) {};
+			treeIterator(const treeIterator &src) : current(src.current), tree(src.tree) {};
 			~treeIterator() {};
 
 			treeIterator &operator=(const treeIterator& src) {
@@ -42,11 +42,8 @@ namespace ft
 						current = current->_left;
 				}
 				else {
-					// std::cout << "TEST" << std::endl;
-					while (current->_parent != NULL && current->_parent->_right == current) {
-						// std::cout << "TEST" << std::endl;
+					while (current->_parent != NULL && current->_parent->_right == current)
 						current = current->_parent;
-					}
 					current = current->_parent;
 				}
 				return (*this);
@@ -57,9 +54,9 @@ namespace ft
 				return (tmp);
 			}
 			treeIterator &operator--(void) {
-				if (current == NULL)
-					return (*this);
-				if (current->_left != NULL) {
+				if (current == nullptr)
+					current = tree->most_right(tree->get_root());
+				else if (current->_left != nullptr) {
 					current = current->_left;
 					while (current->_right)
 						current = current->_right;
@@ -84,12 +81,13 @@ namespace ft
 
 		private :
 			Node current;
+			Tree *tree;
 	};
 
-	template <class Node>
-	bool operator==(const ft::treeIterator<Node>& lhs, const ft::treeIterator<Node>& rhs) { return (lhs.base() == rhs.base()); };
-	template <class Node>
-	bool operator!=(const ft::treeIterator<Node>& lhs, const ft::treeIterator<Node>& rhs) { return (lhs.base() != rhs.base()); };
+	template <class Node, class Tree>
+	bool operator==(const ft::treeIterator<Node, Tree>& lhs, const ft::treeIterator<Node, Tree>& rhs) { return (lhs.base() == rhs.base()); };
+	template <class Node, class Tree>
+	bool operator!=(const ft::treeIterator<Node, Tree>& lhs, const ft::treeIterator<Node, Tree>& rhs) { return (lhs.base() != rhs.base()); };
 
 	template <class Pair>
 	struct node {
@@ -136,10 +134,10 @@ namespace ft
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::treeIterator<pointer> iterator;
-			typedef typename ft::treeIterator<const pointer> const_iterator;
-			typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
-			typedef typename ft::vectorReverseIterator<const_iterator> const_reverse_iterator;
+			typedef typename ft::treeIterator<pointer, ft::tree<value_type, value_compare> > iterator;
+			typedef typename ft::treeIterator<const pointer, ft::tree<value_type, value_compare> > const_iterator;
+			// typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
+			// typedef typename ft::vectorReverseIterator<const_iterator> const_reverse_iterator;
 			typedef std::ptrdiff_t difference_type;
 			typedef std::size_t size_type;
 
@@ -350,6 +348,7 @@ namespace ft
 				insert_node(root, n);
 				insert_repare(n);
 				// printTree(_root,nullptr, false);
+				// std::cout << " ------------------ "  << std::endl;
 				_tree_size++;
 				return (_root);
 			};
@@ -465,7 +464,7 @@ namespace ft
 				if (n->_left == nullptr && n->_right == nullptr)
 					return (nullptr);
 				else if (n->_left != nullptr && n->_right != nullptr)
-					return (min_element(n->_right));
+					return (most_left(n->_right));
 				if (n->_left)
 					return (n->_left);
 				else
@@ -569,7 +568,7 @@ namespace ft
 						u->_color = NOIR;
 					// printTree(_root,nullptr, false);
 					// std::cout << " ------------------ "  << std::endl;
-						return ;
+					return ;
 				}
 				swap_node(n, u);
 				_erase(n);
@@ -579,17 +578,17 @@ namespace ft
 
 			// Functions for map container
 
-			iterator begin() { return (iterator(min_element(_root))); };
-			const_iterator begin() const { return (const_iterator(min_element(_root))); };
+			iterator begin() { return (iterator(most_left(_root), this)); };
+			const_iterator begin() const { return (const_iterator(most_left(_root), this)); };
 
-			iterator end() { return (++(iterator(max_element(_root)))); };
-			const_iterator end() const { return (const_iterator(max_element(_root))); };
+			iterator end() { return (++(iterator(most_right(_root), this))); };
+			const_iterator end() const { return (const_iterator(most_right(_root), this)); };
 
-			reverse_iterator rbegin() { return (reverse_iterator(--(end()))); };
-			const_reverse_iterator rbegin() const { return (const_reverse_iterator(--(end()))); };
+			// reverse_iterator rbegin() { return (reverse_iterator(--(end()))); };
+			// const_reverse_iterator rbegin() const { return (const_reverse_iterator(--(end()))); };
 
-			reverse_iterator rend() { return (reverse_iterator(--(begin()))); };
-			const_reverse_iterator rend() const { return (const_reverse_iterator(--(begin()))); };
+			// reverse_iterator rend() { return (reverse_iterator(--(begin()))); };
+			// const_reverse_iterator rend() const { return (const_reverse_iterator(--(begin()))); };
 			
 
 			bool empty() const { return (!_root ? true : false); };
@@ -598,17 +597,17 @@ namespace ft
 			pair<iterator,bool> insert(const value_type& val) {
 				pointer search = search_node(_root, val);
 				if (search != nullptr)
-					return (ft::make_pair(iterator(search), false));
+					return (ft::make_pair(iterator(search, this), false));
 
 				pointer node = _alloc.allocate(1);
 				_alloc.construct(node, val);
 				_root = _insert(_root, node);			
 
-				return (ft::make_pair(iterator(node), true));
+				return (ft::make_pair(iterator(node, this), true));
 
 			};
 
-			iterator insert (iterator position, const value_type& val) {
+			// iterator insert (iterator position, const value_type& val) {
 				// if (position.base() && _comp(position.base()->_pair, val))
 				// {
 				// 	pointer search = search_node(_root, val);
@@ -623,11 +622,11 @@ namespace ft
 				// 	return (iterator(node, _comp));
 				// }
 				// else
-					return (insert(val).first);
-			};
+			// 		return (insert(val).first);
+			// };
 
-			template <class InputIterator>
-			void insert (InputIterator first, InputIterator last) {
+			// template <class InputIterator>
+			void insert (iterator first, iterator last) {
 				for (; first != last; first++)
 					insert(first->_pair);
 			};
@@ -643,8 +642,11 @@ namespace ft
 				}
 			};
 
+
 			void erase(iterator position) {
 				pointer to_search = (position++).base();
+				if (to_search == nullptr)
+					return ;
 				pointer node = search_node(_root, to_search->_pair);
 				if (node == nullptr)
 					return ;
@@ -655,15 +657,18 @@ namespace ft
 			};
 
 			void erase(iterator first, iterator last) {
-				for (; first != last; first++)
-					erase(first);
+				for (; first != last;) {
+					iterator tmp = first;
+					first++;
+					erase(tmp);
+				}
 			};
 
 			iterator find (value_type k) {
 				pointer result = search_node(_root, k);
 				if (result == nullptr)
 					return (end());
-				return (iterator(result));
+				return (iterator(result, this));
 			};
 
 			size_type count(value_type k) const {
@@ -705,6 +710,18 @@ namespace ft
 				this->_root = root;
 			};
 
+			pointer most_left(pointer node) {
+				if (node == nullptr || node->_left == nullptr)
+					return (node);
+				return (most_left(node->_left));
+			}
+
+			pointer most_right(pointer node) {
+				if (node == nullptr || node->_right == nullptr)
+					return (node);
+				return (most_right(node->_right));
+			}
+
 		private :
 			pointer			 _root;
 			value_compare	_comp;
@@ -738,18 +755,6 @@ namespace ft
 				tree_copy(cpy_from->_left, cpy_to->_left, cpy_to);
 				tree_copy(cpy_from->_right, cpy_to->_right, cpy_to);
 			};
-
-			pointer min_element(pointer node) {
-				if (node == nullptr || node->_left == nullptr)
-					return (node);
-				return (min_element(node->_left));
-			}
-
-			pointer max_element(pointer node) {
-				if (node == nullptr || node->_right == nullptr)
-					return (node);
-				return (max_element(node->_right));
-			}
 
 			pointer search_root(pointer n) { 
 				while (n->_parent != NULL)
