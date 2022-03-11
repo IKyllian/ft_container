@@ -99,7 +99,7 @@ namespace ft
 		};
 
 		// Copy constructor. Constructs a container with a copy of each of the elements in x, in the same order.
-		vector(const vector& x) { 
+		vector(const vector& x) {
 			this->_alloc = x._alloc;
 			this->_alloc_size = x._alloc_size;
 			this->_ptr = this->_alloc.allocate(this->_alloc_size);
@@ -304,7 +304,7 @@ namespace ft
 				this->reserve(get_new_alloc_size(this->_fill_size + size));
 			if (_fill_size == idx)
 			{
-				for (iterator it(first); it != last; it++)
+				for (InputIterator it(first); it != last; it++)
 					_alloc.construct(_ptr + (this->_fill_size++), *it);
 				// _fill_size += size;
 				return ;
@@ -316,7 +316,7 @@ namespace ft
 					_ptr[j] = _ptr[j - 1];
 				_fill_size++;
 			}
-			for (iterator it(first); it != last; it++)
+			for (InputIterator it(first); it != last; it++)
 				this->at(idx++) = *it;
 		};
 
@@ -344,34 +344,23 @@ namespace ft
 		};
 
 		void swap (vector& x) {
-			T *temp_ptr;
-			size_t temp_alloc_size;
-			size_t temp_fill_size;
-
-			temp_ptr = this->_ptr;
-			temp_alloc_size = this->_alloc_size;
-			temp_fill_size = this->_fill_size;
-			
-
-			this->_ptr = x._ptr;
-			this->_alloc_size = x._alloc_size;
-			this->_fill_size = x._fill_size;
-
-			x._ptr = temp_ptr;
-			x._alloc_size = temp_alloc_size;
-			x._fill_size = temp_fill_size;
+			std::swap(_ptr, x._ptr);
+			std::swap(_alloc, x._alloc);
+			std::swap(_alloc_size, x._alloc_size);
+			std::swap(_fill_size, x._fill_size);
 
 		};
 
 		void clear() {
-			for (int i = 0; i < this->_fill_size; i++)
-				this->_alloc.destroy(this->_ptr + i);
-			this->_fill_size = 0;
+			if (_fill_size > 0) {
+				for (int i = 0; i < this->_fill_size; i++)
+					this->_alloc.destroy(this->_ptr + i);
+				this->_fill_size = 0;
+			}
 		};
 
 		//Allocator
 		allocator_type get_allocator() const { return (this->_alloc); };
-
 
 		private :
 			Alloc _alloc;

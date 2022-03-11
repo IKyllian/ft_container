@@ -685,14 +685,8 @@ namespace ft
 			};
 
 			void swap (tree & x) {
-				pointer root = x._root;
-				size_type size = x._tree_size;
-
-				x._tree_size = this->_tree_size;
-				x._root = this->_root;
-
-				this->_tree_size = size;
-				this->_root = root;
+				std::swap(_root, x._root);
+				std::swap(_tree_size, x._tree_size);
 			};
 
 			pointer most_left(pointer node) {

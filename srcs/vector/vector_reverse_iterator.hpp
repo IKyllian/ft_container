@@ -33,12 +33,12 @@ namespace ft
 			};
 			
 			// ---------Bool--------
-			bool operator==(const vectorReverseIterator& src) const { return (current == src.current); };
-			bool operator!=(const vectorReverseIterator& src) const { return (current != src.current); };
-			bool operator<(const vectorReverseIterator& src) const { return (current < src.current); };
-			bool operator<=(const vectorReverseIterator& src) const { return (current <= src.current); };
-			bool operator>(const vectorReverseIterator& src) const { return (current > src.current); };
-			bool operator>=(const vectorReverseIterator& src) const { return (current >= src.current); };
+			// bool operator==(const vectorReverseIterator& src) const { return (current == src.current); };
+			// bool operator!=(const vectorReverseIterator& src) const { return (current != src.current); };
+			// bool operator<(const vectorReverseIterator& src) const { return (current < src.current); };
+			// bool operator<=(const vectorReverseIterator& src) const { return (current <= src.current); };
+			// bool operator>(const vectorReverseIterator& src) const { return (current > src.current); };
+			// bool operator>=(const vectorReverseIterator& src) const { return (current >= src.current); };
 
 
 			// ---------Increment/Decrement---------
@@ -88,18 +88,18 @@ namespace ft
 			iterator_type current;
 	};
 
-	// template <class Iterator>
-    // bool operator== (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() == rhs.base(); }
-    // template <class Iterator>
-    // bool operator!= (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() != rhs.base(); }
-    // template <class Iterator>
-    // bool operator<  (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() > rhs.base(); }
-    // template <class Iterator>
-    // bool operator<= (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() >= rhs.base(); }
-    // template <class Iterator>
-    // bool operator>  (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() < rhs.base(); }
-    // template <class Iterator>
-    // bool operator>= (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() <= rhs.base(); }
+	template <class Iterator>
+    bool operator== (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() == rhs.base(); }
+    template <class Iterator>
+    bool operator!= (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() != rhs.base(); }
+    template <class Iterator>
+    bool operator<  (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() > rhs.base(); }
+    template <class Iterator>
+    bool operator<= (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() >= rhs.base(); }
+    template <class Iterator>
+    bool operator>  (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() < rhs.base(); }
+    template <class Iterator>
+    bool operator>= (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() <= rhs.base(); }
 }
 
 #endif

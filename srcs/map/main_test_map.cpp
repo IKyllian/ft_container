@@ -355,6 +355,26 @@ int main()
 			for (std::map<char, std::string>::iterator it=map6.begin(); it!=map6.end(); ++it)
 				std::cout << it->first << " => " << it->second << '\n';
 		}
+		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+		{
+			std::map<int, int> map;
+			std::map<int, int>::iterator it;
+
+			map.insert(std::pair<int, int>(6, 6));
+			map.insert(std::pair<int, int>(3, 3));
+			map.insert(std::pair<int, int>(2, 2));
+			map.insert(std::pair<int, int>(10, 10));
+			map.insert(std::pair<int, int>(1, 1));
+
+			it = map.find(2);
+			std::cout << "Insert 4 and 9" << std::endl;
+			map.insert(std::pair<int, int>(4, 4));
+			map.insert(std::pair<int, int>(9, 9));
+
+			std::cout << "Print from It : " << std::endl; 
+			for (; it!=map.end(); it++)
+				std::cout << it->first << " => " << it->second << '\n';
+		}
 		std::cout << "----------------------- Erase -----------------------" << std::endl; 
 		{
 			std::cout << " void erase (iterator position);" << std::endl << std::endl;
@@ -476,6 +496,31 @@ int main()
 				std::cout << it->first << " => " << it->second << '\n';
 
 			std::cout << "Map is empty = " << map.empty() << " - Size = " << map.size() << std::endl;
+		}
+		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+		{
+			std::map<int, int> map;
+			std::map<int, int>::iterator it;
+
+			map.insert(std::pair<int, int>(3, 3));
+			map.insert(std::pair<int, int>(2, 2));
+			map.insert(std::pair<int, int>(10, 10));
+			map.insert(std::pair<int, int>(1, 1));
+			map.insert(std::pair<int, int>(5, 5));
+			map.insert(std::pair<int, int>(30, 30));
+			map.insert(std::pair<int, int>(12, 12));
+			map.insert(std::pair<int, int>(15, 15));
+
+			it = map.find(5);
+
+			std::cout << "Erase 10 and 12" << std::endl;
+			map.erase(10);
+			map.erase(12);
+
+			std::cout << "Print from it (5)" << std::endl;
+
+			for (;it!=map.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
 		}
 		std::cout << "----------------------- Swap -----------------------" << std::endl; 
 		{
@@ -754,7 +799,7 @@ int main()
 			std::cout << std::endl;
 
 			std::map<int, int>::iterator begin = map.begin();
-			std::map<int, int>::iterator cpy_begin = map.begin();
+			std::map<int, int>::iterator cpy_begin = begin;
 
 			std::cout << "Begin Copy Iterator = " << cpy_begin->first << std::endl;
 

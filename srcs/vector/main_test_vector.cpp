@@ -495,6 +495,57 @@ int main()
 		show_vector(vect2);
 			
 	}
+	{
+		std::vector<int> vect;
+		std::vector<int> vect2;
+
+		for (int i=0;i<=10;i++) vect.push_back(i);
+		for (int i=50;i<=60;i++) vect2.push_back(i);
+
+		std::vector<int>::iterator begin = vect.begin();
+		std::vector<int>::iterator it = begin + 3;
+		std::vector<int>::iterator end = vect.end() - 1;
+
+		std::vector<int>::iterator begin2 = vect2.begin();
+		std::vector<int>::iterator it2 = begin2 + 3;
+		std::vector<int>::iterator end2 = vect2.end() - 1;
+
+
+
+		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
+		show_vector(vect);
+
+		std::cout << "Fill Size = " << vect2.size() << " - Alloc Size = " << vect2.capacity() << std::endl;
+		show_vector(vect2);
+
+		std::cout << "Before the swap : " << std::endl;
+		std::cout << "Vect -----> begin = " << *begin << " - It = " << *it << " - End = " << *end << std::endl;
+
+		std::cout << "Vect2 -----> begin = " << *begin2 << " - It = " << *it2 << " - End = " << *end2 << std::endl;
+		std::cout << std::endl;
+		
+		vect.swap(vect2);
+		
+		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
+		show_vector(vect);
+
+		std::cout << "Fill Size = " << vect2.size() << " - Alloc Size = " << vect2.capacity() << std::endl;
+		show_vector(vect2);
+
+		std::cout << "After the swap : " << std::endl;
+		std::cout << "Vect -----> begin = " << *begin << " - It = " << *it << " - End = " << *end << std::endl;
+
+		std::cout << "Vect2 -----> begin = " << *begin2 << " - It = " << *it2 << " - End = " << *end2 << std::endl;
+
+		std::cout << "Print Vect2 from Begin : " << std::endl;
+		for (; begin != vect2.end(); begin++)
+			std::cout << *begin << std::endl;
+		std::cout << std::endl;
+		std::cout << "Print Vect from Begin : " << std::endl;
+		for (; begin2 != vect.end(); begin2++)
+			std::cout << *begin2 << std::endl;
+
+	}
 
 	std::cout << "----------------------- ERASE -----------------------" << std::endl;
 	std::cout << "iterator erase (iterator position)" << std::endl << std::endl;	
@@ -688,6 +739,188 @@ int main()
 		show_vector(vect);
 		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *(--vect.rend()) << std::endl;
 
+	}
+	std::cout << "----------------------- Iterators -----------------------" << std::endl; 
+	{
+		std::cout << "iterator begin();" << std::endl;
+		std::cout << "iterator end();" << std::endl;
+		std::cout << "reverse_iterator rbegin();" << std::endl;
+		std::cout << "reverse_iterator rend();" << std::endl << std::endl;
+
+
+		std::vector<int> vect;
+
+		for (int i=0;i<=15;i++) vect.push_back(i);
+
+		std::vector<int>::iterator it = vect.end();
+		std::vector<int>::reverse_iterator reverse_it = vect.rend();
+
+		std::cout << "Vect Begin = " << (*vect.begin()) << " - End (-1) = " << *(--it) << std::endl;
+		std::cout << "Vect RBegin = " << (*vect.rbegin()) << " - REnd (-1) = " << *(--reverse_it) << std::endl;
+		std::cout << std::endl;
+		
+		std::cout << "Vect Contain : " << std::endl;
+		for (std::vector<int>::iterator begin = vect.begin(); begin != vect.end(); begin++)
+			std::cout << "First = " << *begin << " - Second = " << *begin << std::endl;
+		std::cout << std::endl;
+
+		std::cout << "Vect Contain (Reverse) : " << std::endl;
+		for (std::vector<int>::iterator end = vect.end(); end != vect.begin();) {
+			end--;
+			std::cout << "First = " << *end << " - Second = " << *end << std::endl;
+		}
+		std::cout << std::endl;
+
+		std::vector<int>::iterator begin = vect.begin();
+		std::vector<int>::iterator cpy_begin = vect.begin();
+
+		std::cout << "Begin Copy Iterator = " << *cpy_begin << std::endl;
+
+		std::cout << "Vect Contain (With Copy Iterator): " << std::endl;
+		for (; cpy_begin != vect.end(); cpy_begin++)
+			std::cout << "First = " << *cpy_begin << " - Second = " << *cpy_begin << std::endl;
+
+		std::cout << "Original Begin Iterator = " << *begin << std::endl;
+
+		std::cout << std::endl;
+		std::cout << std::endl;
+
+		std::vector<char> vect2;
+		std::cout << "Vect of Size 1" << std::endl;
+		vect2.push_back('A');
+		std::vector<char>::iterator it2 = vect2.end();
+		std::vector<char>::reverse_iterator reverse_it2 = vect2.rend();
+
+		std::cout << "Vect2 Begin = " << (*vect2.begin()) << " - End (-1) = " << *(--it2) << std::endl;
+		std::cout << "Vect2 RBegin = " << (*vect2.rbegin()) << " - REnd (-1) = " << *(--reverse_it2) << std::endl;
+		std::cout << std::endl;
+
+		std::vector<int>::iterator iterator = vect.begin();
+		std::vector<int>::iterator iterator_end = vect.end();
+		std::vector<int>::iterator tmp_it(iterator);
+
+
+		std::cout << "Begin + 2 = " << *(iterator + 2) << " - Begin + 6 = " << *(iterator + 6) << std::endl;
+		std::cout << "End - 9 = " << *(iterator_end - 9) << " - End - 2 = " << *(iterator_end - 2) << std::endl;
+
+		tmp_it += 5;
+
+		std::cout << "Tmp It =  " << *tmp_it << std::endl;
+
+		tmp_it -= 2;
+		
+		std::cout << "Tmp It =  " << *tmp_it << std::endl;
+
+		std::cout << "Iterator [14] = " << iterator[14] << "Iterator [0] = " << iterator[0] << std::endl;
+
+		std::cout << std::endl;
+		if (tmp_it > iterator)
+			std::cout << "tmp_it lower than iterator" << std::endl;
+		else
+			std::cout << "iterator lower than tmp_it" << std::endl;
+
+		if (tmp_it < iterator)
+			std::cout << "iterator lower than tmp_it" << std::endl;
+		else
+			std::cout << "tmp_it lower than iterator" << std::endl;
+
+		if (tmp_it != iterator)
+			std::cout << "tmp_it Not equal to iterator" << std::endl;
+
+		if (iterator == vect.begin())
+			std::cout << "iterator equal to begin()" << std::endl;
+
+	}
+	{
+		std::cout << std::endl;
+		std::vector<int> vect;
+
+		for (int i=0;i<=15;i++) vect.push_back(i);
+		std::vector<int>::reverse_iterator iterator = vect.rbegin();
+		std::vector<int>::reverse_iterator iterator_end = vect.rend();
+		std::vector<int>::reverse_iterator tmp_it(iterator);
+
+
+		std::cout << "Rbegin = " << *iterator << " - RBegin + 2 = " << *(iterator + 2) << " - RBegin + 6 = " << *(iterator + 6) << std::endl;
+		std::cout << "REnd = " << *(iterator_end - 1) << " - REnd - 9 = " << *(iterator_end - 9) << " - REnd - 2 = " << *(iterator_end - 2) << std::endl;
+
+		tmp_it += 5;
+
+		std::cout << "Tmp It =  " << *tmp_it << std::endl;
+
+		tmp_it -= 2;
+		
+		std::cout << "Tmp It =  " << *tmp_it << std::endl;
+
+		std::cout << "Iterator [14] = " << iterator[14] << "Iterator [0] = " << iterator[0] << std::endl;
+
+		std::cout << std::endl;
+		if (tmp_it > iterator)
+			std::cout << "tmp_it lower than iterator" << std::endl;
+		else
+			std::cout << "iterator lower than tmp_it" << std::endl;
+
+		if (tmp_it < iterator)
+			std::cout << "iterator lower than tmp_it" << std::endl;
+		else
+			std::cout << "tmp_it lower than iterator" << std::endl;
+
+		if (tmp_it != iterator)
+			std::cout << "tmp_it Not equal to iterator" << std::endl;
+
+		if (iterator == vect.rbegin())
+			std::cout << "iterator equal to begin()" << std::endl;
+		std::cout << std::endl;
+	}
+	std::cout << "----------------------- Non member function -----------------------" << std::endl; 
+	{
+		std::vector<int> vect;
+		for (int i=0;i<=15;i++) vect.push_back(i);
+
+		std::vector<int> vect2(vect);
+		std::vector<int> vect3;
+		for (int i=30;i<=40;i++) vect3.push_back(i);
+
+		std::vector<int> vect4;
+		for (int i=50;i<=900;i++) vect4.push_back(i);
+
+		if (vect == vect2)
+			std::cout << "Vect == Vect2" << std::endl;
+		else
+			std::cout << "Vect != Vect2" << std::endl;
+
+		if (vect != vect3)
+			std::cout << "Vect != Vect3" << std::endl;
+		else
+			std::cout << "Vect == Vect3" << std::endl;
+
+		if (vect < vect4)
+			std::cout << "Vect < Vect4" << std::endl;
+		else
+			std::cout << "Vect > Vect4" << std::endl;
+
+		if (vect4 > vect3)
+			std::cout << "Vect4 > Vect3" << std::endl;
+		else
+			std::cout << "Vect4 < Vect3" << std::endl;
+
+		if (vect >= vect2)
+			std::cout << "Vect >= Vect2" << std::endl;
+		else
+			std::cout << "Vect < Vect2" << std::endl;
+
+		if (vect <= vect2)
+			std::cout << "Vect <= Vect2" << std::endl;
+		else
+			std::cout << "Vect > Vect2" << std::endl;
+
+		show_vector(vect2);
+		show_vector(vect4);
+
+		swap(vect2, vect4);
+
+		show_vector(vect2);
+		show_vector(vect4);
 	}
 
 	return 0;

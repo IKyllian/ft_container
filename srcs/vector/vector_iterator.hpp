@@ -21,17 +21,17 @@ namespace ft
 			~vectorIterator() {};
 
 			vectorIterator &operator=(const vectorIterator& src) {
-				current = src.current;
+				current = src.base();
 				return (*this);
 			};
 			
 			// ---------Bool--------
-			bool operator==(const vectorIterator& src) const { return (current == src.current); };
-			bool operator!=(const vectorIterator& src) const { return (current != src.current); };
-			bool operator<(const vectorIterator& src) const { return (current < src.current); };
-			bool operator<=(const vectorIterator& src) const { return (current <= src.current); };
-			bool operator>(const vectorIterator& src) const { return (current > src.current); };
-			bool operator>=(const vectorIterator& src) const { return (current >= src.current); };
+			// bool operator==(const vectorIterator& src) const { return (current == src.current); };
+			// bool operator!=(const vectorIterator& src) const { return (current != src.current); };
+			// bool operator<(const vectorIterator& src) const { return (current < src.current); };
+			// bool operator<=(const vectorIterator& src) const { return (current <= src.current); };
+			// bool operator>(const vectorIterator& src) const { return (current > src.current); };
+			// bool operator>=(const vectorIterator& src) const { return (current >= src.current); };
 
 
 			// ---------Increment/Decrement---------
@@ -65,7 +65,7 @@ namespace ft
 				return (*this);
 			};
 			vectorIterator &operator-=(difference_type n) {
-				current += n;
+				current -= n;
 				return (*this);
 			};
 
@@ -78,18 +78,18 @@ namespace ft
 			pointer current;
 	};
 
-	// template <class Iterator>
-    // bool operator== (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() == rhs.base(); }
-    // template <class Iterator>
-    // bool operator!= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() != rhs.base(); }
-    // template <class Iterator>
-    // bool operator<  (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() < rhs.base(); }
-    // template <class Iterator>
-    // bool operator<= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() <= rhs.base(); }
-    // template <class Iterator>
-    // bool operator>  (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() > rhs.base(); }
-    // template <class Iterator>
-    // bool operator>= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() >= rhs.base(); }
+	template <class Iterator>
+    bool operator== (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() == rhs.base(); }
+    template <class Iterator>
+    bool operator!= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() != rhs.base(); }
+    template <class Iterator>
+    bool operator<  (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() < rhs.base(); }
+    template <class Iterator>
+    bool operator<= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() <= rhs.base(); }
+    template <class Iterator>
+    bool operator>  (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() > rhs.base(); }
+    template <class Iterator>
+    bool operator>= (const vectorIterator<Iterator>& lhs, const vectorIterator<Iterator>& rhs) { return lhs.base() >= rhs.base(); }
 }
 
 #endif
