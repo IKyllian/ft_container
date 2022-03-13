@@ -1,5 +1,6 @@
-#include "stack.hpp"
-#include "../vector/vector.hpp"
+#include "../../srcs/stack/stack.hpp"
+#include "../../srcs/vector/vector.hpp"
+#include "../../srcs/utils.hpp"
 
 int main()
 {
@@ -113,6 +114,49 @@ int main()
             stack.pop();
         }
 		std::cout << "Stack Size = " << stack.size() << std::endl;
+	}
+
+    std::cout << "----------------------- Ft Non member function -----------------------" << std::endl; 
+	{
+		ft::stack<int> stack;
+		for (int i=0;i<=15;i++) stack.push(i);
+
+		ft::stack<int> stack2(stack);
+		ft::stack<int> stack3;
+		for (int i=30;i<=40;i++) stack3.push(i);
+
+		ft::stack<int> stack4;
+		for (int i=50;i<=900;i++) stack4.push(i);
+
+		if (stack == stack2)
+			std::cout << "stack == stack2" << std::endl;
+		else
+			std::cout << "stack != stack2" << std::endl;
+
+		if (stack != stack3)
+			std::cout << "stack != stack3" << std::endl;
+		else
+			std::cout << "stack == stack3" << std::endl;
+
+		if (stack < stack4)
+			std::cout << "stack < stack4" << std::endl;
+		else
+			std::cout << "stack > stack4" << std::endl;
+
+		if (stack4 > stack3)
+			std::cout << "stack4 > stack3" << std::endl;
+		else
+			std::cout << "stack4 < stack3" << std::endl;
+
+		if (stack >= stack2)
+			std::cout << "stack >= stack2" << std::endl;
+		else
+			std::cout << "stack < stack2" << std::endl;
+
+		if (stack <= stack2)
+			std::cout << "stack <= stack2" << std::endl;
+		else
+			std::cout << "stack > stack2" << std::endl;
 	}
 
 }

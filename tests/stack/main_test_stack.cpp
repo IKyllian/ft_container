@@ -116,4 +116,46 @@ int main()
         }
 		std::cout << "Stack Size = " << stack.size() << std::endl;
 	}
+     std::cout << "----------------------- Non member function -----------------------" << std::endl; 
+	{
+		std::stack<int> stack;
+		for (int i=0;i<=15;i++) stack.push(i);
+
+		std::stack<int> stack2(stack);
+		std::stack<int> stack3;
+		for (int i=30;i<=40;i++) stack3.push(i);
+
+		std::stack<int> stack4;
+		for (int i=50;i<=900;i++) stack4.push(i);
+
+		if (stack == stack2)
+			std::cout << "stack == stack2" << std::endl;
+		else
+			std::cout << "stack != stack2" << std::endl;
+
+		if (stack != stack3)
+			std::cout << "stack != stack3" << std::endl;
+		else
+			std::cout << "stack == stack3" << std::endl;
+
+		if (stack < stack4)
+			std::cout << "stack < stack4" << std::endl;
+		else
+			std::cout << "stack > stack4" << std::endl;
+
+		if (stack4 > stack3)
+			std::cout << "stack4 > stack3" << std::endl;
+		else
+			std::cout << "stack4 < stack3" << std::endl;
+
+		if (stack >= stack2)
+			std::cout << "stack >= stack2" << std::endl;
+		else
+			std::cout << "stack < stack2" << std::endl;
+
+		if (stack <= stack2)
+			std::cout << "stack <= stack2" << std::endl;
+		else
+			std::cout << "stack > stack2" << std::endl;
+	}
 }

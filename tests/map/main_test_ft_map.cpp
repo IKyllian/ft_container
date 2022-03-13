@@ -1,5 +1,5 @@
-#include "map.hpp"
-#include "node_tree.hpp"
+#include "../../srcs/map/map.hpp"
+#include "../../srcs/map/node_tree.hpp"
 
 
 struct classcomp {

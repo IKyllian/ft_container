@@ -1,40 +1,41 @@
-#include <iostream>
-#include <vector>
+#include "../../srcs/vector/vector.hpp"
+#include "../../srcs/vector/vector_iterator.hpp"
+#include "../../srcs/vector/vector_reverse_iterator.hpp"
 
 template < class T >
-void show_vector(std::vector<T> vect) {
+void show_vector(ft::vector<T> vect) {
 	std::cout << "vect contains:";
 	for (int i=0;i<vect.size();i++)
 		std::cout << ' ' << vect[i];
 	std::cout << std::endl << std::endl;
 }
+
 int main()
 {
 
-	std::cout << "----------------------- CONSTRUCTOR -----------------------" << std::endl; 
+	std::cout << "----------------------- FT CONSTRUCTOR -----------------------" << std::endl; 
 	{
 		std::cout << "Default constructor" << std::endl;
 		std::cout << "explicit vector(const allocator_type& alloc = allocator_type())" << std::endl << std::endl;
 		
-		std::vector<int> vect;
+		ft::vector<int> vect;
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
 	}
-	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 
 	{
 		std::cout << "Fill constructor" << std::endl;
 		std::cout << "explicit vector (size_type n, const value_type& val = ;value_type(), const allocator_type& alloc = allocator_type())" << std::endl << std::endl;
 
-		std::vector<int> vect(4, 42);
-		std::vector<std::string> vect2(2, "Hello World");
-		std::vector<char> vect3(10, 'z');
-		std::vector<float> vect4(5, 42.42);
-		std::vector<int> vect5(0, 100);
-		std::vector<int> vect6(400, 1);
-		std::vector<int> vect7(std::numeric_limits<unsigned int>::max() + 1, 1);
-
+		ft::vector<int> vect(4, 42);
+		ft::vector<std::string> vect2(2, "Hello World");
+		ft::vector<char> vect3(10, 'z');
+		ft::vector<float> vect4(5, 42.42);
+		ft::vector<int> vect5(0, 100);
+		ft::vector<int> vect6(400, 1);
+		ft::vector<int> vect7(std::numeric_limits<unsigned int>::max() + 1, 1);
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
@@ -57,17 +58,17 @@ int main()
 		std::cout << "Fill Size = " << vect7.size() << " - Alloc Size = " << vect7.capacity() << std::endl;
 		show_vector(vect7);
 	}
-	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	{
 		std::cout << "Range constructor" << std::endl;
 		std::cout << "vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()" << std::endl << std::endl;
 
-		std::vector<int> vect(50,42);
-		std::vector<int> vect2(vect.begin(),vect.end());
+		ft::vector<int> vect(50,42);
+		ft::vector<int> vect2(vect.begin(),vect.end());
 		int myints[] = {16,2,77,29};
-		std::vector<int> vect3(myints, myints + sizeof(myints) / sizeof(int));
-		std::vector<int> vect4(vect.begin(),vect.begin() + 20);
-		std::vector<int> vect5(vect.begin(),vect.begin());
+		ft::vector<int> vect3(myints, myints + sizeof(myints) / sizeof(int));
+		ft::vector<int> vect4(vect.begin(),vect.begin() + 20);
+		ft::vector<int> vect5(vect.begin(),vect.begin());
 
 		std::cout << "Fill Size = " << vect2.size() << " - Alloc Size = " << vect2.capacity() << std::endl;
 		show_vector(vect2);
@@ -81,16 +82,15 @@ int main()
 		std::cout << "Fill Size = " << vect5.size() << " - Alloc Size = " << vect5.capacity() << std::endl;
 		show_vector(vect5);
 	}
-	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	{
 		std::cout << "Copy constructor" << std::endl;
 		std::cout << "vector(const vector& x)" << std::endl << std::endl;
 
-		std::vector<int> vect(50,42);
-		std::vector<int> vect2;
-		std::vector<int> vect3(vect);
-		std::vector<int> vect4(vect2);
-
+		ft::vector<int> vect(50,42);
+		ft::vector<int> vect2;
+		ft::vector<int> vect3(vect);
+		ft::vector<int> vect4(vect2);
 
 		std::cout << "Fill Size = " << vect3.size() << " - Alloc Size = " << vect3.capacity() << std::endl;
 		show_vector(vect3);
@@ -99,16 +99,16 @@ int main()
 		show_vector(vect4);
 	}
 
-	std::cout << "----------------------- OPERATOR =() -----------------------" << std::endl;
+	std::cout << "----------------------- FT OPERATOR =() -----------------------" << std::endl;
 	std::cout << "vector& operator= (const vector& x)" << std::endl << std::endl;
 	{
-		std::vector<int> vect(50, 42);
-		std::vector<int> vect2;
-		std::vector<std::string> vect3(10, "Hello World");
+		ft::vector<int> vect(50, 42);
+		ft::vector<int> vect2;
+		ft::vector<std::string> vect3(10, "Hello World");
 
-		std::vector<int> cpy_vect = vect;
-		std::vector<int> cpy_vect2 = vect2;
-		std::vector<std::string> cpy_vect3 = vect3;
+		ft::vector<int> cpy_vect = vect;
+		ft::vector<int> cpy_vect2 = vect2;
+		ft::vector<std::string> cpy_vect3 = vect3;
 
 		std::cout << "VECT = Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
@@ -131,11 +131,11 @@ int main()
 			
 	}
 
-	std::cout << "----------------------- RESIZE -----------------------" << std::endl;
-	std::cout << "void resize (size_type n, value_type val = value_type())" << std::endl << std::endl;
+		std::cout << "----------------------- FT RESIZE -----------------------" << std::endl;
+		std::cout << "void resize (size_type n, value_type val = value_type())" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect(10, 42);
+		ft::vector<int> vect(10, 42);
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
@@ -166,11 +166,11 @@ int main()
 		show_vector(vect);
 	}
 
-	std::cout << "----------------------- RESERVE -----------------------" << std::endl;
-	std::cout << "void reserve (size_type n)" << std::endl << std::endl;
+		std::cout << "----------------------- FT RESERVE -----------------------" << std::endl;
+		std::cout << "void reserve (size_type n)" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect(5, 42);
+		ft::vector<int> vect(5, 42);
 		
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
@@ -189,7 +189,7 @@ int main()
 		show_vector(vect);
 
 		std::cout << "Empty vector" << std::endl;
-		std::vector<int> vect2;
+		ft::vector<int> vect2;
 
 		std::cout << "Fill Size = " << vect2.size() << " - Alloc Size = " << vect2.capacity() << std::endl;
 		show_vector(vect2);
@@ -199,14 +199,14 @@ int main()
 		show_vector(vect2);
 	}
 
-		std::cout << "----------------------- MAX SIZE / EMPTY -----------------------" << std::endl;
+		std::cout << "----------------------- FT MAX SIZE / EMPTY -----------------------" << std::endl;
 		std::cout << "bool empty() const" << std::endl;
 		std::cout << "size_type max_size() const" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect(1,1);
-		std::vector<int> vect2(3,10);
-		std::vector<int> vect3;
+		ft::vector<int> vect(1,1);
+		ft::vector<int> vect2(3,10);
+		ft::vector<int> vect3;
 		std::cout << "Max size = " << vect.max_size() << std::endl;
 
 		std::cout << "Vect Is empty = " << vect.empty() << std::endl;
@@ -220,14 +220,13 @@ int main()
 		std::cout << "Vect3 Is empty = " << vect3.empty() << std::endl;
 		vect3.resize(3,3);
 		std::cout << "Vect3 Is empty = " << vect3.empty() << std::endl;
-	
 	}
 
-		std::cout << "----------------------- AT -----------------------" << std::endl;
+		std::cout << "----------------------- FT AT -----------------------" << std::endl;
 		std::cout << "reference at (size_type n)" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect(10);
+		ft::vector<int> vect(10);
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
 
@@ -242,16 +241,16 @@ int main()
 		vect.clear();
 		// vect.at(0);
 
-		const std::vector<int> vect2(10, 2);
+		const ft::vector<int> vect2(10, 2);
 
 		vect2.at(3);
 	}
 
-	std::cout << "----------------------- FRONT/BACK -----------------------" << std::endl;
+	std::cout << "----------------------- FT FRONT/BACK -----------------------" << std::endl;
 	std::cout << "reference at (size_type n)" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect(5, 3);
+		ft::vector<int> vect(5, 3);
 
 		std::cout << "Front = " << vect.front() << std::endl;
 		vect.reserve(6);
@@ -261,12 +260,12 @@ int main()
 		std::cout << "Front = " << vect.front() << std::endl;
 	}
 
-	std::cout << "----------------------- PUSH_BACK/POP_BACK -----------------------" << std::endl;
+	std::cout << "----------------------- FT PUSH_BACK/POP_BACK -----------------------" << std::endl;
 	std::cout << "void push_back (const value_type& val)" << std::endl;
 	std::cout << "void pop_back()" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect;
+		ft::vector<int> vect;
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
@@ -282,21 +281,21 @@ int main()
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
-		
+
 		// vect.pop_back();
 	
 	}
 
 
-	std::cout << "----------------------- INSERT -----------------------" << std::endl;
+	std::cout << "-----------------------FT INSERT -----------------------" << std::endl;
 	std::cout << "iterator insert(iterator position, const value_type& val)" << std::endl << std::endl;
 
 	{
 		// -------------- Container size of 4 -----------
 		std::cout << "Test a container with a size of 4 :" <<  std::endl << std::endl;
-		std::vector<int> vect(4, 100);
-		std::vector<int>::iterator it;
-		// std::vector<std::string> vect(4, "Ceci est un test");
+		ft::vector<int> vect(4, 100);
+		ft::vector<int>::iterator it;
+		// ft::vector<std::string> vect(4, "Ceci est un test");
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		std::cout << "At start vect contains:";
@@ -328,7 +327,7 @@ int main()
 		//------------ Empty container ---------
 		std::cout << "Test an empty container :" <<  std::endl << std::endl;
 
-		std::vector<int> empty_vect;
+		ft::vector<int> empty_vect;
 
 		std::cout << "Fill Size = " << empty_vect.size() << " - Alloc Size = " << empty_vect.capacity() << std::endl;
 		std::cout << "At start vect contains:";
@@ -361,8 +360,8 @@ int main()
 		//------------ container size of 1 ---------
 		std::cout << "Test a container with a size of 1:" <<  std::endl << std::endl;
 
-		std::vector<int> vect(1, 0);
-		std::vector<int>::iterator it;
+		ft::vector<int> vect(1, 0);
+		ft::vector<int>::iterator it;
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		std::cout << "At start vect contains:";
@@ -389,8 +388,8 @@ int main()
 
 		// -------------- Container size of 4 -----------
 		std::cout << "Test a container with a size of 4 :" <<  std::endl << std::endl;
-		std::vector<int> vect(4, 100);
-		// std::vector<std::string> vect(4, "Ceci est un test");
+		ft::vector<int> vect(4, 100);
+		// ft::vector<std::string> vect(4, "Ceci est un test");
 
 		std::cout << "At start vect contains:";
 		show_vector(vect);
@@ -419,8 +418,8 @@ int main()
 
 		// -------------- Empty container -----------
 		std::cout << "Test a empty container :" <<  std::endl << std::endl;
-		std::vector<int> vect;
-		// std::vector<std::string> vect(4, "Ceci est un test");
+		ft::vector<int> vect;
+		// ft::vector<std::string> vect(4, "Ceci est un test");
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		std::cout << "At start vect contains:";
@@ -448,7 +447,7 @@ int main()
 	{
 		std::cout << "void insert (iterator position, InputIterator first, InputIterator last)" << std::endl << std::endl;
 
-		std::vector<int> vect (3,100);
+		ft::vector<int> vect (3,100);
 		show_vector(vect);
 		int myarray [] = { 501,502,503 };
 
@@ -472,12 +471,15 @@ int main()
 	}
 
 
-	std::cout << "----------------------- SWAP -----------------------" << std::endl;
+
+
+
+	std::cout << "----------------------- FT SWAP -----------------------" << std::endl;
 	std::cout << "void swap (vector& x)" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect(10, 42);
-		std::vector<int> vect2(40, 100);
+		ft::vector<int> vect(10, 42);
+		ft::vector<int> vect2(40, 100);
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
@@ -496,19 +498,19 @@ int main()
 			
 	}
 	{
-		std::vector<int> vect;
-		std::vector<int> vect2;
+		ft::vector<int> vect;
+		ft::vector<int> vect2;
 
 		for (int i=0;i<=10;i++) vect.push_back(i);
 		for (int i=50;i<=60;i++) vect2.push_back(i);
 
-		std::vector<int>::iterator begin = vect.begin();
-		std::vector<int>::iterator it = begin + 3;
-		std::vector<int>::iterator end = vect.end() - 1;
+		ft::vector<int>::iterator begin = vect.begin();
+		ft::vector<int>::iterator it = begin + 3;
+		ft::vector<int>::iterator end = vect.end() - 1;
 
-		std::vector<int>::iterator begin2 = vect2.begin();
-		std::vector<int>::iterator it2 = begin2 + 3;
-		std::vector<int>::iterator end2 = vect2.end() - 1;
+		ft::vector<int>::iterator begin2 = vect2.begin();
+		ft::vector<int>::iterator it2 = begin2 + 3;
+		ft::vector<int>::iterator end2 = vect2.end() - 1;
 
 
 
@@ -544,14 +546,16 @@ int main()
 		std::cout << "Print Vect from Begin : " << std::endl;
 		for (; begin2 != vect.end(); begin2++)
 			std::cout << *begin2 << std::endl;
-
+			
 	}
 
-	std::cout << "----------------------- ERASE -----------------------" << std::endl;
+
+
+	std::cout << "----------------------- FT ERASE -----------------------" << std::endl;
 	std::cout << "iterator erase (iterator position)" << std::endl << std::endl;	
 	{
-		std::vector<int> vect;
-		std::vector<int>::iterator it;
+		ft::vector<int> vect;
+		ft::vector<int>::iterator it;
 
 		for (int i=0;i<=10;i++) vect.push_back(i);
 		show_vector(vect);
@@ -569,8 +573,8 @@ int main()
 	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	std::cout << "iterator erase (iterator first, iterator last)" << std::endl << std::endl;
 	{
-		std::vector<int> vect;
-		std::vector<int>::iterator it;
+		ft::vector<int> vect;
+		ft::vector<int>::iterator it;
 
 		for (int i=0;i<=10;i++) vect.push_back(i);
 
@@ -585,8 +589,7 @@ int main()
 
 
 		std::cout << "Erase two last elements" << std::endl;
-		it = vect.erase(vect.end() - 3, vect.end());
-		std::cout << "return = " << *it << std::endl;
+		vect.erase(vect.end() - 3, vect.end());
 		show_vector(vect);
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl << std::endl;
 
@@ -599,8 +602,7 @@ int main()
 
 
 		std::cout << "Erase all" << std::endl;
-		it = vect.erase(vect.begin(), vect.end());
-		std::cout << "return = " << *it << std::endl;
+		vect.erase(vect.begin(), vect.end());
 		show_vector(vect);
 
 		std::cout << "After Changes ------> Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl << std::endl;
@@ -608,14 +610,12 @@ int main()
 
 
 
-
-
-	std::cout << "----------------------- ASSIGN -----------------------" << std::endl;
+	std::cout << "----------------------- FT ASSIGN -----------------------" << std::endl;
 	std::cout << "void assign (size_type n, const value_type& val)" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect(5, 100);
-		std::vector<int> vect2;
+		ft::vector<int> vect(5, 100);
+		ft::vector<int> vect2;
 		
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
@@ -642,11 +642,11 @@ int main()
 		show_vector(vect2);
 	}
 
-	std::cout << "----------------------- CLEAR -----------------------" << std::endl;
+	std::cout << "----------------------- FT CLEAR -----------------------" << std::endl;
 	std::cout << "void clear()" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect(10, 42);
+		ft::vector<int> vect(10, 42);
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
@@ -663,16 +663,16 @@ int main()
 			
 	}
 
-	std::cout << "----------------------- BEGIN/END -----------------------" << std::endl;
+	std::cout << "----------------------- FT BEGIN/END -----------------------" << std::endl;
 	std::cout << "void clear()" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect;
+		ft::vector<int> vect;
 
 		for (int i = 0; i <= 10; i++)
 			vect.push_back(i);
-		std::vector<int>::iterator it = vect.begin();
-		std::vector<int>::iterator it_end = vect.end();
+		ft::vector<int>::iterator it = vect.begin();
+		ft::vector<int>::iterator it_end = vect.end();
 
 		show_vector(vect);
 		std::cout << "Vect Begin = " << *it << " - End = " << *(it_end - 1) << std::endl;
@@ -697,16 +697,16 @@ int main()
 
 	}
 
-	std::cout << "-----------------------  RBEGIN/REND -----------------------" << std::endl;
+	std::cout << "----------------------- FT RBEGIN/REND -----------------------" << std::endl;
 	std::cout << "void clear()" << std::endl << std::endl;
 
 	{
-		std::vector<int> vect;
+		ft::vector<int> vect;
 		for (int i = 1; i <= 10; i++)
 			vect.push_back(i);
 
-		std::vector<int>::reverse_iterator it;
-		std::vector<int>::reverse_iterator it_end;
+		ft::vector<int>::reverse_iterator it;
+		ft::vector<int>::reverse_iterator it_end;
 
 
 		it = vect.rbegin();
@@ -714,7 +714,6 @@ int main()
 
 		// std::cout << "End = " << *(vect.end() - 1) << " - Begin = " << *(vect.begin()) << std::endl;
 		// std::cout << "Rbegin = " << *it << " - --Rend = " << *(--it_end) << std::endl;
-
 		show_vector(vect);
 		std::cout << "Vect Begin = " << *it << " - End = " << *(--it_end) << std::endl;
 		
@@ -738,9 +737,8 @@ int main()
 		vect.pop_back();
 		show_vector(vect);
 		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *(--vect.rend()) << std::endl;
-
 	}
-	std::cout << "----------------------- Iterators -----------------------" << std::endl; 
+	std::cout << "----------------------- Ft Iterators -----------------------" << std::endl; 
 	{
 		std::cout << "iterator begin();" << std::endl;
 		std::cout << "iterator end();" << std::endl;
@@ -748,31 +746,31 @@ int main()
 		std::cout << "reverse_iterator rend();" << std::endl << std::endl;
 
 
-		std::vector<int> vect;
+		ft::vector<int> vect;
 
 		for (int i=0;i<=15;i++) vect.push_back(i);
 
-		std::vector<int>::iterator it = vect.end();
-		std::vector<int>::reverse_iterator reverse_it = vect.rend();
+		ft::vector<int>::iterator it = vect.end();
+		ft::vector<int>::reverse_iterator reverse_it = vect.rend();
 
 		std::cout << "Vect Begin = " << (*vect.begin()) << " - End (-1) = " << *(--it) << std::endl;
 		std::cout << "Vect RBegin = " << (*vect.rbegin()) << " - REnd (-1) = " << *(--reverse_it) << std::endl;
 		std::cout << std::endl;
 		
 		std::cout << "Vect Contain : " << std::endl;
-		for (std::vector<int>::iterator begin = vect.begin(); begin != vect.end(); begin++)
+		for (ft::vector<int>::iterator begin = vect.begin(); begin != vect.end(); begin++)
 			std::cout << "First = " << *begin << " - Second = " << *begin << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "Vect Contain (Reverse) : " << std::endl;
-		for (std::vector<int>::iterator end = vect.end(); end != vect.begin();) {
+		for (ft::vector<int>::iterator end = vect.end(); end != vect.begin();) {
 			end--;
 			std::cout << "First = " << *end << " - Second = " << *end << std::endl;
 		}
 		std::cout << std::endl;
 
-		std::vector<int>::iterator begin = vect.begin();
-		std::vector<int>::iterator cpy_begin = vect.begin();
+		ft::vector<int>::iterator begin = vect.begin();
+		ft::vector<int>::iterator cpy_begin = vect.begin();
 
 		std::cout << "Begin Copy Iterator = " << *cpy_begin << std::endl;
 
@@ -785,19 +783,19 @@ int main()
 		std::cout << std::endl;
 		std::cout << std::endl;
 
-		std::vector<char> vect2;
+		ft::vector<char> vect2;
 		std::cout << "Vect of Size 1" << std::endl;
 		vect2.push_back('A');
-		std::vector<char>::iterator it2 = vect2.end();
-		std::vector<char>::reverse_iterator reverse_it2 = vect2.rend();
+		ft::vector<char>::iterator it2 = vect2.end();
+		ft::vector<char>::reverse_iterator reverse_it2 = vect2.rend();
 
 		std::cout << "Vect2 Begin = " << (*vect2.begin()) << " - End (-1) = " << *(--it2) << std::endl;
 		std::cout << "Vect2 RBegin = " << (*vect2.rbegin()) << " - REnd (-1) = " << *(--reverse_it2) << std::endl;
 		std::cout << std::endl;
 
-		std::vector<int>::iterator iterator = vect.begin();
-		std::vector<int>::iterator iterator_end = vect.end();
-		std::vector<int>::iterator tmp_it(iterator);
+		ft::vector<int>::iterator iterator = vect.begin();
+		ft::vector<int>::iterator iterator_end = vect.end();
+		ft::vector<int>::iterator tmp_it(iterator);
 
 
 		std::cout << "Begin + 2 = " << *(iterator + 2) << " - Begin + 6 = " << *(iterator + 6) << std::endl;
@@ -833,12 +831,12 @@ int main()
 	}
 	{
 		std::cout << std::endl;
-		std::vector<int> vect;
+		ft::vector<int> vect;
 
 		for (int i=0;i<=15;i++) vect.push_back(i);
-		std::vector<int>::reverse_iterator iterator = vect.rbegin();
-		std::vector<int>::reverse_iterator iterator_end = vect.rend();
-		std::vector<int>::reverse_iterator tmp_it(iterator);
+		ft::vector<int>::reverse_iterator iterator = vect.rbegin();
+		ft::vector<int>::reverse_iterator iterator_end = vect.rend();
+		ft::vector<int>::reverse_iterator tmp_it(iterator);
 
 
 		std::cout << "Rbegin = " << *iterator << " - RBegin + 2 = " << *(iterator + 2) << " - RBegin + 6 = " << *(iterator + 6) << std::endl;
@@ -872,16 +870,16 @@ int main()
 			std::cout << "iterator equal to begin()" << std::endl;
 		std::cout << std::endl;
 	}
-	std::cout << "----------------------- Non member function -----------------------" << std::endl; 
+	std::cout << "----------------------- Ft Non member function -----------------------" << std::endl; 
 	{
-		std::vector<int> vect;
+		ft::vector<int> vect;
 		for (int i=0;i<=15;i++) vect.push_back(i);
 
-		std::vector<int> vect2(vect);
-		std::vector<int> vect3;
+		ft::vector<int> vect2(vect);
+		ft::vector<int> vect3;
 		for (int i=30;i<=40;i++) vect3.push_back(i);
 
-		std::vector<int> vect4;
+		ft::vector<int> vect4;
 		for (int i=50;i<=900;i++) vect4.push_back(i);
 
 		if (vect == vect2)
@@ -923,5 +921,7 @@ int main()
 		show_vector(vect4);
 	}
 
-	return 0;
+
+	return (0);
 }
+
