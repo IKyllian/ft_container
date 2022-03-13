@@ -34,7 +34,7 @@ namespace ft
 
 			// ---------Increment/Decrement---------
 			treeIterator &operator++(void) {
-				// std::cout << "Current = " << current->_pair.first <<  std::endl;
+				// std::cout << "Current = " << current->_value <<  std::endl;
 				if (current == NULL)
 					return (*this);
 				if (current->_right != NULL) {
@@ -90,23 +90,23 @@ namespace ft
 	template <class Node, class Tree>
 	bool operator!=(const ft::treeIterator<Node, Tree>& lhs, const ft::treeIterator<Node, Tree>& rhs) { return (lhs.base() != rhs.base()); };
 
-	template <class Pair>
+	template <class T>
 	struct node {
 		node	*_left;
 		node	*_right;
 		node	*_parent;
 		int		_color;
-		Pair	_pair;
+		T		_value;
 
-		node(const Pair &pair = Pair()) : _left(nullptr), _right(nullptr), _parent(nullptr), _color(ROUGE), _pair(pair) {};
-		node(node *left, node *right, node *parent, int color, const Pair &pair = Pair()) : _left(left), _right(right), _parent(parent), _color(color), _pair(pair) {};
+		node(const T &value = T()) : _left(nullptr), _right(nullptr), _parent(nullptr), _color(ROUGE), _value(value) {};
+		node(node *left, node *right, node *parent, int color, const T &value = T()) : _left(left), _right(right), _parent(parent), _color(color), _value(value) {};
 
 		node& operator=(const node& src) {
 			_left = src._left;
 			_right = src._right;
 			_parent = src._parent;
 			_color = src._color;
-			_pair = src._pair;
+			_value = src._value;
 		}
 	};
 
@@ -123,12 +123,12 @@ namespace ft
 		}
 	};
 
-	template <class Pair, class Compare, class Alloc = std::allocator<ft::node<Pair> > >
+	template <class T, class Compare, class Alloc = std::allocator<ft::node<T> > >
 	class tree
 	{
 		public :
 
-			typedef Pair value_type;
+			typedef T value_type;
 			typedef Compare value_compare;
 			typedef Alloc allocator_type;
 			typedef typename allocator_type::reference reference;
@@ -136,7 +136,7 @@ namespace ft
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef typename ft::treeIterator<pointer, ft::tree<value_type, value_compare> > iterator;
-			typedef typename ft::treeIterator<const pointer, ft::tree<value_type, value_compare> > const_iterator;
+			typedef typename ft::treeIterator<const pointer, const ft::tree<value_type, value_compare> > const_iterator;
 			typedef std::ptrdiff_t difference_type;
 			typedef std::size_t size_type;
 
@@ -147,6 +147,7 @@ namespace ft
 			};
 
 			~tree() {
+				// std::cout << "Tree Destructor" << std::endl;
 				this->clear();
 			};
 
@@ -188,9 +189,9 @@ namespace ft
 			pointer search_node(pointer root, value_type to_search) const {
 				if (!root)
 					return (nullptr);
-				if (_comp(to_search, root->_pair))
+				if (_comp(to_search, root->_value))
 					return (search_node(root->_left, to_search));
-				else if (_comp(root->_pair, to_search))
+				else if (_comp(root->_value, to_search))
 					return (search_node(root->_right, to_search));
 				else
 					return (root);
@@ -307,7 +308,7 @@ namespace ft
 					_root = n;
 					return ;
 				}
-				if (racine != nullptr && _comp(n->_pair, racine->_pair)) {
+				if (racine != nullptr && _comp(n->_value, racine->_value)) {
 					if (racine->_left != nullptr) {
 						insert_node(racine->_left, n);
 						return;
@@ -591,7 +592,7 @@ namespace ft
 			};
 
 			iterator insert (iterator position, const value_type& val) {
-				if (position.base() && _comp(position.base()->_pair, val))
+				if (position.base() && _comp(position.base()->_value, val))
 				{
 					pointer search = search_node(_root, val);
 					if (search != nullptr)
@@ -609,7 +610,7 @@ namespace ft
 
 			void insert (iterator first, iterator last) {
 				for (; first != last; first++)
-					insert(first->_pair);
+					insert(first->_value);
 			};
 
 			size_type erase(const value_type& k) {
@@ -627,7 +628,7 @@ namespace ft
 				pointer to_search = (position++).base();
 				if (to_search == nullptr)
 					return ;
-				pointer node = search_node(_root, to_search->_pair);
+				pointer node = search_node(_root, to_search->_value);
 				if (node == nullptr)
 					return ;
 				else {
@@ -659,13 +660,13 @@ namespace ft
 
 			iterator lower_bound(value_type k) {
 				iterator it = begin();
-				for (; it != end() && _comp((*it)._pair, k); it++) ;
+				for (; it != end() && _comp((*it)._value, k); it++) ;
 				return (it);
 			};
 
 			iterator upper_bound(value_type k) {
 				iterator it = begin();
-				for (; it != end() && !(_comp(k, (*it)._pair)); it++) ;
+				for (; it != end() && !(_comp(k, (*it)._value)); it++) ;
 				return (it);
 			};
 
@@ -763,9 +764,9 @@ namespace ft
 			
 				showTrunks(trunk);
 				if (root->_color == ROUGE)
-					std::cout << " " << root->_pair.first << "(R)" << std::endl;
+					std::cout << " " << root->_value << "(R)" << std::endl;
 				else
-					std::cout << " " << root->_pair.first << "(N)" << std::endl;
+					std::cout << " " << root->_value << "(N)" << std::endl;
 				if (prev) {
 					prev->str = prev_str;
 				}
@@ -775,17 +776,17 @@ namespace ft
 			}
 
 			void print_node(pointer n, std::string str) {
-				std::cout << str << " = " << n->_pair.first << " - Color =" << n->_color << std::endl;
+				std::cout << str << " = " << n->_value << " - Color =" << n->_color << std::endl;
 				if (n->_parent)
-					std::cout << str << " Parent = " << n->_parent->_pair.first << " - Color =" << n->_color << std::endl;
+					std::cout << str << " Parent = " << n->_parent->_value << " - Color =" << n->_color << std::endl;
 				else
 					std::cout << str << " Racine" << std::endl;
 				if (n->_left)
-					std::cout << str << " Left = " << n->_left->_pair.first << " - Color =" << n->_color << std::endl;
+					std::cout << str << " Left = " << n->_left->_value << " - Color =" << n->_color << std::endl;
 				else
 					std::cout << str << " Left NULL " << std::endl;
 				if (n->_right)
-					std::cout << str << " Right = " << n->_right->_pair.first << " - Color =" << n->_color << std::endl;
+					std::cout << str << " Right = " << n->_right->_value << " - Color =" << n->_color << std::endl;
 				else
 					std::cout << str << " Right NULL " << std::endl;
 

@@ -8,7 +8,9 @@ struct classcomp {
 };
 
 int main() {
-		std::cout << "----------------------- FT CONSTRUCTOR -----------------------" << std::endl; 
+	ft::map<int, int> map;
+	std::cout << "Max Size = " << map.max_size() << std::endl;
+		std::cout << "----------------------- FT CONSTRUCTOR / Operator -----------------------" << std::endl; 
 		{
 			std::cout << "Default constructor" << std::endl;
 			std::cout << "explicit map (const key_compare& comp = key_compare() const allocator_type& alloc = allocator_type());" << std::endl << std::endl;
@@ -18,20 +20,11 @@ int main() {
 			ft::map<int, int, classcomp> map3;
 
 			std::cout << "is Empty : " << map.empty() << std::endl;
+			for (int i = 1; i <= 20; i++)
+				map.insert(ft::pair<int, int>(i, i));
 
-			map.insert(ft::pair<int, int>(1, 1));
-			map.insert(ft::pair<int, int>(2, 2));
-			map.insert(ft::pair<int, int>(3, 3));
-			map.insert(ft::pair<int, int>(4, 4));
-			map.insert(ft::pair<int, int>(5, 5));
-			map.insert(ft::pair<int, int>(6, 6));
-
-			map3.insert(ft::pair<int, int>(1, 1));
-			map3.insert(ft::pair<int, int>(2, 2));
-			map3.insert(ft::pair<int, int>(3, 3));
-			map3.insert(ft::pair<int, int>(4, 4));
-			map3.insert(ft::pair<int, int>(5, 5));
-			map3.insert(ft::pair<int, int>(6, 6));
+			for (int i = 1; i <= 20; i++)
+				map3.insert(ft::pair<int, int>(i, i));
 
 			map2.insert(ft::pair<char, char>('a', 'C'));
 			map2.insert(ft::pair<char, char>('b', 'e'));
@@ -61,13 +54,8 @@ int main() {
 			ft::map<char, char> map2;
 
 			std::cout << "is Empty : " << map.empty() << std::endl;
-
-			map.insert(ft::pair<int, int>(1, 1));
-			map.insert(ft::pair<int, int>(2, 2));
-			map.insert(ft::pair<int, int>(3, 3));
-			map.insert(ft::pair<int, int>(4, 4));
-			map.insert(ft::pair<int, int>(5, 5));
-			map.insert(ft::pair<int, int>(6, 6));
+			for (int i = 1; i <= 40; i++)
+				map.insert(ft::pair<int, int>(i, i));
 
 			map2.insert(ft::pair<char, char>('a', 'C'));
 			map2.insert(ft::pair<char, char>('b', 'e'));
@@ -105,12 +93,8 @@ int main() {
 
 			std::cout << "is Empty : " << map.empty() << std::endl;
 
-			map.insert(ft::pair<int, int>(1, 1));
-			map.insert(ft::pair<int, int>(2, 2));
-			map.insert(ft::pair<int, int>(3, 3));
-			map.insert(ft::pair<int, int>(4, 4));
-			map.insert(ft::pair<int, int>(5, 5));
-			map.insert(ft::pair<int, int>(6, 6));
+			for (int i = 1; i <= 6; i++)
+				map.insert(ft::pair<int, int>(i, i));
 
 			map2.insert(ft::pair<char, char>('a', 'C'));
 			map2.insert(ft::pair<char, char>('b', 'e'));
@@ -150,12 +134,8 @@ int main() {
 
 			std::cout << "is Empty : " << map.empty() << std::endl;
 
-			map.insert(ft::pair<int, int>(1, 1));
-			map.insert(ft::pair<int, int>(2, 2));
-			map.insert(ft::pair<int, int>(3, 3));
-			map.insert(ft::pair<int, int>(4, 4));
-			map.insert(ft::pair<int, int>(5, 5));
-			map.insert(ft::pair<int, int>(6, 6));
+			for (int i = 1; i <= 6; i++)
+				map.insert(ft::pair<int, int>(i, i));
 
 			map2.insert(ft::pair<char, char>('a', 'C'));
 			map2.insert(ft::pair<char, char>('b', 'e'));
@@ -274,6 +254,13 @@ int main() {
 			std::cout << "Insert 10 who already exists" << std::endl;
 			ret = map.insert(ft::pair<int, int>(10, 10));
 			std::cout << "Value it (Key) = " << ret.first->first << " - (Value) = " << ret.first->second << " - Bool = " << ret.second << std::endl;
+
+			std::cout << "Insert 100 elements" << std::endl;
+			for (int i = 15; i <= 120; i++)
+				map.insert(ft::pair<int, int>(i, i));
+			std::cout << "Map contains : " << std::endl;
+			for (ft::map<int, int>::iterator it=map.begin(); it!=map.end(); ++it)
+				std::cout << it->first << " => " << it->second << '\n';
 		}
 		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 		{
