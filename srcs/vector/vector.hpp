@@ -73,7 +73,7 @@ namespace ft
 			-> https://webdevdesigner.com/q/what-does-the-explicit-keyword-mean-23047/ */
 
 		// Default constructor. Constructs an empty container, with no elements.
-		explicit vector(const allocator_type& alloc = allocator_type()): _alloc_size(0), _fill_size(0), _ptr(NULL), _alloc(alloc) {};
+		explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _ptr(NULL), _alloc_size(0), _fill_size(0) {};
 
 		// Fill constructor. Constructs a container with n elements. Each element is a copy of val. 
 		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc)
@@ -88,8 +88,8 @@ namespace ft
 		// Range constructor. Constructs a container with as many elements as the range [first,last), with each element constructed from its corresponding element in that range, in the same order.
 		template<class InputIterator>
 		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _alloc(alloc), _fill_size(0), _alloc_size(0), _ptr(NULL) {
-			difference_type size = last - first;
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _alloc(alloc), _ptr(NULL), _alloc_size(0), _fill_size(0) {
+			size_type size = last - first;
 			this->_alloc_size = size;
 			this->_ptr = _alloc.allocate(size);
 			for (; first != last; first++)
@@ -237,7 +237,7 @@ namespace ft
 		template <class InputIterator>
   		void assign (InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) {
-			difference_type size = last - first;
+			size_type size = last - first;
 			this->clear();
 			if (this->_alloc_size < size)
 				this->reserve(size);
@@ -269,7 +269,8 @@ namespace ft
 			return (iterator(this->_ptr + idx));
 		};
 		void insert (iterator position, size_type n, const value_type& val) {
-			difference_type idx = position - begin();
+			size_type idx = position - begin();
+			// size_type idx = idx2;
 			if (this->_fill_size + n > this->_alloc_size)
 				this->reserve(get_new_alloc_size(this->_fill_size + n));
 			if (_fill_size == idx)
@@ -292,8 +293,8 @@ namespace ft
 		template <class InputIterator>
     	void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL ) {
-			difference_type size = last - first;
-			difference_type idx = position - begin();
+			size_type size = last - first;
+			size_type idx = position - begin();
 
 			if (this->_fill_size + size > this->_alloc_size)
 				this->reserve(get_new_alloc_size(this->_fill_size + size));
@@ -315,7 +316,7 @@ namespace ft
 		};
 
 		iterator erase (iterator position) {
-			difference_type idx = position - begin();
+			size_type idx = position - begin();
 			if (_fill_size == idx)
 				return (this->end());
 			else if ((_fill_size - 1) == idx)
@@ -333,7 +334,6 @@ namespace ft
 		};
 
 		iterator erase (iterator first, iterator last) {
-			pointer to_return = &(*first);
 			for (iterator it(first); it != last; it++)
 				this->erase(first);
 			return (first);
@@ -348,7 +348,7 @@ namespace ft
 
 		void clear() {
 			if (_fill_size > 0) {
-				for (int i = 0; i < this->_fill_size; i++)
+				for (size_type i = 0; i < this->_fill_size; i++)
 					this->_alloc.destroy(this->_ptr + i);
 				this->_fill_size = 0;
 			}
@@ -359,9 +359,9 @@ namespace ft
 
 		private :
 			Alloc _alloc;
-			T *_ptr;
-			size_t _alloc_size;
-			size_t _fill_size;
+			pointer _ptr;
+			size_type _alloc_size;
+			size_type _fill_size;
 			
 			// Fonction qui sert pour realloc le container a la bonne taille
 			size_t get_new_alloc_size(size_type n) {
@@ -384,7 +384,7 @@ namespace ft
 	bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
 		if (lhs.size() != rhs.size())
 			return (false);
-		for(int i = 0; i < lhs.size(); i++)
+		for(size_t i = 0; i < lhs.size(); i++)
 			if (lhs.at(i) != rhs.at(i))
 				return (false);
 		return (true);

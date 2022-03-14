@@ -5,7 +5,7 @@
 template < class T >
 void show_vector(ft::vector<T> vect) {
 	std::cout << "vect contains:";
-	for (int i=0;i<vect.size();i++)
+	for (size_t i=0;i<vect.size();i++)
 		std::cout << ' ' << vect[i];
 	std::cout << std::endl << std::endl;
 }
@@ -920,7 +920,6 @@ int main()
 		show_vector(vect2);
 		show_vector(vect4);
 	}
-
 
 	return (0);
 }

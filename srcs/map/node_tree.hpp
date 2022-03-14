@@ -140,9 +140,9 @@ namespace ft
 			typedef std::ptrdiff_t difference_type;
 			typedef std::size_t size_type;
 
-			tree(value_compare comp, const allocator_type& alloc = allocator_type()) : _comp(comp), _alloc(alloc), _tree_size(0), _root(nullptr) {};
+			tree(value_compare comp, const allocator_type& alloc = allocator_type()) : _root(nullptr),  _comp(comp), _alloc(alloc), _tree_size(0) {};
 
-			tree(const tree& src) : _alloc(src._alloc),  _comp(src._comp), _root(nullptr), _tree_size(0) { 
+			tree(const tree& src) : _root(nullptr), _comp(src._comp), _alloc(src._alloc), _tree_size(0) { 
 				*this = src;
 			};
 
@@ -594,13 +594,12 @@ namespace ft
 				if (position.base() && _comp(position.base()->_pair, val))
 				{
 					pointer search = search_node(_root, val);
+					pointer from = _root;
 					if (search != nullptr)
 						return (iterator(search, this));
 					pointer node = _alloc.allocate(1);
-					pointer from = position.base();
 					_alloc.construct(node, val);
-					_root = _insert(_root, node);		
-
+					_root = _insert(from, node);		
 					return (iterator(node, this));
 				}
 				else

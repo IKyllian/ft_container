@@ -4,13 +4,13 @@
 template < class T >
 void show_vector(std::vector<T> vect) {
 	std::cout << "vect contains:";
-	for (int i=0;i<vect.size();i++)
+	for (size_t i=0;i<vect.size();i++)
 		std::cout << ' ' << vect[i];
 	std::cout << std::endl << std::endl;
 }
+
 int main()
 {
-
 	std::cout << "----------------------- CONSTRUCTOR -----------------------" << std::endl; 
 	{
 		std::cout << "Default constructor" << std::endl;
@@ -21,7 +21,7 @@ int main()
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
 	}
-	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 
 	{
 		std::cout << "Fill constructor" << std::endl;
@@ -34,7 +34,6 @@ int main()
 		std::vector<int> vect5(0, 100);
 		std::vector<int> vect6(400, 1);
 		std::vector<int> vect7(std::numeric_limits<unsigned int>::max() + 1, 1);
-
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
@@ -57,7 +56,7 @@ int main()
 		std::cout << "Fill Size = " << vect7.size() << " - Alloc Size = " << vect7.capacity() << std::endl;
 		show_vector(vect7);
 	}
-	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	{
 		std::cout << "Range constructor" << std::endl;
 		std::cout << "vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()" << std::endl << std::endl;
@@ -81,7 +80,7 @@ int main()
 		std::cout << "Fill Size = " << vect5.size() << " - Alloc Size = " << vect5.capacity() << std::endl;
 		show_vector(vect5);
 	}
-	std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
+		std::cout << "----------------------------------------------------------------------------------------------------" << std::endl << std::endl;
 	{
 		std::cout << "Copy constructor" << std::endl;
 		std::cout << "vector(const vector& x)" << std::endl << std::endl;
@@ -90,7 +89,6 @@ int main()
 		std::vector<int> vect2;
 		std::vector<int> vect3(vect);
 		std::vector<int> vect4(vect2);
-
 
 		std::cout << "Fill Size = " << vect3.size() << " - Alloc Size = " << vect3.capacity() << std::endl;
 		show_vector(vect3);
@@ -131,8 +129,8 @@ int main()
 			
 	}
 
-	std::cout << "----------------------- RESIZE -----------------------" << std::endl;
-	std::cout << "void resize (size_type n, value_type val = value_type())" << std::endl << std::endl;
+		std::cout << "----------------------- RESIZE -----------------------" << std::endl;
+		std::cout << "void resize (size_type n, value_type val = value_type())" << std::endl << std::endl;
 
 	{
 		std::vector<int> vect(10, 42);
@@ -166,8 +164,8 @@ int main()
 		show_vector(vect);
 	}
 
-	std::cout << "----------------------- RESERVE -----------------------" << std::endl;
-	std::cout << "void reserve (size_type n)" << std::endl << std::endl;
+		std::cout << "----------------------- RESERVE -----------------------" << std::endl;
+		std::cout << "void reserve (size_type n)" << std::endl << std::endl;
 
 	{
 		std::vector<int> vect(5, 42);
@@ -220,7 +218,6 @@ int main()
 		std::cout << "Vect3 Is empty = " << vect3.empty() << std::endl;
 		vect3.resize(3,3);
 		std::cout << "Vect3 Is empty = " << vect3.empty() << std::endl;
-	
 	}
 
 		std::cout << "----------------------- AT -----------------------" << std::endl;
@@ -282,13 +279,13 @@ int main()
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
-		
+
 		// vect.pop_back();
 	
 	}
 
 
-	std::cout << "----------------------- INSERT -----------------------" << std::endl;
+	std::cout << "-----------------------INSERT -----------------------" << std::endl;
 	std::cout << "iterator insert(iterator position, const value_type& val)" << std::endl << std::endl;
 
 	{
@@ -472,6 +469,9 @@ int main()
 	}
 
 
+
+
+
 	std::cout << "----------------------- SWAP -----------------------" << std::endl;
 	std::cout << "void swap (vector& x)" << std::endl << std::endl;
 
@@ -544,8 +544,10 @@ int main()
 		std::cout << "Print Vect from Begin : " << std::endl;
 		for (; begin2 != vect.end(); begin2++)
 			std::cout << *begin2 << std::endl;
-
+			
 	}
+
+
 
 	std::cout << "----------------------- ERASE -----------------------" << std::endl;
 	std::cout << "iterator erase (iterator position)" << std::endl << std::endl;	
@@ -603,8 +605,6 @@ int main()
 
 		std::cout << "After Changes ------> Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl << std::endl;
 	}
-
-
 
 
 
@@ -695,7 +695,7 @@ int main()
 
 	}
 
-	std::cout << "-----------------------  RBEGIN/REND -----------------------" << std::endl;
+	std::cout << "----------------------- RBEGIN/REND -----------------------" << std::endl;
 	std::cout << "void clear()" << std::endl << std::endl;
 
 	{
@@ -712,7 +712,6 @@ int main()
 
 		// std::cout << "End = " << *(vect.end() - 1) << " - Begin = " << *(vect.begin()) << std::endl;
 		// std::cout << "Rbegin = " << *it << " - --Rend = " << *(--it_end) << std::endl;
-
 		show_vector(vect);
 		std::cout << "Vect Begin = " << *it << " - End = " << *(--it_end) << std::endl;
 		
@@ -736,7 +735,6 @@ int main()
 		vect.pop_back();
 		show_vector(vect);
 		std::cout << "Begin = " << *(vect.rbegin()) << " - End = " << *(--vect.rend()) << std::endl;
-
 	}
 	std::cout << "----------------------- Iterators -----------------------" << std::endl; 
 	{
