@@ -178,7 +178,6 @@ namespace ft
 					_tree.insert(*first++);
 			};
 
-
 			void erase (iterator position) { _tree.erase(position.base()); };
 			size_type erase (const key_type& k) { return (_tree.erase(ft::make_pair(k, mapped_type()))); };
 			void erase (iterator first, iterator last) {

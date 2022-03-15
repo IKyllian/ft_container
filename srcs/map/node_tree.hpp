@@ -142,8 +142,8 @@ namespace ft
 
 			tree(value_compare comp, const allocator_type& alloc = allocator_type()) : _root(nullptr),  _comp(comp), _alloc(alloc), _tree_size(0) {};
 
-			tree(const tree& src) : _root(nullptr), _comp(src._comp), _alloc(src._alloc), _tree_size(0) { 
-				*this = src;
+			tree(const tree& src) : _root(nullptr), _comp(src._comp), _alloc(src._alloc), _tree_size(src._tree_size) { 
+				tree_copy(src._root, this->_root, nullptr);
 			};
 
 			~tree() {
@@ -161,7 +161,7 @@ namespace ft
 			pointer get_parent(pointer n) { return (n->_parent); };
 			pointer get_grandparent(pointer n) { 
 				pointer p = get_parent(n);
-				if (p == nullptr) // Noeud sans parent n'a pas de grand parent
+				if (p == nullptr)
 					return (nullptr);
 				return (get_parent(p));
 			};
@@ -178,7 +178,7 @@ namespace ft
 			pointer get_oncle(pointer n) {
 				pointer p = get_parent(n);
 				pointer g = get_grandparent(n);
-				if (g == nullptr) // Noeud sans grand parent n'a pas d'oncle
+				if (g == nullptr)
 					return (nullptr);
 				return (get_brother(p));
 			};
@@ -359,8 +359,6 @@ namespace ft
 							n->_parent->_left = node_to_swap;
 					}
 					
-					// si le parent du noeud a swap n'est pas le noeud a delete alors on met son enfant gauche a null car il va etre deplacé
-					// A Revoir
 					if (node_to_swap->_parent != n)
 						node_to_swap->_parent->_left = nullptr;
 					
@@ -581,13 +579,10 @@ namespace ft
 				pointer search = search_node(_root, val);
 				if (search != nullptr)
 					return (ft::make_pair(iterator(search, this), false));
-
 				pointer node = _alloc.allocate(1);
 				_alloc.construct(node, val);
 				_root = _insert(_root, node);			
-
 				return (ft::make_pair(iterator(node, this), true));
-
 			};
 
 			iterator insert (iterator position, const value_type& val) {
