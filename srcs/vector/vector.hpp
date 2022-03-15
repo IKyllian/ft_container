@@ -76,13 +76,15 @@ namespace ft
 		explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _ptr(NULL), _alloc_size(0), _fill_size(0) {};
 
 		// Fill constructor. Constructs a container with n elements. Each element is a copy of val. 
-		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc)
+		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _ptr(NULL), _alloc_size(0), _fill_size(0)
 		{
-			_ptr = _alloc.allocate(n);
-			for (size_type i = 0; i < n; i++)
-				_alloc.construct(_ptr + i, val);
-			this->_fill_size = n;
-			this->_alloc_size = n;
+			if (n > 0) {
+				_ptr = _alloc.allocate(n);
+				for (size_type i = 0; i < n; i++)
+					_alloc.construct(_ptr + i, val);
+				this->_fill_size = n;
+				this->_alloc_size = n;
+			}
 		};
 
 		// Range constructor. Constructs a container with as many elements as the range [first,last), with each element constructed from its corresponding element in that range, in the same order.
@@ -90,20 +92,24 @@ namespace ft
 		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL) : _alloc(alloc), _ptr(NULL), _alloc_size(0), _fill_size(0) {
 			size_type size = last - first;
-			this->_alloc_size = size;
-			this->_ptr = _alloc.allocate(size);
-			for (; first != last; first++)
-				this->push_back(*first);
+			if (size > 0) {
+				this->_alloc_size = size;
+				this->_ptr = _alloc.allocate(size);
+				for (; first != last; first++)
+					this->push_back(*first);
+			}
 		};
 
 		// Copy constructor. Constructs a container with a copy of each of the elements in x, in the same order.
 		vector(const vector& x) {
 			this->_alloc = x._alloc;
 			this->_alloc_size = x._alloc_size;
-			this->_ptr = this->_alloc.allocate(this->_alloc_size);
-			for (size_type i = 0; i < x._fill_size; i++)
-				this->_alloc.construct(this->_ptr + i, x[i]);
-			this->_fill_size = x._fill_size;	
+			this->_fill_size = x._fill_size;
+			if (_alloc_size > 0) {
+				this->_ptr = this->_alloc.allocate(this->_alloc_size);
+				for (size_type i = 0; i < x._fill_size; i++)
+					this->_alloc.construct(this->_ptr + i, x[i]);
+			}
 		};
 
 		//Destructor
@@ -182,6 +188,9 @@ namespace ft
 					this->_alloc.construct(new_ptr + i, *(this->_ptr + i));
 				for (size_type i = this->_fill_size; i < n; i++)
 					this->_alloc.construct(new_ptr + i, val);
+				for (size_type i = 0; i < this->_fill_size; i++)
+					this->_alloc.destroy(this->_ptr + i);
+				this->_alloc.deallocate(this->_ptr, this->_alloc_size);
 				_ptr = new_ptr;
 				_fill_size = n;
 			}
@@ -270,7 +279,6 @@ namespace ft
 		};
 		void insert (iterator position, size_type n, const value_type& val) {
 			size_type idx = position - begin();
-			// size_type idx = idx2;
 			if (this->_fill_size + n > this->_alloc_size)
 				this->reserve(get_new_alloc_size(this->_fill_size + n));
 			if (_fill_size == idx)
