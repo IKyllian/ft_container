@@ -868,6 +868,18 @@ int main()
 			std::cout << "iterator equal to begin()" << std::endl;
 		std::cout << std::endl;
 	}
+	{
+		std::cout << std::endl;
+		std::vector<int> vect;
+
+		for (int i=0;i<=15;i++) vect.push_back(i);
+		std::vector<int>::const_iterator it = vect.begin();
+
+		std::cout << "Begin = " << *it << std::endl;
+
+		it = vect.end();
+		std::cout << "Begin = " << *(--it) << std::endl;
+		}
 	// std::cout << "----------------------- Non member function -----------------------" << std::endl; 
 	// {
 	// 	std::vector<int> vect;

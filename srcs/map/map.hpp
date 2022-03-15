@@ -160,7 +160,7 @@ namespace ft
 
 			bool empty() const { return (_tree.empty()); };
 			size_type size() const { return (_tree.size()); };
-			size_type max_size() const { return (std::numeric_limits<difference_type>::max()); };
+			size_type max_size() const { return (_alloc.max_size()); };
 
 			// ---------------------- Element Access ---------------------------
 

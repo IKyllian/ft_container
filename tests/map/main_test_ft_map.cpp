@@ -810,5 +810,17 @@ int main() {
 			std::cout << "Map2 RBegin = " << map2.rbegin()->first << " - REnd (-1) = " << (--reverse_it2)->first << std::endl;
 
 		}
+		// {
+		// 	ft::map<char,int> mymap;
+
+		// 	mymap['a']=20;
+		// 	mymap['b']=40;
+		// 	mymap['c']=60;
+		// 	mymap['d']=80;
+		// 	mymap['e']=100;
+
+
+		// 	ft::map<char,int>::const_iterator it = mymap.begin();
+		// }
 	return (0);
 }

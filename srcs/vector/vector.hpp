@@ -54,8 +54,8 @@ namespace ft
 		*/
 		typedef typename allocator_type::const_pointer const_pointer;
 
-		typedef typename ft::vectorIterator<pointer>						iterator;
-		typedef typename ft::vectorIterator<const pointer>				const_iterator;
+		typedef typename ft::vectorIterator<pointer>				iterator;
+		typedef typename ft::vectorIterator<pointer>			const_iterator;
 
 		typedef typename ft::vectorReverseIterator<iterator>		reverse_iterator;
 		typedef typename ft::vectorReverseIterator<const_iterator>	const_reverse_iterator;
