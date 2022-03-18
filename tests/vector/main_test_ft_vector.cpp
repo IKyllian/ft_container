@@ -10,6 +10,7 @@ void show_vector(ft::vector<T> vect) {
 	std::cout << std::endl << std::endl;
 }
 
+
 int main()
 {
 
@@ -875,31 +876,31 @@ int main()
 		ft::vector<int> vect;
 
 		for (int i=0;i<=15;i++) vect.push_back(i);
-		ft::vector<int>::const_iterator it = vect.begin();
+		ft::vector<int>::const_iterator it = vect.cbegin();
 
 		std::cout << "Begin = " << *it << std::endl;
 	}
-	std::cout << "----------------------- Ft Non member function -----------------------" << std::endl; 
-	{
-		ft::vector<int> vect;
-		for (int i=0;i<=15;i++) vect.push_back(i);
+	// std::cout << "----------------------- Ft Non member function -----------------------" << std::endl; 
+	// {
+	// 	ft::vector<int> vect;
+	// 	for (int i=0;i<=15;i++) vect.push_back(i);
 
-		ft::vector<int> vect2(vect);
-		ft::vector<int> vect3;
-		for (int i=30;i<=40;i++) vect3.push_back(i);
+	// 	ft::vector<int> vect2(vect);
+	// 	ft::vector<int> vect3;
+	// 	for (int i=30;i<=40;i++) vect3.push_back(i);
 
-		ft::vector<int> vect4;
-		for (int i=50;i<=900;i++) vect4.push_back(i);
+	// 	ft::vector<int> vect4;
+	// 	for (int i=50;i<=900;i++) vect4.push_back(i);
 
-		if (vect == vect2)
-			std::cout << "Vect == Vect2" << std::endl;
-		else
-			std::cout << "Vect != Vect2" << std::endl;
+	// 	if (vect == vect2)
+	// 		std::cout << "Vect == Vect2" << std::endl;
+	// 	else
+	// 		std::cout << "Vect != Vect2" << std::endl;
 
-		if (vect != vect3)
-			std::cout << "Vect != Vect3" << std::endl;
-		else
-			std::cout << "Vect == Vect3" << std::endl;
+	// 	if (vect != vect3)
+	// 		std::cout << "Vect != Vect3" << std::endl;
+	// 	else
+	// 		std::cout << "Vect == Vect3" << std::endl;
 
 		// if (vect < vect4)
 		// 	std::cout << "Vect < Vect4" << std::endl;
@@ -921,15 +922,14 @@ int main()
 		// else
 		// 	std::cout << "Vect > Vect2" << std::endl;
 
-		show_vector(vect2);
-		show_vector(vect4);
+	// 	show_vector(vect2);
+	// 	show_vector(vect4);
 
-		swap(vect2, vect4);
+	// 	swap(vect2, vect4);
 
-		show_vector(vect2);
-		show_vector(vect4);
-	}
-
+	// 	show_vector(vect2);
+	// 	show_vector(vect4);
+	// }
 	return (0);
 }
 

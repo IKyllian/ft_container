@@ -43,12 +43,13 @@ namespace ft {
 		}
 		return (first2 != last2);
 	}
+	
 
-	 template <bool is_integral, typename T>
-        struct integral_const {
-            typedef T type;
-            static const bool value = is_integral;
-        };
+	template <bool is_integral, typename T>
+    struct integral_const {
+		typedef T type;
+		static const bool value = is_integral;
+    };
 
     template <typename>
         struct is_integral_type : public integral_const<false, bool> {};

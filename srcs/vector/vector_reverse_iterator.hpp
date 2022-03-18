@@ -24,7 +24,8 @@ namespace ft
 
 			vectorReverseIterator(){ };
 			vectorReverseIterator(iterator_type ptr) : current(ptr) {};
-			vectorReverseIterator(const vectorReverseIterator &src) : current(src.base()) {};
+			template <class U>
+			vectorReverseIterator(const vectorReverseIterator<U> &src) : current(src.base()) {};
 			~vectorReverseIterator() {};
 
 			vectorReverseIterator &operator=(const vectorReverseIterator& src) {
@@ -32,15 +33,6 @@ namespace ft
 				return (*this);
 			};
 			
-			// ---------Bool--------
-			// bool operator==(const vectorReverseIterator& src) const { return (current == src.current); };
-			// bool operator!=(const vectorReverseIterator& src) const { return (current != src.current); };
-			// bool operator<(const vectorReverseIterator& src) const { return (current < src.current); };
-			// bool operator<=(const vectorReverseIterator& src) const { return (current <= src.current); };
-			// bool operator>(const vectorReverseIterator& src) const { return (current > src.current); };
-			// bool operator>=(const vectorReverseIterator& src) const { return (current >= src.current); };
-
-
 			// ---------Increment/Decrement---------
 			vectorReverseIterator &operator++(void) {
 				current--;
