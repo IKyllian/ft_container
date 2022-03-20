@@ -12,7 +12,6 @@ namespace ft
 	template <class Iter, class Pair>
 	class setIterator {
 		public :
-
 			typedef typename ft::iterator_traits<Pair>::value_type value_type;
 			typedef typename ft::iterator_traits<Pair>::pointer pointer;
 			typedef typename ft::iterator_traits<Pair>::reference reference;
@@ -21,11 +20,12 @@ namespace ft
 			
 			setIterator() : current() { };
 			setIterator(Iter iterator) : current(iterator) {};
-			setIterator(const setIterator &src) : current(src.current) {};
+			template <class I, class P>
+			setIterator(const setIterator<I, P> &src) : current(src.base()) {};
 			~setIterator() {};
 
 			setIterator &operator=(const setIterator& src) {
-				current = src.current;
+				current = src.base();
 				return (*this);
 			};
 

@@ -12,7 +12,6 @@ namespace ft
 	template <class Iter, class Pair>
 	class mapIterator {
 		public :
-
 			typedef typename ft::iterator_traits<Pair>::value_type value_type;
 			typedef typename ft::iterator_traits<Pair>::pointer pointer;
 			typedef typename ft::iterator_traits<Pair>::reference reference;
@@ -21,11 +20,12 @@ namespace ft
 			
 			mapIterator() : current() { };
 			mapIterator(Iter iterator) : current(iterator) {};
-			mapIterator(const mapIterator &src) : current(src.current) {};
+			template <class I, class P>
+			mapIterator(const mapIterator<I, P> &src) : current(src.base()) {};
 			~mapIterator() {};
 
 			mapIterator &operator=(const mapIterator& src) {
-				current = src.current;
+				current = src.base();
 				return (*this);
 			};
 
@@ -109,7 +109,7 @@ namespace ft
 
 			typedef typename ft::mapIterator<typename tree::iterator, pointer> iterator;
 
-			typedef typename ft::mapIterator<typename tree::const_iterator, pointer> const_iterator;
+			typedef typename ft::mapIterator<typename tree::const_iterator, const_pointer> const_iterator;
 
 			typedef typename ft::vectorReverseIterator<iterator> reverse_iterator;
 

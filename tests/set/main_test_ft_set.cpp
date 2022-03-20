@@ -758,6 +758,31 @@ std::cout << "void insert (InputIterator first, InputIterator last);" << std::en
 			std::cout << "set2 RBegin = " << *(set2.rbegin()) << " - REnd (-1) = " << *(--reverse_it2) << std::endl;
 
 		}
+		{
+			ft::set<int> set;
+
+			set.insert(4);
+			set.insert(5);
+			set.insert(1);
+			set.insert(2);
+			set.insert(6);
+			set.insert(3);
+			set.insert(8);
+
+			ft::set<int>::const_iterator it = set.begin();
+
+			std::cout << *it << std::endl;
+			it++;
+			std::cout << *(++it) << std::endl;
+			std::cout << *(--it) << std::endl;
+
+			ft::set<int>::const_reverse_iterator it2 = set.rbegin();
+
+			std::cout << *it2 << std::endl;
+			it2++;
+			std::cout << *(++it2) << std::endl;
+			std::cout << *(--it2) << std::endl;
+		}
 	return (0);
 }
 }

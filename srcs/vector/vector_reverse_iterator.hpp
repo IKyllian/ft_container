@@ -92,6 +92,16 @@ namespace ft
     bool operator>  (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() < rhs.base(); }
     template <class Iterator>
     bool operator>= (const vectorReverseIterator<Iterator>& lhs, const vectorReverseIterator<Iterator>& rhs) { return lhs.base() <= rhs.base(); }
+
+	template<class Iter>
+	typename vectorReverseIterator<Iter>::difference_type operator-( const vectorReverseIterator<Iter>& lhs, const vectorReverseIterator<Iter>& rhs ) {
+		return (rhs.base() - lhs.base());
+	}
+
+	template< class Iter >
+	vectorReverseIterator<Iter> operator+( typename vectorReverseIterator<Iter>::difference_type n, const vectorReverseIterator<Iter>& it ) {
+		return (vectorReverseIterator<Iter>(it.base() - n));
+	}
 }
 
 #endif

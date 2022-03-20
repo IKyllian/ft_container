@@ -9,12 +9,11 @@ namespace ft
 	template <class T>
 	class vectorIterator {
 		public :
-			typedef T iterator_type;
-			typedef typename ft::iterator_traits<iterator_type>::pointer pointer;
-			typedef typename ft::iterator_traits<iterator_type>::reference reference;
-			typedef typename ft::iterator_traits<iterator_type>::difference_type difference_type;
-			typedef typename ft::iterator_traits<iterator_type>::value_type value_type;
-			typedef typename ft::iterator_traits<iterator_type>::iterator_category iterator_category;
+			typedef typename ft::iterator_traits<T>::pointer pointer;
+			typedef typename ft::iterator_traits<T>::reference reference;
+			typedef typename ft::iterator_traits<T>::difference_type difference_type;
+			typedef typename ft::iterator_traits<T>::value_type value_type;
+			typedef typename ft::iterator_traits<T>::iterator_category iterator_category;
 			
 			vectorIterator(){ };
 			vectorIterator(pointer ptr) : current(ptr) {};
@@ -64,14 +63,11 @@ namespace ft
 
 			// -----------Dereferencing/Address----------
 			reference operator [](difference_type n) const { return (*(current + n)); };
-			pointer operator ->() { return (current); };
-			// const pointer operator ->() const { return (current); };
-			reference operator*() { return *current; };
-			const reference operator*() const { return *current; };
-			iterator_type base() const { return (current); };
-			// const iterator_type base() const { return (current); }
+			pointer operator ->() const { return (current); };
+			reference operator*() const { return *current; };
+			pointer base() const { return (current); };
 		private :
-			iterator_type current;
+			pointer current;
 	};
 
 	template <class T>
@@ -87,8 +83,15 @@ namespace ft
     template <class T>
     bool operator>= (const vectorIterator<T>& lhs, const vectorIterator<T>& rhs) { return (lhs.base() >= rhs.base()); }
 
+	template<class Iter>
+	typename vectorIterator<Iter>::difference_type operator-( const vectorIterator<Iter>& lhs, const vectorIterator<Iter>& rhs ) {
+		return (rhs.base() - lhs.base());
+	}
 
-	
+	template< class Iter >
+	vectorIterator<Iter> operator+( typename vectorIterator<Iter>::difference_type n, const vectorIterator<Iter>& it ) {
+		return (vectorIterator<Iter>(it.base() + n));
+	}
 }
 
 #endif

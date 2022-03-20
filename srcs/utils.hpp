@@ -44,54 +44,36 @@ namespace ft {
 		return (first2 != last2);
 	}
 	
+	template<class T, T v>
+	struct integral_constant {
+		const static T value = v;
+		typedef T value_type;
+		typedef integral_constant<T, v> type;
+		operator value_type() const { return value; }
+		value_type operator()() const { return value; }
+	};
 
-	template <bool is_integral, typename T>
-    struct integral_const {
-		typedef T type;
-		static const bool value = is_integral;
-    };
+	typedef integral_constant<bool,true> true_type;
+	typedef integral_constant<bool,false> false_type;
 
-    template <typename>
-        struct is_integral_type : public integral_const<false, bool> {};
+	template <class T>	struct is_integral_type                     		: public false_type {};
+	template <>			struct is_integral_type<bool>						: public true_type {};
+	template <>			struct is_integral_type<char>						: public true_type {};
+	template <>			struct is_integral_type<signed char>				: public true_type {};
+	template <>			struct is_integral_type<unsigned char>				: public true_type {};
+	template <>			struct is_integral_type<wchar_t>					: public true_type {};
+	template <>			struct is_integral_type<char16_t>					: public true_type {};
+	template <>			struct is_integral_type<char32_t>					: public true_type {};
+	template <>			struct is_integral_type<short>						: public true_type {};
+	template <>			struct is_integral_type<int>						: public true_type {};
+	template <>			struct is_integral_type<unsigned short int>			: public true_type {};
+	template <>			struct is_integral_type<unsigned int>				: public true_type {};
+	template <>			struct is_integral_type<long>						: public true_type {};
+	template <>			struct is_integral_type<unsigned long>				: public true_type {};
+	template <>			struct is_integral_type<long long>					: public true_type {};
+	template <>			struct is_integral_type<unsigned long long>			: public true_type {};
 
-    template <>
-        struct is_integral_type<bool> : public integral_const<true, bool> {};
-
-	template <>
-        struct is_integral_type<int> : public integral_const<true, int> {};
-
-    template <>
-        struct is_integral_type<long int> : public integral_const<true, long int> {};
-
-    template <>
-        struct is_integral_type<long long int> : public integral_const<true, long long int> {};
-
-    template <>
-        struct is_integral_type<unsigned char> : public integral_const<true, unsigned char> {};
-
-    template <>
-        struct is_integral_type<unsigned short int> : public integral_const<true, unsigned short int> {};
-
-    template <>
-        struct is_integral_type<unsigned int> : public integral_const<true, unsigned int> {};
-
-    template <>
-        struct is_integral_type<unsigned long int> : public integral_const<true, unsigned long int> {};
-    
-    template <>
-        struct is_integral_type<unsigned long long int> : public integral_const<true, unsigned long long int> {};
-
-    template <>
-        struct is_integral_type<char> : public integral_const<true, char> {};
-
-    template <>
-        struct is_integral_type<signed char> : public integral_const<true, signed char> {};
-
-    template <>
-        struct is_integral_type<short int> : public integral_const<true, short int> {};
-
-    template <typename T>
-        struct is_integral : public is_integral_type<T> { };
+	template <class T>	struct is_integral : public is_integral_type<T> {};
 
 	template <class T1, class T2>
 	class pair

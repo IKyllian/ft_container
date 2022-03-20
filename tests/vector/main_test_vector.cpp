@@ -869,67 +869,74 @@ int main()
 			std::cout << "iterator equal to begin()" << std::endl;
 		std::cout << std::endl;
 	}
-	// {
-	// 	std::cout << std::endl;
-	// 	std::vector<int> vect;
+	{
+		std::cout << std::endl;
+		std::vector<int> vect;
 
-	// 	for (int i=0;i<=15;i++) vect.push_back(i);
-	// 	std::vector<int>::const_iterator it = vect.begin();
+		for (int i=0;i<=15;i++) vect.push_back(i);
+		std::vector<int>::const_iterator it = vect.begin();
 
-	// 	std::cout << "Begin = " << *it << std::endl;
+		std::cout << *it << std::endl;
+		it++;
+		std::cout << *(++it) << std::endl;
+		std::cout << *(--it) << std::endl;
 
-	// 	it = vect.end();
-	// 	std::cout << "Begin = " << *(--it) << std::endl;
-	// 	}
-	// std::cout << "----------------------- Non member function -----------------------" << std::endl; 
-	// {
-	// 	std::vector<int> vect;
-	// 	for (int i=0;i<=15;i++) vect.push_back(i);
+		std::vector<int>::const_reverse_iterator it2 = vect.rbegin();
 
-	// 	std::vector<int> vect2(vect);
-	// 	std::vector<int> vect3;
-	// 	for (int i=30;i<=40;i++) vect3.push_back(i);
+		std::cout << *it2 << std::endl;
+		it2++;
+		std::cout << *(++it2) << std::endl;
+		std::cout << *(--it2) << std::endl;
+	}
+	std::cout << "----------------------- Non member function -----------------------" << std::endl; 
+	{
+		std::vector<int> vect;
+		for (int i=0;i<=15;i++) vect.push_back(i);
 
-	// 	std::vector<int> vect4;
-	// 	for (int i=50;i<=900;i++) vect4.push_back(i);
+		std::vector<int> vect2(vect);
+		std::vector<int> vect3;
+		for (int i=30;i<=40;i++) vect3.push_back(i);
 
-	// 	if (vect == vect2)
-	// 		std::cout << "Vect == Vect2" << std::endl;
-	// 	else
-	// 		std::cout << "Vect != Vect2" << std::endl;
+		std::vector<int> vect4;
+		for (int i=50;i<=900;i++) vect4.push_back(i);
 
-	// 	if (vect != vect3)
-	// 		std::cout << "Vect != Vect3" << std::endl;
-	// 	else
-	// 		std::cout << "Vect == Vect3" << std::endl;
+		if (vect == vect2)
+			std::cout << "Vect == Vect2" << std::endl;
+		else
+			std::cout << "Vect != Vect2" << std::endl;
 
-	// 	if (vect < vect4)
-	// 		std::cout << "Vect < Vect4" << std::endl;
-	// 	else
-	// 		std::cout << "Vect > Vect4" << std::endl;
+		if (vect != vect3)
+			std::cout << "Vect != Vect3" << std::endl;
+		else
+			std::cout << "Vect == Vect3" << std::endl;
 
-	// 	if (vect4 > vect3)
-	// 		std::cout << "Vect4 > Vect3" << std::endl;
-	// 	else
-	// 		std::cout << "Vect4 < Vect3" << std::endl;
+		if (vect < vect4)
+			std::cout << "Vect < Vect4" << std::endl;
+		else
+			std::cout << "Vect > Vect4" << std::endl;
 
-	// 	if (vect >= vect2)
-	// 		std::cout << "Vect >= Vect2" << std::endl;
-	// 	else
-	// 		std::cout << "Vect < Vect2" << std::endl;
+		if (vect4 > vect3)
+			std::cout << "Vect4 > Vect3" << std::endl;
+		else
+			std::cout << "Vect4 < Vect3" << std::endl;
 
-	// 	if (vect <= vect2)
-	// 		std::cout << "Vect <= Vect2" << std::endl;
-	// 	else
-	// 		std::cout << "Vect > Vect2" << std::endl;
+		if (vect >= vect2)
+			std::cout << "Vect >= Vect2" << std::endl;
+		else
+			std::cout << "Vect < Vect2" << std::endl;
 
-	// 	show_vector(vect2);
-	// 	show_vector(vect4);
+		if (vect <= vect2)
+			std::cout << "Vect <= Vect2" << std::endl;
+		else
+			std::cout << "Vect > Vect2" << std::endl;
 
-	// 	swap(vect2, vect4);
+		show_vector(vect2);
+		show_vector(vect4);
 
-	// 	show_vector(vect2);
-	// 	show_vector(vect4);
-	// }
+		swap(vect2, vect4);
+
+		show_vector(vect2);
+		show_vector(vect4);
+	}
 	return 0;
 }

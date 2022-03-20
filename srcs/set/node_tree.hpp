@@ -23,18 +23,18 @@ namespace ft
 
 			treeIterator() : current(nullptr) { };
 			treeIterator(pointer ptr, Tree *tree) : current(ptr), tree(tree) {};
-			treeIterator(const treeIterator &src) : current(src.current), tree(src.tree) {};
+			template <class N, class T>
+			treeIterator(const treeIterator<N, T> &src) : current(src.base()), tree(src.tree_base()) {};
 			~treeIterator() {};
 
 			treeIterator &operator=(const treeIterator& src) {
-				current = src.current;
-				tree = src.tree;
+				current = src.base();
+				tree = src.tree_base();
 				return (*this);
 			};
 
 			// ---------Increment/Decrement---------
 			treeIterator &operator++(void) {
-				// std::cout << "Current = " << current->_value <<  std::endl;
 				if (current == NULL)
 					return (*this);
 				if (current->_right != NULL) {
@@ -78,10 +78,11 @@ namespace ft
 			// -----------Dereferencing/Address----------
 			pointer operator ->() const { return (current); };		
 			reference operator *() const { return (*current); };
-			Node base() const { return (current); };
+			pointer base() const { return (current); };
+			Tree* tree_base() const { return (tree); };
 
 		private :
-			Node current;
+			pointer current;
 			Tree *tree;
 	};
 
@@ -136,7 +137,7 @@ namespace ft
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef typename ft::treeIterator<pointer, ft::tree<value_type, value_compare> > iterator;
-			typedef typename ft::treeIterator<const pointer, const ft::tree<value_type, value_compare> > const_iterator;
+			typedef typename ft::treeIterator<const_pointer, ft::tree<value_type, value_compare> > const_iterator;
 			typedef std::ptrdiff_t difference_type;
 			typedef std::size_t size_type;
 

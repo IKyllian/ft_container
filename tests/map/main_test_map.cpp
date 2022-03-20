@@ -806,7 +806,33 @@ int main()
 
 			std::cout << "Map2 Begin = " << map2.begin()->first << " - End (-1) = " << (--it2)->first << std::endl;
 			std::cout << "Map2 RBegin = " << map2.rbegin()->first << " - REnd (-1) = " << (--reverse_it2)->first << std::endl;
+		}
+		{
+			std::map<char,int> mymap;
 
+			mymap['a']=20;
+			mymap['b']=40;
+			mymap['c']=60;
+			mymap['d']=80;
+			mymap['e']=100;
+
+			std::map<char,int>::const_iterator it = mymap.begin();
+
+			std::cout << it->first << std::endl;
+			it++;
+			it++;
+			std::cout << it->first << std::endl;
+			it--;
+			std::cout << it->first << std::endl;
+
+			std::map<char, int>::const_reverse_iterator it2 = mymap.rbegin();
+
+			std::cout << it2->first << std::endl;
+			it2++;
+			it2++;
+			std::cout << it2->first << std::endl;
+			it2--;
+			std::cout << it2->first << std::endl;
 		}
 	return (0);	
 }
