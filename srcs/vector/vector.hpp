@@ -278,10 +278,10 @@ namespace ft
 			return (iterator(this->_ptr + idx));
 		};
 		void insert (iterator position, size_type n, const value_type& val) {
-			size_type idx = position - begin();
+			difference_type idx = position - begin();
 			if (this->_fill_size + n > this->_alloc_size)
 				this->reserve(get_new_alloc_size(this->_fill_size + n));
-			if (_fill_size == idx)
+			if (_fill_size == (size_type)idx)
 			{
 				for (size_type i = 0; i < n; i++)
 					_alloc.construct(_ptr + (this->_fill_size + i), val);
@@ -291,7 +291,7 @@ namespace ft
 			// Alloue un nouveau element à la fin du tableau et décalle tout le tableau sur la droite
 			for (size_type i = 0; i < n; i++) {
 				_alloc.construct(_ptr + _fill_size, _ptr[_fill_size - 1 ]);
-				for (size_type j = _fill_size - 1; j > idx; j--)
+				for (difference_type j = _fill_size - 1; j > idx; j--)
 					_ptr[j] = _ptr[j - 1];
 				_fill_size++;
 			}
@@ -302,11 +302,11 @@ namespace ft
     	void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL ) {
 			size_type size = last - first;
-			size_type idx = position - begin();
+			difference_type idx = position - begin();
 
 			if (this->_fill_size + size > this->_alloc_size)
 				this->reserve(get_new_alloc_size(this->_fill_size + size));
-			if (_fill_size == idx)
+			if (_fill_size == (size_type)idx)
 			{
 				for (InputIterator it(first); it != last; it++)
 					_alloc.construct(_ptr + (this->_fill_size++), *it);
@@ -315,7 +315,7 @@ namespace ft
 			// Alloue un nouveau element à la fin du tableau et décalle tout le tableau sur la droite
 			for (size_type i = 0; i < size; i++) {
 				_alloc.construct(_ptr + _fill_size, _ptr[_fill_size - 1 ]);
-				for (size_type j = _fill_size - 1; j > idx; j--)
+				for (difference_type j = _fill_size - 1; j > idx; j--)
 					_ptr[j] = _ptr[j - 1];
 				_fill_size++;
 			}
@@ -324,10 +324,10 @@ namespace ft
 		};
 
 		iterator erase (iterator position) {
-			size_type idx = position - begin();
-			if (_fill_size == idx)
+			difference_type idx = position - begin();
+			if (_fill_size == (size_type)idx)
 				return (this->end());
-			else if ((_fill_size - 1) == idx)
+			else if ((_fill_size - 1) == (size_type)idx)
 			{
 				pop_back();
 				return (this->end());

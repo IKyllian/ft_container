@@ -49,9 +49,7 @@ namespace ft
 			// -----------Arithmetic operators---------
 			vectorIterator operator+(difference_type n){ return (vectorIterator(current + n)); };
 			vectorIterator operator-(difference_type n){ return (vectorIterator(current - n)); };
-			difference_type operator+(vectorIterator b){ return (current + b.current); };
-			difference_type operator-(vectorIterator b){ return (current - b.current); };
-
+			
 			vectorIterator &operator+=(difference_type n) {
 				current += n;
 				return (*this);
@@ -85,7 +83,7 @@ namespace ft
 
 	template<class Iter>
 	typename vectorIterator<Iter>::difference_type operator-( const vectorIterator<Iter>& lhs, const vectorIterator<Iter>& rhs ) {
-		return (rhs.base() - lhs.base());
+		return (lhs.base() - rhs.base());
 	}
 
 	template< class Iter >

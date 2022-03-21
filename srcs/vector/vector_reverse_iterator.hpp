@@ -56,8 +56,6 @@ namespace ft
 			// -----------Arithmetic operators---------
 			vectorReverseIterator operator+(difference_type n){ return (vectorReverseIterator(current - n)); };
 			vectorReverseIterator operator-(difference_type n){ return (vectorReverseIterator(current + n)); };
-			difference_type operator+(vectorReverseIterator b){ return (current - b.current); };
-			difference_type operator-(vectorReverseIterator b){ return (current + b.current); };
 
 			vectorReverseIterator &operator+=(difference_type n) {
 				current -= n;

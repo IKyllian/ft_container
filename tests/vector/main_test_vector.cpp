@@ -888,6 +888,14 @@ int main()
 		std::cout << *(++it2) << std::endl;
 		std::cout << *(--it2) << std::endl;
 	}
+	{
+        std::vector<int> v;
+		for (int i=0;i<=3;i++) v.push_back(i);
+		std::vector<int>::reverse_iterator ri1= v.rbegin();
+        std::cout << *ri1 << std::endl;
+		std::vector<int>::reverse_iterator ri2= 2 + ri1;
+        std::cout << *ri2 << std::endl; 
+	}
 	std::cout << "----------------------- Non member function -----------------------" << std::endl; 
 	{
 		std::vector<int> vect;

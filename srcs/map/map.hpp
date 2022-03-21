@@ -62,7 +62,6 @@ namespace ft
 	template <class Iter, class Pair>
 	bool operator!=(const ft::mapIterator<Iter, Pair>& lhs, const ft::mapIterator<Iter, Pair>& rhs) { return (lhs.base() != rhs.base()); };
 
-
 	template < class Key,                                     // map::key_type
            class T,                                       // map::mapped_type
            class Compare = std::less<Key>,                     // map::key_compare

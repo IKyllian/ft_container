@@ -890,6 +890,14 @@ int main()
 		std::cout << *(++it2) << std::endl;
 		std::cout << *(--it2) << std::endl;
 	}
+	{
+        ft::vector<int> v;
+		for (int i=0;i<=3;i++) v.push_back(i);
+		ft::vector<int>::reverse_iterator ri1= v.rbegin();
+        std::cout << *ri1 << std::endl;
+		ft::vector<int>::reverse_iterator ri2= 2 + ri1;
+        std::cout << *ri2 << std::endl; 
+	}
 	std::cout << "----------------------- Ft Non member function -----------------------" << std::endl; 
 	{
 		ft::vector<int> vect;
