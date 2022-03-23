@@ -156,7 +156,7 @@ namespace ft
 
 			bool empty() const { return (_tree.empty()); };
 			size_type size() const { return (_tree.size()); };
-			size_type max_size() const { return (_alloc.max_size()); };
+			size_type max_size() const { return (_tree.max_size()); };
 
 			// ---------------------- Modifiers ---------------------------
 
@@ -169,7 +169,6 @@ namespace ft
 				while (first != last)
 					_tree.insert(*first++);
 			};
-
 
 			void erase (iterator position) { _tree.erase(position.base()); };
 			size_type erase (const value_type& val) { return (_tree.erase(val)); };

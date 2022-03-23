@@ -52,7 +52,6 @@ int main()
         stack2.pop();
 		std::cout << "Stack Size = " << stack.size() << std::endl;
 
-        std::cout << "Stack2 Size = " << stack2.size() << std::endl;
 	}
 
     std::cout << std::endl << "----------------------- TOP -----------------------" << std::endl;

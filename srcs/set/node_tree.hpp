@@ -691,6 +691,8 @@ namespace ft
 				return (most_right(node->_right));
 			}
 
+			size_type max_size() const { return ((std::numeric_limits<size_type>::max() / sizeof(node<value_type>))); };
+
 		private :
 			pointer			 _root;
 			value_compare	_comp;
