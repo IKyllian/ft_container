@@ -152,7 +152,7 @@ namespace ft
 			};
 
 			tree& operator=(const tree& src) {
-				clear();
+				this->clear();
 				_comp = src._comp;
 				_tree_size = src._tree_size;
 				tree_copy(src._root, this->_root, nullptr);
@@ -451,17 +451,6 @@ namespace ft
 					_root = n;
 			}
 
-			pointer search_replace(pointer n) {
-				if (n->_left == nullptr && n->_right == nullptr)
-					return (nullptr);
-				else if (n->_left != nullptr && n->_right != nullptr)
-					return (most_left(n->_right));
-				if (n->_left)
-					return (n->_left);
-				else
-					return (n->_right);
-			}
-
 			void double_black_repare(pointer n) {
 				if (n == _root)
 					return ;
@@ -711,6 +700,17 @@ namespace ft
 				_clear_tree(node->_left);
 				_clear_tree(node->_right);
 				delete_node(node);
+			}
+
+			pointer search_replace(pointer n) {
+				if (n->_left == nullptr && n->_right == nullptr)
+					return (nullptr);
+				else if (n->_left != nullptr && n->_right != nullptr)
+					return (most_left(n->_right));
+				if (n->_left)
+					return (n->_left);
+				else
+					return (n->_right);
 			}
 
 			void tree_copy(pointer cpy_from, pointer &cpy_to, pointer parent) {

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <memory>
 
-// #include <type_traits> // A supprimer plus tard
 #include "vector_iterator.hpp"
 #include "vector_reverse_iterator.hpp"
 #include "../utils.hpp"
@@ -76,7 +75,7 @@ namespace ft
 		explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _ptr(NULL), _alloc_size(0), _fill_size(0) {};
 
 		// Fill constructor. Constructs a container with n elements. Each element is a copy of val. 
-		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _ptr(NULL), _alloc_size(0), _fill_size(0)
+		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc), _ptr(NULL), _alloc_size(0), _fill_size(0)
 		{
 			if (n > 0) {
 				_ptr = _alloc.allocate(n);
@@ -139,12 +138,12 @@ namespace ft
 
 		iterator end() { 
 			if (this->empty())
-				return (this->begin());
+				return (this->_ptr);
 			return (iterator(this->_ptr + this->size()));
 		};
 		const_iterator end() const {
 			if (this->empty())
-				return (this->begin());
+				return (this->_ptr);
 			return (const_iterator(this->_ptr + this->size()));
 		};
 		

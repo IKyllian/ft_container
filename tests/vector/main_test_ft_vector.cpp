@@ -3,7 +3,7 @@
 #include "../../srcs/vector/vector_reverse_iterator.hpp"
 
 template < class T >
-void show_vector(ft::vector<T> vect) {
+void show_vector(ft::vector<T> &vect) {
 	std::cout << "vect contains:";
 	for (size_t i=0;i<vect.size();i++)
 		std::cout << ' ' << vect[i];
@@ -235,12 +235,13 @@ int main()
     		vect.at(i)=i;
 		for (unsigned i=0; i<vect.size(); i++)
 			std::cout << ' ' << vect.at(i);
+		std::cout << "With [] :" << std::endl;
+		for (unsigned i=0; i<vect.size(); i++)
+    		vect[i];
 		std::cout << '\n';
 
-		// vect.at(vect.size());
 
 		vect.clear();
-		// vect.at(0);
 
 		const ft::vector<int> vect2(10, 2);
 
@@ -283,8 +284,6 @@ int main()
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		show_vector(vect);
 
-		// vect.pop_back();
-	
 	}
 
 
@@ -296,13 +295,11 @@ int main()
 		std::cout << "Test a container with a size of 4 :" <<  std::endl << std::endl;
 		ft::vector<int> vect(4, 100);
 		ft::vector<int>::iterator it;
-		// ft::vector<std::string> vect(4, "Ceci est un test");
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		std::cout << "At start vect contains:";
 		show_vector(vect);
 
-		// vect.insert(vect.end(), "Hello World");
 		std::cout << "Insert 42 at the beginning of the vector" << std::endl;
 		it = vect.insert(vect.begin(), 42);
 		std::cout << "return value = " << *it << std::endl;
@@ -390,12 +387,10 @@ int main()
 		// -------------- Container size of 4 -----------
 		std::cout << "Test a container with a size of 4 :" <<  std::endl << std::endl;
 		ft::vector<int> vect(4, 100);
-		// ft::vector<std::string> vect(4, "Ceci est un test");
 
 		std::cout << "At start vect contains:";
 		show_vector(vect);
 
-		// vect.insert(vect.end(), "Hello World");
 		std::cout << "Insert 21 4 time at the beginning of the vector" << std::endl;
 		vect.insert(vect.begin(), 4, 21);
 		show_vector(vect);
@@ -420,13 +415,11 @@ int main()
 		// -------------- Empty container -----------
 		std::cout << "Test a empty container :" <<  std::endl << std::endl;
 		ft::vector<int> vect;
-		// ft::vector<std::string> vect(4, "Ceci est un test");
 
 		std::cout << "Fill Size = " << vect.size() << " - Alloc Size = " << vect.capacity() << std::endl;
 		std::cout << "At start vect contains:";
 		show_vector(vect);
 
-		// vect.insert(vect.end(), "Hello World");
 		std::cout << "Insert 21 4 time at the beginning of the vector" << std::endl;
 		vect.insert(vect.begin(), 4, 21);
 		show_vector(vect);
@@ -713,8 +706,6 @@ int main()
 		it = vect.rbegin();
 		it_end = vect.rend();
 
-		// std::cout << "End = " << *(vect.end() - 1) << " - Begin = " << *(vect.begin()) << std::endl;
-		// std::cout << "Rbegin = " << *it << " - --Rend = " << *(--it_end) << std::endl;
 		show_vector(vect);
 		std::cout << "Vect Begin = " << *it << " - End = " << *(--it_end) << std::endl;
 		

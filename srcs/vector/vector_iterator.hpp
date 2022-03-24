@@ -1,7 +1,6 @@
 #ifndef VECTOR_ITERATOR_HPP
 #define VECTOR_ITERATOR_HPP
 
-#include <iostream>
 #include "../iterators.hpp"
 
 namespace ft
