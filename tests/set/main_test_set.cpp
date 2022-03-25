@@ -618,7 +618,8 @@ std::cout << "void insert (InputIterator first, InputIterator last);" << std::en
 				std::cout << " is an element of myset.\n";
 				else
 				std::cout << " is not an element of myset.\n";
-					}
+			}
+		}
 		std::cout << "----------------------- Lower/Upper Bound -----------------------" << std::endl; 
 		{
 			std::cout << "iterator lower_bound (const key_type& k);" << std::endl << std::endl;
@@ -783,5 +784,4 @@ std::cout << "void insert (InputIterator first, InputIterator last);" << std::en
 			std::cout << *(--it2) << std::endl;
 		}
 	return (0);
-}
 }

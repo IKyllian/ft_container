@@ -1,108 +1,70 @@
-VECTOR = ./tests/vector/ft_vector
-STACK = ./tests/stack/ft_stack
-MAP = ./tests/map/ft_map
-SET = ./tests/set/ft_set
+NAME = $(addprefix tests/, ft_test)
+STD_NAME = $(addprefix tests/, std_test)
 
-STD_VECTOR = ./tests/vector/std_vector
-STD_STACK = ./tests/stack/std_stack
-STD_MAP = ./tests/map/std_map
-STD_SET = ./tests/set/std_set
+NAME_BONUS = $(addprefix tests/, ft_test_bonus)
+STD_NAME_BONUS = $(addprefix tests/, std_test_bonus)
 
-VECTOR_FILE = ./tests/vector/ft_vector.txt
-STACK_FILE = ./tests/stack/ft_stack.txt
-MAP_FILE = ./tests/map/ft_map.txt
-SET_FILE = ./tests/set/ft_set.txt
+FT_FILE = ./tests/ft_diff.txt
+STD_FILE = ./tests/std_diff.txt
 
-STD_VECTOR_FILE = ./tests/vector/real_vector.txt
-STD_STACK_FILE = ./tests/stack/real_stack.txt
-STD_MAP_FILE = ./tests/map/real_map.txt
-STD_SET_FILE = ./tests/set/real_set.txt
+FT_FILE_BONUS = ./tests/ft_diff_bonus.txt
+STD_FILE_BONUS = ./tests/std_diff_bonus.txt
 
-HEADER = ./srcs/utils.hpp \
-		 ./srcs/iterators.hpp \
-		 ./srcs/vector/vector.hpp \
-		 ./srcs/vector/vector_iterator.hpp \
-		 ./srcs/vector/vector_reverse_iterator.hpp \
-		 ./srcs/stack/stack.hpp \
-		 ./srcs/map/map.hpp \
-		 ./srcs/map/node_tree.hpp \
-		 ./srcs/set/node_tree.hpp \
-		 ./srcs/set/set.hpp \
+SRCS = ./tests/ft_main.cpp 		 
+STD_SRCS = ./tests/std_main.cpp
 
-VECTOR_SRCS = ./tests/vector/main_test_ft_vector.cpp
-STACK_SRCS = ./tests/stack/main_test_ft_stack.cpp
-MAP_SRCS = ./tests/map/main_test_ft_map.cpp
-SET_SRCS = ./tests/set/main_test_ft_set.cpp
-
-STD_VECTOR_SRCS = ./tests/vector/main_test_vector.cpp
-STD_STACK_SRCS = ./tests/stack/main_test_stack.cpp
-STD_MAP_SRCS = ./tests/map/main_test_map.cpp
-STD_SET_SRCS = ./tests/set/main_test_set.cpp
-
-VECTOR_OBJS = $(VECTOR_SRCS:.cpp=.o)
-STACK_OBJS = $(STACK_SRCS:.cpp=.o)
-MAP_OBJS = $(MAP_SRCS:.cpp=.o)
-SET_OBJS = $(SET_SRCS:.cpp=.o)
-
-STD_VECTOR_OBJS = $(STD_VECTOR_SRCS:.cpp=.o)
-STD_STACK_OBJS = $(STD_STACK_SRCS:.cpp=.o)
-STD_MAP_OBJS = $(STD_MAP_SRCS:.cpp=.o)
-STD_SET_OBJS = $(STD_SET_SRCS:.cpp=.o)
+SRCS_BONUS = ./tests/set/main_test_ft_set.cpp 		 
+STD_SRCS_BONUS = ./tests/set/main_test_set.cpp
 
 CLANG = clang++
 FLAGS = -Wall -Wextra -Werror -std=c++98
 RM = rm -f
 DIFF = diff
-%.o : %.cpp $(HEADER)
-	$(CLANG) $(FLAGS) -c $< -o $@
 
-$(VECTOR) : $(VECTOR_OBJS) $(STACK_OBJS) $(MAP_OBJS) $(SET_OBJS) $(STD_VECTOR_OBJS) $(STD_STACK_OBJS) $(STD_MAP_OBJS) $(STD_SET_OBJS) $(HEADER) 
-	$(CLANG) $(FLAGS) -o $(VECTOR) $(VECTOR_OBJS)
-	$(CLANG) $(FLAGS) -o $(STACK) $(STACK_OBJS)
-	$(CLANG) $(FLAGS) -o $(MAP) $(MAP_OBJS)
-	$(CLANG) $(FLAGS) -o $(SET) $(SET_OBJS)
-	$(CLANG) $(FLAGS) -o $(STD_VECTOR) $(STD_VECTOR_OBJS)
-	$(CLANG) $(FLAGS) -o $(STD_STACK) $(STD_STACK_OBJS)
-	$(CLANG) $(FLAGS) -o $(STD_MAP) $(STD_MAP_OBJS)
-	$(CLANG) $(FLAGS) -o $(STD_SET) $(STD_SET_OBJS)
+OBJS = $(SRCS:.cpp=.o)
+STD_OBJS = $(STD_SRCS:.cpp=.o)
 
-all : $(VECTOR)
+OBJS_BONUS = $(SRCS_BONUS:.cpp=.o)
+STD_OBJS_BONUS = $(STD_SRCS_BONUS:.cpp=.o)
 
-vector :
-	$(RM) $(STD_VECTOR_FILE) $(VECTOR_FILE)
-	$(STD_VECTOR) >> $(STD_VECTOR_FILE)
-	$(VECTOR) >> $(VECTOR_FILE)
-	DIFF $(VECTOR_FILE) $(STD_VECTOR_FILE)
+all : $(NAME) $(STD_NAME) bonus
 
-stack :
-	$(RM) $(STD_STACK_FILE) $(STACK_FILE)
-	$(STD_STACK) >> $(STD_STACK_FILE)
-	$(STACK) >> $(STACK_FILE)
-	DIFF $(STACK_FILE) $(STD_STACK_FILE)
+$(NAME) : $(OBJS) $(HEADER) 
+	$(CLANG) $(FLAGS) -o $@ $(SRCS)
 
-map :
-	$(RM) $(STD_MAP_FILE) $(MAP_FILE)
-	$(STD_MAP) >> $(STD_MAP_FILE)
-	$(MAP) >> $(MAP_FILE)
-	DIFF $(MAP_FILE) $(STD_MAP_FILE)
+$(STD_NAME) : $(STD_OBJS) $(HEADER)
+	$(CLANG) $(FLAGS) -o $@ $(STD_SRCS)
 
-set :
-	$(RM) $(STD_SET_FILE) $(SET_FILE)
-	$(STD_SET) >> $(STD_SET_FILE)
-	$(SET) >> $(SET_FILE)
-	DIFF $(SET_FILE) $(STD_SET_FILE)
+bonus : $(NAME_BONUS) $(STD_NAME_BONUS)
+
+$(NAME_BONUS) : $(OBJS_BONUS) $(HEADER) 
+	$(CLANG) $(FLAGS) -Iincludes -o $@ $(SRCS_BONUS)
+
+$(STD_NAME_BONUS) : $(STD_OBJS_BONUS) $(HEADER)
+	$(CLANG) $(FLAGS) -Iincludes -o $@ $(STD_SRCS_BONUS)
+
+test :
+	$(RM) $(STD_FILE) $(FT_FILE)
+	./$(STD_NAME) >> $(STD_FILE)
+	./$(NAME) >> $(FT_FILE)
+	DIFF $(FT_FILE) $(STD_FILE)
+
+test_bonus :
+	$(RM) $(STD_FILE_BONUS) $(FT_FILE_BONUS)
+	./$(STD_NAME_BONUS) >> $(STD_FILE_BONUS)
+	./$(NAME_BONUS) >> $(FT_FILE_BONUS)
+	DIFF $(FT_FILE_BONUS) $(STD_FILE_BONUS)
 
 clean :	
-	$(RM) $(VECTOR_OBJS) $(STACK_OBJS) $(MAP_OBJS) $(SET_OBJS)
-	$(RM) $(STD_VECTOR_OBJS) $(STD_STACK_OBJS) $(STD_MAP_OBJS) $(STD_SET_OBJS)
+	$(RM) $(OBJS) $(OBJS_BONUS)
+	$(RM) $(STD_OBJS) $(STD_OBJS_BONUS)
+	$(RM) $(FT_FILE) $(STD_FILE)
+	$(RM) $(FT_FILE_BONUS) $(STD_FILE_BONUS)
 
 fclean : clean
-	$(RM) $(VECTOR) $(STACK) $(MAP) $(SET) $(STD_VECTOR) $(STD_STACK) $(STD_MAP) $(STD_SET)
-	$(RM) $(VECTOR_FILE) $(STD_VECTOR_FILE)
-	$(RM) $(STACK_FILE) $(STD_STACK_FILE)
-	$(RM) $(MAP_FILE) $(STD_MAP_FILE)
-	$(RM) $(SET_FILE) $(STD_SET_FILE)
+	$(RM) $(NAME) $(STD_NAME)
+	$(RM) $(NAME_BONUS) $(STD_NAME_BONUS)
 
 re : fclean all
 
-.PHONY : clean fclean all re
+.PHONY : clean fclean all re bonus test test_bonus

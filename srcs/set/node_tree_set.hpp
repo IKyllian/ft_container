@@ -92,17 +92,17 @@ namespace ft
 	bool operator!=(const ft::treeIterator<Node, Tree>& lhs, const ft::treeIterator<Node, Tree>& rhs) { return (lhs.base() != rhs.base()); };
 
 	template <class T>
-	struct node {
-		node	*_left;
-		node	*_right;
-		node	*_parent;
+	struct node_set {
+		node_set	*_left;
+		node_set	*_right;
+		node_set	*_parent;
 		int		_color;
 		T		_value;
 
-		node(const T &value = T()) : _left(nullptr), _right(nullptr), _parent(nullptr), _color(ROUGE), _value(value) {};
-		node(node *left, node *right, node *parent, int color, const T &value = T()) : _left(left), _right(right), _parent(parent), _color(color), _value(value) {};
+		node_set(const T &value = T()) : _left(nullptr), _right(nullptr), _parent(nullptr), _color(ROUGE), _value(value) {};
+		node_set(node_set *left, node_set *right, node_set *parent, int color, const T &value = T()) : _left(left), _right(right), _parent(parent), _color(color), _value(value) {};
 
-		node& operator=(const node& src) {
+		node_set& operator=(const node_set& src) {
 			_left = src._left;
 			_right = src._right;
 			_parent = src._parent;
@@ -124,7 +124,7 @@ namespace ft
 		}
 	};
 
-	template <class T, class Compare, class Alloc = std::allocator<ft::node<T> > >
+	template <class T, class Compare, class Alloc = std::allocator<ft::node_set<T> > >
 	class tree
 	{
 		public :
@@ -691,7 +691,7 @@ namespace ft
 				return (most_right(node->_right));
 			}
 
-			size_type max_size() const { return ((std::numeric_limits<size_type>::max() / sizeof(node<value_type>))); };
+			size_type max_size() const { return ((std::numeric_limits<size_type>::max() / sizeof(node_set<value_type>))); };
 
 		private :
 			pointer			 _root;

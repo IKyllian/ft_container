@@ -182,15 +182,17 @@ namespace ft
 				T *new_ptr;
 				size_type size = get_new_alloc_size(n);
 				new_ptr = this->_alloc.allocate(size);
-				_alloc_size = size;
 				for (size_type i = 0; i < this->_fill_size; i++)
 					this->_alloc.construct(new_ptr + i, *(this->_ptr + i));
 				for (size_type i = this->_fill_size; i < n; i++)
 					this->_alloc.construct(new_ptr + i, val);
-				for (size_type i = 0; i < this->_fill_size; i++)
-					this->_alloc.destroy(this->_ptr + i);
-				this->_alloc.deallocate(this->_ptr, this->_alloc_size);
+				if (_alloc_size > 0) {
+					for (size_type i = 0; i < this->_fill_size; i++)
+						this->_alloc.destroy(this->_ptr + i);
+					this->_alloc.deallocate(this->_ptr, this->_alloc_size);
+				}
 				_ptr = new_ptr;
+				_alloc_size = size;
 				_fill_size = n;
 			}
 		};
@@ -212,9 +214,11 @@ namespace ft
 				for (size_type i = 0; i < this->_fill_size; i++)
 					this->_alloc.construct(new_ptr + i, *(this->_ptr + i));
 				// Free old ptr
-				for (size_type i = 0; i < this->_fill_size; i++)
-					this->_alloc.destroy(this->_ptr + i);
-				this->_alloc.deallocate(this->_ptr, this->_alloc_size);
+				if (this->_alloc_size > 0) {
+					for (size_type i = 0; i < this->_fill_size; i++)
+						this->_alloc.destroy(this->_ptr + i);
+					this->_alloc.deallocate(this->_ptr, this->_alloc_size);
+				}
 				this->_ptr = new_ptr;
 				this->_alloc_size = n;
 			}
