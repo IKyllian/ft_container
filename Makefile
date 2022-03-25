@@ -4,6 +4,17 @@ STD_NAME = $(addprefix tests/, std_test)
 NAME_BONUS = $(addprefix tests/, ft_test_bonus)
 STD_NAME_BONUS = $(addprefix tests/, std_test_bonus)
 
+HEADER = ./srcs/utils.hpp \
+		 ./srcs/iterators.hpp \
+		 ./srcs/vector/vector.hpp \
+		 ./srcs/vector/vector_iterator.hpp \
+		 ./srcs/vector/vector_reverse_iterator.hpp \
+		 ./srcs/stack/stack.hpp \
+		 ./srcs/map/map.hpp \
+		 ./srcs/map/node_tree.hpp \
+		 ./srcs/set/node_tree_set.hpp \
+		 ./srcs/set/set.hpp \
+
 FT_FILE = ./tests/ft_diff.txt
 STD_FILE = ./tests/std_diff.txt
 
